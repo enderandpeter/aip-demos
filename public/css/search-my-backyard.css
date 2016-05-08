@@ -1,0 +1,162 @@
+@charset 'utf-8';
+@import url(https://fonts.googleapis.com/css?family=Dancing+Script);
+
+/*
+	Set the html and body height to allow relative unit sizes
+	for the contained divs.
+*/
+html, body { 
+	height: 100%; 
+	margin: 0; 
+	padding: 0; 
+}
+
+h2{
+	font-size: 1.5em
+}
+
+h3{
+	font-size: 1.3em;
+}
+
+address{
+	font-size: 1.2em
+}
+
+.hide {
+	display: none;
+}
+
+#map {
+    height: 100%;
+}
+
+#map h1 {
+	font-family: 'Dancing Script', cursive;
+}
+
+#uicontrols {
+	display: none;
+}
+
+#header {
+    background: rgba(255,255,255,0.8);
+    border: black dotted 0.1em;
+    padding: 0.8em;
+    width: 80%;
+}
+#header header {
+    font-size: 2em;
+    text-align: center;
+}
+#header h1 {
+    margin: 2%;
+}
+#siteinfo {
+    font-size: 1.2em;    
+}
+#messages{	
+    width: 100%;
+    display: none;
+}
+
+#messages.show{
+	display: block;
+}
+
+#messages.warning{
+	background-color: rgba(255, 200, 10, 0.4);
+}
+
+#messages.success{
+	background-color: rgba(10, 200, 10, 0.4);
+}
+
+#messages.error{
+	background-color: rgba(200, 10, 10, 0.4);
+}
+
+#marker_menu{
+	width: 23em;
+	background: rgba(255,255,255,0.5);
+	max-height: 60em;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#marker_menu_buttons_list {
+    list-style-type: none;
+}
+#marker_menu_buttons_list button {
+	font-size: 0.8em;
+}
+#marker_menu_buttons_list .button_container{
+	display: inline-block
+}
+#marker_menu_buttons_list .button_container{
+	display: inline-block
+}
+#marker_list{
+	font-size: 1.2em;
+	padding: 0;	
+}
+#marker_list li {
+	list-style-type: none;
+	background: rgba(200, 252, 255, 0.32);	
+	border: 0.2em solid transparent;
+}
+
+#marker_list li:nth-child(even) {
+    background: rgba(241, 254, 255, 0.32);
+}
+
+#marker_list li.hovering, #marker_list li:hover {
+	border-color: black;
+}
+
+#marker_list li.selected{
+	border-color: #CCC;
+}
+
+#marker_list li div:first-child{
+	margin-bottom: 2%;
+}
+
+.marker_list_label_header{
+	height: 2em;
+	margin-top: 0.2em;
+	margin-bottom: 0.4em;
+	position: relative;
+}
+
+.marker_list_label_header_container:hover .marker_list_label_header:after{
+	content: '\270e';
+    position: absolute;
+    right: 0;
+}
+
+.progress_container{
+	text-align: center;
+}
+
+.progress_indicator {
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-name: loading;
+  animation-timing-function: linear;
+  width: auto%;
+  font-size: 3em;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.reviews{
+	margin-top: 5%;
+}
