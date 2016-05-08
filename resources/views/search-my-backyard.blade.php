@@ -95,6 +95,9 @@
 							<button type="submit" class="btn btn-default btn-sm" data-bind="click: toggleVisibility, attr: { title: getVisibilityTitle }">																
 								<span class="glyphicon" aria-hidden="true" data-bind="css : { 'glyphicon-eye-open': !observableMap(), 'glyphicon-eye-close': observableMap }"></span>								
 							</button>
+							<button type="submit" title="Open StreetView" class="btn btn-default btn-sm" data-bind="click: openStreetView">
+								<span class="glyphicon glyphicon-road" aria-hidden="true"></span>							
+							</button>
 							<button type="submit" class="btn btn-default btn-sm" title="Remove" data-bind="click: removeMarker">
 								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>							
 							</button>

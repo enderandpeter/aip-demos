@@ -210,6 +210,7 @@ window.addEventListener('load', function(){
         	
         	var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         	var labelIndex = 0;
+        	var panorama;
         	
         	/**
         	 * The displayed array of markers
@@ -352,6 +353,16 @@ window.addEventListener('load', function(){
     				  $('#infowindow_lat').text(marker.getPosition().lat());
     				  $('#infowindow_lng').text(marker.getPosition().lng());
     			  };
+    			  
+    			  marker.openStreetView = function(){
+    				  panorama = map.getStreetView();
+    				  panorama.setPosition(marker.getPosition());
+    				  panorama.setVisible(true);
+    				  
+    				  panorama.addListener('closeclick', function(event){
+    					  this.setVisible(false);
+    				  });
+    			  }
     			  
     			  marker.goToLocation = function(){
     				  if(event && event.stopPropagation){
