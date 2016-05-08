@@ -142,7 +142,8 @@ window.addEventListener('load', function(){
         	var self = this;
         	
         	this.data = ko.observable({
-        		yelp: ko.observableArray([])	
+        		yelp: ko.observableArray([]),
+        		streetview: ko.observableArray([])
         	});
         	
         	/**
@@ -276,16 +277,45 @@ window.addEventListener('load', function(){
              * @this MarkerListViewModel
              */
             this.addMarker = function(location) {
+            	  /*
+            	   * The local StreetViewPanorama
+            	   */
+            	  var panorama = map.getStreetView();
+            	  /*
+            	   * A StreetViewService item for when local StreetView data is unavailable
+            	   */
+            	  var sv = new google.maps.StreetViewService();
+            	  
+            	  /*
+            	   * This is required in order to load the Street View data, but it will still
+            	   * not be available the first the Street View Location data is queried.
+            	   */
+            	  panorama.setVisible(true);
+				  panorama.setVisible(false);
+            	
     			  var marker = new google.maps.Marker({
     				    position: location,
     				    map: map,
-    				    label: labels[labelIndex++ % labels.length]
+    				    label: labels[labelIndex++ % labels.length],    				    
     			  });
+    			  marker.setTitle(marker.getLabel());
     			  marker.hover = ko.observable(false);
     			  marker.selected = ko.observable(false);
     			  marker.isSelected = ko.observable(false);
     			  marker.editing = ko.observable(false);
     			  marker.observableMap = ko.observable(map);
+    			  marker.locationDescription = ko.observable('');
+    			  
+    			  sv.getPanorama({location: marker.getPosition()}, function(data, status){
+					  if(status === google.maps.StreetViewStatus.OK){
+						  marker.locationDescription(data.location.description);
+					  }
+				  });
+    			  
+    			  marker.description = ko.pureComputed(function(){
+    				  return marker.locationDescription();
+    			  });
+    			  
     			  marker.originalClasses = '';
     			  
     			  marker.toggleVisibility = function(visible, event){
@@ -337,6 +367,7 @@ window.addEventListener('load', function(){
     				if(event.key === "Enter" || event.keyCode === 13 || event.type === 'blur'){
     					var newLabel = $(event.target).closest('.marker_list_label_input').val();
     					marker.setLabel(newLabel);
+    					marker.setTitle(newLabel);
     					marker.editing(false);
     					marker.updateInfoWindow();
     				} else {
@@ -355,8 +386,14 @@ window.addEventListener('load', function(){
     			  };
     			  
     			  marker.openStreetView = function(){
-    				  panorama = map.getStreetView();
+    				  if(event && event.stopPropagation){
+    					event.stopPropagation();
+    				  }
     				  panorama.setPosition(marker.getPosition());
+    				  
+    				  if(!panorama.getLocation()){
+    					  return;
+    				  }
     				  panorama.setVisible(true);
     				  
     				  panorama.addListener('closeclick', function(event){
@@ -392,7 +429,7 @@ window.addEventListener('load', function(){
     					  if(response.data.yelp){
     						 var yelpData = response.data.yelp;
     						 locationDataViewModel.data().yelp(yelpData);
-    					  }
+    					  }    					 
     				  }).fail(function(jqxhr, status, error){
     					  errorViewModel.setMessage('Could not retrieve location data', 'error');
     					  console.error(error);

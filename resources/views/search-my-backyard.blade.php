@@ -85,8 +85,13 @@
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="lat">Lat: <span data-bind="text: getPosition().lat().toPrecision(5)"></span></div> 
-							<div class="lng">Long: <span data-bind="text: getPosition().lng().toPrecision(5)"></span></div>
+							<div data-bind="ifnot: description">
+								<div class="lat">Lat: <span data-bind="text: getPosition().lat().toPrecision(5)"></span></div> 
+								<div class="lng">Long: <span data-bind="text: getPosition().lng().toPrecision(5)"></span></div>
+							</div>
+							<div data-bind="if: description">
+								<div data-bind="text: description, attr: { title: 'Close to Lat: ' + getPosition().lat().toPrecision(5) + ', Long: ' + getPosition().lng().toPrecision(5) }"></div>
+							</div>
 						</div>
 						<div class="col-md-6 btn-group" role="group" aria-label="Manage location">
 							<button type="submit" title="Go to location" class="btn btn-default btn-sm" data-bind="click: goToLocation">
@@ -95,7 +100,7 @@
 							<button type="submit" class="btn btn-default btn-sm" data-bind="click: toggleVisibility, attr: { title: getVisibilityTitle }">																
 								<span class="glyphicon" aria-hidden="true" data-bind="css : { 'glyphicon-eye-open': !observableMap(), 'glyphicon-eye-close': observableMap }"></span>								
 							</button>
-							<button type="submit" title="Open StreetView" class="btn btn-default btn-sm" data-bind="click: openStreetView">
+							<button type="submit" title="Open StreetView" class="btn btn-default btn-sm" data-bind="click: openStreetView, disable: !locationDescription()">
 								<span class="glyphicon glyphicon-road" aria-hidden="true"></span>							
 							</button>
 							<button type="submit" class="btn btn-default btn-sm" title="Remove" data-bind="click: removeMarker">
@@ -120,47 +125,59 @@
 					<div class="progress_indicator glyphicon glyphicon-refresh">					
 					</div>
 				</div>
-				<div id="yelp_content" data-bind="ifnot: downloading">
-					<h3>Yelp</h3>				
-					<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: data().yelp">
-						<li class="business_list_item media">						
-							<div class="business_info media-left">
-								<div class="business_img">
-									<img class="media-object" data-bind="attr: { src: image_url }">
-								</div>							
-							</div>
-							<div class="media-body">
-								<header class="media-heading">
-									<h3>
-										<a data-bind="attr: { href: url }, text: name"></a>
-									</h3>
-									<address data-bind="text: location.display_address"></address>
-									<tel data-bind="text: $data.display_phone"></tel>
-								</header>
-								<div class="rating">							
-									<img class="rating_img" data-bind="attr: { src: rating_img_url_small }" />
-									<span data-bind="text: rating"></span>
+				<div id="location_content" data-bind="ifnot: downloading">
+					<div id="yelp_content" data-bind="if: data().yelp().length !== 0">
+						<h3>Yelp</h3>				
+						<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: data().yelp">
+							<li class="business_list_item media">						
+								<div class="business_info media-left">
+									<div class="business_img">
+										<img class="media-object" data-bind="attr: { src: image_url }">
+									</div>							
 								</div>
-							
-							<div class="reviews">
-								<ul data-bind="foreach: reviews" class="list-unstyled media-list">
-									<li class="review_list_item media">
-										<div class="user media-left">
-											<img class="media-object" data-bind="attr: { src: user.image_url, title: user.name }" />
-										</div>
-										<div class="media-body">									
-											<div class="review_excerpt" data-bind="text: excerpt"></div>
-											<div class="review_rating">
-												<img data-bind="attr: { src: rating_image_small_url }" />
-												<span data-bind="text: rating"></span>
+								<div class="media-body">
+									<header class="media-heading">
+										<h3>
+											<a data-bind="attr: { href: url }, text: name" target="_blank"></a>
+										</h3>
+										<address data-bind="text: location.display_address"></address>
+										<tel data-bind="text: $data.display_phone"></tel>
+									</header>
+									<div class="rating">							
+										<img class="rating_img" data-bind="attr: { src: rating_img_url_small }" />
+										<span data-bind="text: rating"></span>
+									</div>
+								
+								<div class="reviews">
+									<ul data-bind="foreach: reviews" class="list-unstyled media-list">
+										<li class="review_list_item media">
+											<div class="user media-left">
+												<img class="media-object" data-bind="attr: { src: user.image_url, title: user.name }" />
 											</div>
-										</div>
-									</li>
-								</ul>
-							</div>
-							</div>
-						</li>
-					</ul>
+											<div class="media-body">									
+												<div class="review_excerpt" data-bind="text: excerpt"></div>
+												<div class="review_rating">
+													<img data-bind="attr: { src: rating_image_small_url }" />
+													<span data-bind="text: rating"></span>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div id="streetview_content" data-bind="if: data().streetview().length !== 0">
+						<h3>Google Street View</h3>
+						<ul id="streetview_image_list" data-bind="foreach: data().streetview">
+							<li class="streetview_image_list_item">
+								<a data-bind="attr: { href: $data }" target="_blank">
+									<img data-bind="attr: { src: $data }">
+								</a>	
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>	
