@@ -413,12 +413,15 @@ window.addEventListener('load', function(){
     				  
     				  locationDataViewModel.downloading(true);
     				  
-    				  var requestURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAlGK97uekQTDMR4h7Wr5lLtENUgpOD7eo&pano=' + panoramaData.location.pano;
     				  locationDataViewModel.data().streetview([]);    				  
-    				  for(var i = 0; i < 360; i += 90){
-    					  locationDataViewModel.data().streetview.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
-    					  locationDataViewModel.data().streetview()[locationDataViewModel.data().streetview().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
-    				  }    				  
+    				  if(panoramaData && panoramaData.location.pano){
+    					  var requestURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAlGK97uekQTDMR4h7Wr5lLtENUgpOD7eo&pano=' + panoramaData.location.pano;
+        				      				  
+        				  for(var i = 0; i < 360; i += 90){
+        					  locationDataViewModel.data().streetview.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
+        					  locationDataViewModel.data().streetview()[locationDataViewModel.data().streetview().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
+        				  }  
+    				  }   				  
     				  
     				  var jqxhr = $.ajax('/search-my-backyard',
     						 {
@@ -427,8 +430,7 @@ window.addEventListener('load', function(){
 		    				    },	
 		    					method: 'POST',
     					  		data: {
-    					  			location: marker.getPosition().lat() + ',' + marker.getPosition().lng(),
-    					  			panoID: panoramaData.location.pano ? panoramaData.location.pano : '' 	
+    					  			location: marker.getPosition().lat() + ',' + marker.getPosition().lng()
     					  		},
     					  		dataType: 'json'
     						 }
