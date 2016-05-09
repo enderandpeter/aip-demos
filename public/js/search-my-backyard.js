@@ -394,9 +394,6 @@ window.addEventListener('load', function(){
     				  }
     				  panorama.setPosition(marker.getPosition());
     				  
-    				  if(!panorama.getLocation()){
-    					  return;
-    				  }
     				  panorama.setVisible(true);
     				  
     				  panorama.addListener('closeclick', function(event){
