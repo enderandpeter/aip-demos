@@ -143,7 +143,8 @@ window.addEventListener('load', function(){
         	
         	this.data = ko.observable({
         		yelp: ko.observableArray([]),
-        		streetview: ko.observableArray([])
+        		streetview: ko.observableArray([]),
+        		wikipedia: ko.observableArray([])
         	});
         	
         	/**
@@ -411,9 +412,19 @@ window.addEventListener('load', function(){
     				  marker.updateInfoWindow();
     				  self.infoWindow.open(map, marker);
     				  
+    				  /*
+    				   * Enable the download state
+    				   */
     				  locationDataViewModel.downloading(true);
     				  
-    				  locationDataViewModel.data().streetview([]);    				  
+    				  /*
+    				   * Clear the street view array when loading a new InfoWindow
+    				   */
+    				  locationDataViewModel.data().streetview([]);
+    				  
+    				  /*
+    				   * Only get Street View images if panorama data is detected
+    				   */
     				  if(panoramaData && panoramaData.location.pano){
     					  var requestURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAlGK97uekQTDMR4h7Wr5lLtENUgpOD7eo&pano=' + panoramaData.location.pano;
         				      				  
@@ -423,6 +434,9 @@ window.addEventListener('load', function(){
         				  }  
     				  }   				  
     				  
+    				  /*
+    				   * Create and send the request for Yelp review data
+    				   */
     				  var jqxhr = $.ajax('/search-my-backyard',
     						 {
 		    				    headers: {
@@ -449,6 +463,100 @@ window.addEventListener('load', function(){
     					  console.error(error);
     				  }).always(function(){
     					  locationDataViewModel.downloading(false);
+    				  });
+    				  
+    				  /*
+    				   * Create and send the request for images from Wikipedia articles near the Geolocation 
+    				   */
+    				  var wpApiUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&generator=geosearch&colimit=50&prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=" + marker.getPosition().lat() + '|' + marker.getPosition().lng();
+    				  
+    				  wpApiUrl = window.encodeURI(wpApiUrl);
+    				  
+    				  var wpJqxhr = $.ajax(wpApiUrl,
+    					 {
+	    				    headers: {
+	    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	    				    },	
+	    					method: 'POST',
+					  		dataType: 'jsonp',
+					  		jsonp: 'callback'
+						 }
+    				  ).done(function(response){
+    					  var pages = {};
+    					  var pageIds = [];
+    					  var imageURLPrefix = 'https://en.wikipedia.org/wiki/';
+    					  if(response.query.pages){
+    						  pages = response.query.pages;
+    						  var titles = [];
+    						  var localPages = [];
+    						  var maxArticles = 10;
+    						  var articleCount = 0;
+    						  
+    						  for(var pageIndex in pages){
+    							  if(articleCount > maxArticles){
+    								  break;
+    							  }
+    							  var article = pages[pageIndex];
+    							  var localPage = {
+    									title: article.title,
+    									imageArray: []
+    							  };
+    							  var localImages = {};
+    							  
+    							  /*
+    							   * Grab the first five images from each found article
+    							   */
+    							  if(Array.isArray(article.images) && article.images.length > 0){
+    								  for(var i = 0; i < 5; i++){
+    									  if(!article.images[i]){
+    										  break;
+    									  }
+        								  localImages[article.images[i].title] = '';
+        								  titles.push(article.images[i].title);
+        							  }
+    								  
+    								  localPage.images = localImages;
+    								  localPages.push(localPage);
+    							  }
+    							  
+    							  articleCount++;
+    						  }
+    						  
+    						  var wpImageUrl = window.encodeURI('https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iilimit=max&titles=' + titles.join('|'));
+							  
+							  var wpimageinfoJqxhr = $.ajax(wpImageUrl,
+		    					 {
+			    				    headers: {
+			    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    				    },	
+			    					method: 'POST',
+							  		dataType: 'jsonp',
+							  		jsonp: 'callback'
+								 }
+		    				  ).done(function(imageinfo_resp){
+		    					  if(imageinfo_resp.query.pages){
+		    						  for(var pageIndex in imageinfo_resp.query.pages){
+		    							  var page = imageinfo_resp.query.pages[pageIndex];
+		    							  
+		    							  for(var localPageIndex in localPages){
+		    								  var aLocalPage = localPages[localPageIndex];
+		    								  
+		    								  if(aLocalPage.images[page.title] !== undefined){
+		    									  aLocalPage.images[page.title] = page.imageinfo[0].url;
+		    									  aLocalPage.imageArray.push(page.imageinfo[0].url);
+		    								  }
+		    							  }
+			    					  }
+		    						  locationDataViewModel.data().wikipedia(localPages);
+		    					  }		    					  
+		    				  }).fail(function(jqxhr, status, error){
+		    					  errorViewModel.setMessage('Could not retrieve Wikipedia image data', 'error');
+		    					  console.error(error);
+		    				  });
+    					  }
+    				  }).fail(function(jqxhr, status, error){
+    					  errorViewModel.setMessage('Could not retrieve Wikipedia article data', 'error');
+    					  console.error(error);
     				  });
     			  };
     			  

@@ -160,3 +160,12 @@ address{
 .reviews{
 	margin-top: 5%;
 }
+
+.wikipedia_image_list_item{
+	width: 10em;
+	height: 10em;
+}
+
+#wikipedia_content .wikipedia_image_list_item img{
+	max-width: 100%
+}
