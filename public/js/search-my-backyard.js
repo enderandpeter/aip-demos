@@ -281,6 +281,7 @@ window.addEventListener('load', function(){
             	   * The local StreetViewPanorama
             	   */
             	  var panorama = map.getStreetView();
+            	  var panoramaData = null;
             	  /*
             	   * A StreetViewService item for when local StreetView data is unavailable
             	   */
@@ -308,6 +309,7 @@ window.addEventListener('load', function(){
     			  
     			  sv.getPanorama({location: marker.getPosition()}, function(data, status){
 					  if(status === google.maps.StreetViewStatus.OK){
+						  panoramaData = data;
 						  marker.locationDescription(data.location.description);
 					  }
 				  });
@@ -411,13 +413,23 @@ window.addEventListener('load', function(){
     				  
     				  locationDataViewModel.downloading(true);
     				  
+    				  var requestURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAlGK97uekQTDMR4h7Wr5lLtENUgpOD7eo&pano=' + panoramaData.location.pano;
+    				  
+    				  for(var i = 0; i < 360; i += 90){
+    					  locationDataViewModel.data().streetview.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
+    					  locationDataViewModel.data().streetview()[locationDataViewModel.data().streetview().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
+    				  }    				  
+    				  
     				  var jqxhr = $.ajax('/search-my-backyard',
     						 {
 		    				    headers: {
 		    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		    				    },	
 		    					method: 'POST',
-    					  		data: {location: marker.getPosition().lat() + ',' + marker.getPosition().lng()},
+    					  		data: {
+    					  			location: marker.getPosition().lat() + ',' + marker.getPosition().lng(),
+    					  			panoID: panoramaData.location.pano ? panoramaData.location.pano : '' 	
+    					  		},
     					  		dataType: 'json'
     						 }
     				  ).done(function(response){
@@ -429,7 +441,7 @@ window.addEventListener('load', function(){
     					  if(response.data.yelp){
     						 var yelpData = response.data.yelp;
     						 locationDataViewModel.data().yelp(yelpData);
-    					  }    					 
+    					  }
     				  }).fail(function(jqxhr, status, error){
     					  errorViewModel.setMessage('Could not retrieve location data', 'error');
     					  console.error(error);

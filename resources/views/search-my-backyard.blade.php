@@ -172,8 +172,8 @@
 						<h3>Google Street View</h3>
 						<ul id="streetview_image_list" data-bind="foreach: data().streetview">
 							<li class="streetview_image_list_item">
-								<a data-bind="attr: { href: $data }" target="_blank">
-									<img data-bind="attr: { src: $data }">
+								<a data-bind="attr: { href: image }" target="_blank">
+									<img data-bind="attr: { src: thumbnail }">
 								</a>	
 							</li>
 						</ul>
