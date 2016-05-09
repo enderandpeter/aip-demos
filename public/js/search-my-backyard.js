@@ -468,35 +468,76 @@ window.addEventListener('load', function(){
     				  /*
     				   * Create and send the request for images from Wikipedia articles near the Geolocation 
     				   */
-    				  var wpApiUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&generator=geosearch&colimit=50&prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=" + marker.getPosition().lat() + '|' + marker.getPosition().lng();
+    				  
+    				  /*
+    				   * Create the URL for retrieving a list of articles in the area and their image names
+    				   * 
+    				   * Example:
+    				   * https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&generator=geosearch&colimit=50&
+    				   * prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=39.68711024716294|-104.80545043945312
+    				   */
+    				  var wpApiUrl = 'https://en.wikipedia.org/w/api.php?' + 
+    				  				 'action=query&format=json&generator=geosearch&colimit=50&' + 
+    				  				 'prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=' + 
+    				  				 marker.getPosition().lat() + '|' + marker.getPosition().lng();
     				  
     				  wpApiUrl = window.encodeURI(wpApiUrl);
     				  
     				  var wpJqxhr = $.ajax(wpApiUrl,
     					 {
+    					  	/*
+    					  	 * Required for Laravel's VerifyCsrfToken middleware
+    					  	 */
 	    				    headers: {
 	    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	    				    },	
 	    					method: 'POST',
+	    					/*
+	    					 * Use jsonp to circumvent cross-domain restrictions
+	    					 */
 					  		dataType: 'jsonp',
 					  		jsonp: 'callback'
 						 }
     				  ).done(function(response){
     					  var pages = {};
     					  var pageIds = [];
-    					  var imageURLPrefix = 'https://en.wikipedia.org/wiki/';
     					  if(response.query.pages){
     						  pages = response.query.pages;
-    						  var titles = [];
-    						  var localPages = [];
+    						  
+    						  /*
+    						   * The list of titles to join with a vertical bar to send as parameters on the next Wikipedia API call
+    						   */
+    						  var titles = [];    						  
+    						  /*
+    						   * Contains objects listing the articles and their images
+    						   */
+    						  var localPages = [];    						  
+    						  /*
+    						   * The maximum number of articles to query.
+    						   */
     						  var maxArticles = 10;
+    						  /*
+    						   * The current article count
+    						   */
     						  var articleCount = 0;
     						  
+    						  /*
+    						   * For every result, store the title and an object of image name keys and image URLs. The URLs will be populated
+    						   * on the next API call. There will also be an imageArray that will contain just the file URLs so that Knockout's
+    						   * foreach can loop through them.
+    						   */
     						  for(var pageIndex in pages){
+    							  /*
+    							   * The API only allows a max of 50 article titles to be passed as parameters, but we may use less.
+    							   */
     							  if(articleCount > maxArticles){
     								  break;
     							  }
     							  var article = pages[pageIndex];
+    							  
+    							  /*
+    							   * Each article and images for the article will be stored in a localPage object and placed in the localPages array.
+    							   */
     							  var localPage = {
     									title: article.title,
     									imageArray: []
@@ -504,7 +545,7 @@ window.addEventListener('load', function(){
     							  var localImages = {};
     							  
     							  /*
-    							   * Grab the first five images from each found article
+    							   * Grab the first five images from each article
     							   */
     							  if(Array.isArray(article.images) && article.images.length > 0){
     								  for(var i = 0; i < 5; i++){
@@ -522,19 +563,33 @@ window.addEventListener('load', function(){
     							  articleCount++;
     						  }
     						  
-    						  var wpImageUrl = window.encodeURI('https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iilimit=max&titles=' + titles.join('|'));
+    						  /*
+    						   * Create the URL for retrieving the image URLs for the images found in the articles in the geographic area
+    						   */
+    						  var wpImageUrl = window.encodeURI('https://en.wikipedia.org/w/api.php' + 
+    								  '?action=query&format=json&prop=imageinfo&iiprop=url&iilimit=max&titles=' + titles.join('|'));
 							  
 							  var wpimageinfoJqxhr = $.ajax(wpImageUrl,
 		    					 {
+								   /*
+		    					  	* Required for Laravel's VerifyCsrfToken middleware
+		    					    */
 			    				    headers: {
 			    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			    				    },	
 			    					method: 'POST',
+			    					/*
+			    					 * Use jsonp to circumvent cross-domain restrictions
+			    					 */
 							  		dataType: 'jsonp',
 							  		jsonp: 'callback'
 								 }
 		    				  ).done(function(imageinfo_resp){
 		    					  if(imageinfo_resp.query.pages){
+		    						  /*
+		    						   * For every page of imageinfo, search through localPages to find the element in the images 
+		    						   * collection with that image name for a key and store the URL there
+		    						   */
 		    						  for(var pageIndex in imageinfo_resp.query.pages){
 		    							  var page = imageinfo_resp.query.pages[pageIndex];
 		    							  
