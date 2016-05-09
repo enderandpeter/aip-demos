@@ -414,7 +414,7 @@ window.addEventListener('load', function(){
     				  locationDataViewModel.downloading(true);
     				  
     				  var requestURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAlGK97uekQTDMR4h7Wr5lLtENUgpOD7eo&pano=' + panoramaData.location.pano;
-    				  
+    				  locationDataViewModel.data().streetview([]);    				  
     				  for(var i = 0; i < 360; i += 90){
     					  locationDataViewModel.data().streetview.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
     					  locationDataViewModel.data().streetview()[locationDataViewModel.data().streetview().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
