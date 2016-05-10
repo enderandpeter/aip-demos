@@ -121,81 +121,97 @@
 				</div>
 			</header>		
 			<div id="infowindow_content" class="autofilled">
+				<div data-bind="ifnot: downloading">
+				<ul id="infowindow_main_list" class="nav nav-tabs" data-bind="foreach: services()">
+					<li role="presentation"><a href="#" data-bind="text: serviceName, css: { active: showView }, click: showTab"></a></li>
+				</ul>
+				</div>
 				<div class="progress_container" data-bind="if: downloading">
 					<div class="progress_indicator glyphicon glyphicon-refresh">					
 					</div>
 				</div>
 				<div id="location_content" data-bind="ifnot: downloading">
-					<div id="yelp_content" data-bind="if: data().yelp().length !== 0">
-						<h3>Yelp</h3>				
-						<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: data().yelp">
-							<li class="business_list_item media">						
-								<div class="business_info media-left">
-									<div class="business_img">
-										<img class="media-object" data-bind="attr: { src: image_url }">
-									</div>							
-								</div>
-								<div class="media-body">
-									<header class="media-heading">
-										<h3>
-											<a data-bind="attr: { href: url }, text: name" target="_blank"></a>
-										</h3>
-										<address data-bind="text: location.display_address"></address>
-										<tel data-bind="text: $data.display_phone"></tel>
-									</header>
-									<div class="rating">							
-										<img class="rating_img" data-bind="attr: { src: rating_img_url_small }" />
-										<span data-bind="text: rating"></span>
+					<div id="location_data">
+						<div id="yelp_container" data-bind="if: getService('yelp').showView">
+							<div id="yelp_content" data-bind="if: getService('yelp').data().length !== 0">
+								<h3 data-bind="text: getService('yelp').serviceName"></h3>
+								<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: getService('yelp').data">
+									<li class="business_list_item media">						
+									<div class="business_info media-left">
+										<div class="business_img">
+											<img class="media-object" data-bind="attr: { src: $data.image_url }">
+										</div>							
 									</div>
-								
-								<div class="reviews">
-									<ul data-bind="foreach: reviews" class="list-unstyled media-list">
-										<li class="review_list_item media">
-											<div class="user media-left">
-												<img class="media-object" data-bind="attr: { src: user.image_url, title: user.name }" />
+									<div class="media-body">
+										<header class="media-heading">
+											<h3>
+												<a data-bind="attr: { href: url }, text: name" target="_blank"></a>
+											</h3>
+											<address data-bind="text: location.display_address"></address>
+											<tel data-bind="text: $data.display_phone"></tel>
+										</header>
+										<div class="rating">							
+											<img class="rating_img" data-bind="attr: { src: rating_img_url_small }" />
+											<span data-bind="text: rating"></span>
+										</div>
+									
+										<div class="reviews">
+											<ul data-bind="foreach: reviews" class="list-unstyled media-list">
+												<li class="review_list_item media">
+													<div class="user media-left">
+														<img class="media-object" data-bind="attr: { src: user.image_url, title: user.name }" />
+													</div>
+													<div class="media-body">									
+														<div class="review_excerpt" data-bind="text: excerpt"></div>
+															<div class="review_rating">
+																<img data-bind="attr: { src: rating_image_small_url }" />
+																<span data-bind="text: rating"></span>
+															</div>
+														</div>
+													</li>
+												</ul>
 											</div>
-											<div class="media-body">									
-												<div class="review_excerpt" data-bind="text: excerpt"></div>
-												<div class="review_rating">
-													<img data-bind="attr: { src: rating_image_small_url }" />
-													<span data-bind="text: rating"></span>
-												</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div id="streetview_content" data-bind="if: data().streetview().length !== 0">
-						<h3>Google Street View</h3>
-						<ul id="streetview_image_list" data-bind="foreach: data().streetview">
-							<li class="streetview_image_list_item">
-								<a data-bind="attr: { href: image }" target="_blank">
-									<img class="img-responsive" data-bind="attr: { src: thumbnail }">
-								</a>	
-							</li>
-						</ul>
-					</div>
-					<div id="wikipedia_content" data-bind="if: data().wikipedia().length !== 0">
-						<h3>Wikipedia</h3>																				
-						<ul class="wikipedia_article_list list-unstyled" data-bind="foreach: data().wikipedia">
-							<li class="wikipedia_article_list_item">
-								<div class="wikipedia_article_container" data-bind="if: $data.imageArray">
-									<h4 data-bind="text: title"></h4>
-									<ul class="wikipedia_image_list list-unstyled list-inline" data-bind="foreach: imageArray">
-										<li class="wikipedia_image_list_item">
-											<a data-bind="attr: { href: $data }" target="_blank">
-												<img class="img-responsive" data-bind="attr: { src: $data }">
-											</a>											
-										</li>
-									</ul>
-								</div>	
-							</li>
-						</ul>				
-					</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div id="streetview_container" data-bind="if: getService('streetview').showView">
+							<div id="streetview_content" data-bind="if: getService('streetview').data().length !== 0">
+								<h3 data-bind="text: getService('streetview').serviceName"></h3>
+								<ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: getService('streetview').data">
+									<li class="streetview_image_list_item">
+										<a data-bind="attr: { href: image }" target="_blank">
+											<img class="img-responsive" data-bind="attr: { src: thumbnail }">
+										</a>	
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div id="wikipedia_container" data-bind="if: getService('wikipedia').showView">
+							<div id="wikipedia_content" data-bind="if: getService('wikipedia').data().length !== 0">
+								<h3 data-bind="text: getService('streetview').serviceName"></h3>																				
+								<ul class="wikipedia_article_list list-unstyled" data-bind="foreach: getService('wikipedia').data">
+									<li class="wikipedia_article_list_item">
+										<div class="wikipedia_article_container" data-bind="if: $data.imageArray">
+											<h4 data-bind="text: title"></h4>
+											<ul class="wikipedia_image_list list-unstyled list-inline" data-bind="foreach: imageArray">
+												<li class="wikipedia_image_list_item">
+													<a data-bind="attr: { href: $data }" target="_blank">
+														<img class="img-responsive" data-bind="attr: { src: $data }">
+													</a>											
+												</li>
+											</ul>
+										</div>	
+									</li>
+								</ul>				
+							</div>
+						</div>
+					</div>					
+					
+					
 				</div>
+				
 			</div>
 		</div>	
 	</div>

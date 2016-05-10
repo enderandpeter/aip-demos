@@ -43,7 +43,7 @@ address{
     background: rgba(255,255,255,0.8);
     border: black dotted 0.1em;
     padding: 0.8em;
-    width: 80%;
+    width: 30em;
 }
 #header header {
     font-size: 2em;
@@ -132,6 +132,10 @@ address{
 	content: '\270e';
     position: absolute;
     right: 0;
+}
+
+#infowindow{
+	width: 45em;
 }
 
 .progress_container{

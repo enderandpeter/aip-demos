@@ -141,16 +141,80 @@ window.addEventListener('load', function(){
         function LocationDataViewModel(){
         	var self = this;
         	
-        	this.data = ko.observable({
-        		yelp: ko.observableArray([]),
-        		streetview: ko.observableArray([]),
-        		wikipedia: ko.observableArray([])
+        	/*
+        	 * this.services = ko.observable([
+        		ko.observable({
+        			service: 'yelp',
+        			serviceName: 'Yelp',
+        			data: ko.observableArray([]),
+        			showView: true,
+        			showTab: function(){...}
+        		}),
+        		 ko.observable({
+        			service: 'streetview',
+        			serviceName: 'Google Street View',
+        			data: ko.observableArray([]),
+        			showView: false,
+        			showTab: function(){...}
+        		}),
+        		 ko.observable({
+        			service: 'wikipedia', 
+        			serviceName: 'Wikipedia',
+        			data: ko.observableArray([]),
+        			showView: false,
+        			showTab: function(){...}
+        		})
+        	]);
+        	 */       	
+        	var serviceSetup = [{
+    			service: 'yelp',
+    			serviceName: 'Yelp',	
+        	},{
+        		service: 'streetview',
+    			serviceName: 'Google Street View'
+        	},{
+        		service: 'wikipedia', 
+    			serviceName: 'Wikipedia'
+        	}];
+        	
+        	this.services = ko.observableArray([]);
+        	var services = this.services;
+        	
+        	$.each(serviceSetup, function(index, element){
+        		function showTab(){
+            		for(var serviceIndex in services()){
+            			var service = services()[serviceIndex];
+            			service().showView(false);
+            		}
+            		
+            		this.showView(true);
+            	}
+        		
+        		element.data = ko.observableArray([]);
+        		element.showTab = showTab;
+        		
+        		if(!index){
+        			element.showView = ko.observable(true);
+        		} else {
+        			element.showView = ko.observable(false);
+        		}
+        		
+        		services.push(ko.observable(element));
         	});
         	
         	/**
         	 * Whether or not data is downloading from a web API.
         	 */
         	this.downloading = ko.observable(false);
+        	
+        	this.getService = function(name){
+        		for(var serviceIndex in services()){
+        			var service = services()[serviceIndex];
+        			if(name === service().service){
+        				return service();
+        			}
+        		}
+        	}
         };
         
         var errorViewModel = new ErrorViewModel();
@@ -417,7 +481,7 @@ window.addEventListener('load', function(){
     				  /*
     				   * Clear the street view array when loading a new InfoWindow
     				   */
-    				  locationDataViewModel.data().streetview([]);
+    				  locationDataViewModel.getService('streetview').data([]);
     				  
     				  /*
     				   * Only get Street View images if panorama data is detected
@@ -426,8 +490,8 @@ window.addEventListener('load', function(){
     					  var requestURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAlGK97uekQTDMR4h7Wr5lLtENUgpOD7eo&pano=' + panoramaData.location.pano;
         				      				  
         				  for(var i = 0; i < 360; i += 90){
-        					  locationDataViewModel.data().streetview.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
-        					  locationDataViewModel.data().streetview()[locationDataViewModel.data().streetview().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
+        					  locationDataViewModel.getService('streetview').data.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
+        					  locationDataViewModel.getService('streetview').data()[locationDataViewModel.getService('streetview').data().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
         				  }  
     				  }   				  
     				  
@@ -453,7 +517,7 @@ window.addEventListener('load', function(){
     					  
     					  if(response.data.yelp){
     						 var yelpData = response.data.yelp;
-    						 locationDataViewModel.data().yelp(yelpData);
+    						 locationDataViewModel.getService('yelp').data(yelpData);
     					  }
     				  }).fail(function(jqxhr, status, error){
     					  errorViewModel.setMessage('Could not retrieve location data', 'error');
@@ -599,7 +663,7 @@ window.addEventListener('load', function(){
 		    								  }
 		    							  }
 			    					  }
-		    						  locationDataViewModel.data().wikipedia(localPages);
+		    						  locationDataViewModel.getService('wikipedia').data(localPages);
 		    					  }		    					  
 		    				  }).fail(function(jqxhr, status, error){
 		    					  errorViewModel.setMessage('Could not retrieve Wikipedia image data', 'error');
@@ -635,7 +699,7 @@ window.addEventListener('load', function(){
     			  
     			  this.infoWindow.addListener('closeclick', function(){    				  
     				  uicontrols.appendChild(infowindow);
-    				  locationDataViewModel.data().yelp.removeAll();
+    				  locationDataViewModel.getService('yelp').data.removeAll();
     			  });
         	};
             
