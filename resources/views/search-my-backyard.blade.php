@@ -43,19 +43,19 @@
 				<ul id="marker_menu_buttons_list" class="list-inline">
 					<li>					
 						<div data-bind="if: markers().length !== 0" class="btn-group" role="group" aria-label="Manage all locations">
-							<button type="submit" title="Clear all selections" class="btn btn-default" data-bind="click: clearMarkerList">
+							<button type="submit" title="Clear/select markers" class="btn btn-default" data-bind="click: toggleMarkerSelection">
 								<span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
 							</button>
-							<button type="submit" title="Remove all markers" class="btn btn-default" data-bind="click: removeMarkerList">
+							<button type="submit" title="Remove selected markers" class="btn btn-default" data-bind="click: removeSelectedMarkers">
 								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>							
 							</button>
-							<div data-bind="if: canHideAll()" class="button_container">
-								<button type="submit" title="Hide all markers" class="btn btn-default" data-bind="click: hideMarkers">																
+							<div data-bind="if: canHideAllSelection()" class="button_container">
+								<button type="submit" title="Hide selected markers" class="btn btn-default" data-bind="click: toggleVisibleSelectedMarkers">																
 									<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>								
 								</button>
 							</div>
-							<div data-bind="ifnot: canHideAll()" class="button_container">
-								<button type="submit" title="Show all markers" class="btn btn-default" data-bind="click: showMarkers">
+							<div data-bind="ifnot: canHideAllSelection()" class="button_container">
+								<button type="submit" title="Show all markers" class="btn btn-default" data-bind="click: toggleVisibleSelectedMarkers">
 									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>								
 								</button>
 							</div>

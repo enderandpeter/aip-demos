@@ -688,8 +688,11 @@ window.addEventListener('load', function(){
     			  /**
  	               * Enable a marker's selected property. This will keep the Saved Locations list item highlighted.
 	               */
-    			  marker.select = function(){
-    				  marker.selected(!marker.selected());
+    			  marker.select = function(toggle){
+    				  if(typeof toggle !== 'boolean'){
+    					  toggle = !marker.selected();
+    				  }
+    				  marker.selected(toggle);
     				  marker.isSelected(marker.selected());
     			  };
     			  
@@ -734,47 +737,56 @@ window.addEventListener('load', function(){
     	     };
             
     	     /**
-              * Remove all markers
+              * Remove selected markers
               */
-    	     this.removeMarkerList = function(){
-    	    	this.hideMarkers();
-             	this.markers([]);
+    	     this.removeSelectedMarkers = function(){
+    	    	 self.getSelectedMarkers().map(function(element){
+    	    		 element.toggleVisibility(false);
+    	    		 element.removeMarker();
+    	    	 });
+    	     };
+    	     
+    	     /**
+              * Hide selected markers
+              */
+    	     this.toggleVisibleSelectedMarkers = function(){
+    	    	 self.getSelectedMarkers().map(function(element){
+    	    		 element.toggleVisibility(!element.observableMap());
+    	    	 });
+    	     };
+    	     
+    	     /**
+    	      * Get the selected markers
+    	      */
+    	     this.getSelectedMarkers = function(){
+    	    	 return self.markers().filter(function(element){
+	    			 return element.isSelected();
+	    		 });
     	     };
     	     
     	     /**
     	      * Deselect all markers in the Saved Locations list
     	      */
-    	     this.clearMarkerList = function(){
-    	    	 for(var markerIndex in self.markers()){
-    	    		 var marker = self.markers()[markerIndex];
-    	    		 marker.selected(false);
-    	    		 marker.isSelected(marker.selected());
-    	    	 }
+    	     this.toggleMarkerSelection = function(){
+    	    	 
+    	    	 var allSelected = self.markers().every(function(element){
+    	    		 return element.isSelected();
+    	    	 });
+    	    	 
+    	    	 self.markers().map(function(element){
+	    			 element.select(!allSelected);
+	    		 });
+    	    	 
     	     };
     	     
     	     /**
     	      * Whether or not there is at least one marker being shown
     	      */
-    	     this.canHideAll = function(){
-    	    	 return self.markers().some(function(element){    	    		 
+    	     this.canHideAllSelection = function(){
+    	    	 return self.getSelectedMarkers().some(function(element){    	    		 
     	    		 return element.observableMap();
     	    	 });
     	     };
-    	     
-    	     /**
-    	      * Hide all markers from view
-    	      */
-            this.hideMarkers = function() {
-        	  this.setMapOnAll(null);
-        	};
-            
-            /**
-             * Show all markers
-             */
-            this.showMarkers = function() {
-              this.setMapOnAll(map);
-            };
-        	
         }
         
         var markerListViewModel = new MarkerListViewModel();
