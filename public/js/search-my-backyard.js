@@ -142,6 +142,11 @@ window.addEventListener('load', function(){
         	var self = this;
         	
         	/*
+        	 * The marker for this location data
+        	 */
+        	this.marker = ko.observable(null);
+        	
+        	/*
         	 * this.services = ko.observable([
         		ko.observable({
         			service: 'yelp',
@@ -221,7 +226,7 @@ window.addEventListener('load', function(){
         ko.applyBindings(errorViewModel, document.querySelector('#messages'));
         
         var locationDataViewModel = new LocationDataViewModel();
-        ko.applyBindings(locationDataViewModel, document.querySelector('#infowindow_content'));
+        ko.applyBindings(locationDataViewModel, infowindow);
         
         if (!navigator.geolocation) {
         	errorViewModel.setMessage('This browser does not support Geolocation', 'error');
@@ -436,20 +441,10 @@ window.addEventListener('load', function(){
     					marker.setLabel(newLabel);
     					marker.setTitle(newLabel);
     					marker.editing(false);
-    					marker.updateInfoWindow();
+    					locationDataViewModel.marker(marker);
     				} else {
     					return true;
     				}
-    			  };
-    			  
-    			  /**
-    			   * Update the InfoWindow for this marker
-    			   */
-    			  marker.updateInfoWindow = function(){
-    				  self.infoWindow.setContent(document.querySelector('#infowindow'));
-    				  $('#infowindow_title').text(marker.getLabel());
-    				  $('#infowindow_lat').text(marker.getPosition().lat());
-    				  $('#infowindow_lng').text(marker.getPosition().lng());
     			  };
     			  
     			  marker.openStreetView = function(){
@@ -477,6 +472,12 @@ window.addEventListener('load', function(){
     				   * Enable the download state
     				   */
     				  locationDataViewModel.downloading(true);
+    				  
+    				  /*
+    				   * Assign the marker for this location data
+    				   */
+    				  
+    				  locationDataViewModel.marker(marker);
     				  
     				  /*
     				   * Clear the street view array when loading a new InfoWindow

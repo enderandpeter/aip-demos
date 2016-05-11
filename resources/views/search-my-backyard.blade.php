@@ -112,12 +112,17 @@
 			</ul>
 			</form>
 		</div>
-		<div id="infowindow">
+		<div id="infowindow" data-bind="if: marker">
 			<header id="infowindow_header">
-				<h2 id="infowindow_title" class="autofilled"></h2>
+				<h2 id="infowindow_title" data-bind="text: marker().getLabel()" class="autofilled"></h2>
 				<div id="infowindow_position">
-					<div>Lat: <span id="infowindow_lat" class="autofilled"></span></div>
-					<div>Long: <span id="infowindow_lng" class="autofilled"></span></div>
+					<div data-bind="ifnot: marker().locationDescription">
+						<div class="lat">Lat: <span id="infowindow_lat" class="autofilled" data-bind="text: marker().getPosition().lat().toPrecision(5)"></span></div> 
+						<div class="lng">Long: <span id="infowindow_lng" class="autofilled" data-bind="text: marker().getPosition().lng().toPrecision(5)"></span></div>
+					</div>
+					<div data-bind="if: marker().locationDescription">
+						<div data-bind="text: marker().locationDescription, attr: { title: 'Close to Lat: ' + marker().getPosition().lat().toPrecision(5) + ', Long: ' + marker().getPosition().lng().toPrecision(5) }"></div>
+					</div>
 				</div>
 			</header>		
 			<div id="infowindow_content" class="autofilled">
