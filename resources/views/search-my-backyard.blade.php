@@ -190,11 +190,13 @@
 						</div>
 						<div id="wikipedia_container" data-bind="if: getService('wikipedia').showView">
 							<div id="wikipedia_content" data-bind="if: getService('wikipedia').data().length !== 0">
-								<h3 data-bind="text: getService('streetview').serviceName"></h3>																				
+								<h3 data-bind="text: getService('wikipedia').serviceName"></h3>																				
 								<ul class="wikipedia_article_list list-unstyled" data-bind="foreach: getService('wikipedia').data">
 									<li class="wikipedia_article_list_item">
 										<div class="wikipedia_article_container" data-bind="if: $data.imageArray">
-											<h4 data-bind="text: title"></h4>
+											<h4>
+												<a data-bind="text: title, attr: { href: 'https://en.wikipedia.org/wiki/' + title.replace(/ /g, '_') }" target="_blank"></a>
+											</h4>
 											<ul class="wikipedia_image_list list-unstyled list-inline" data-bind="foreach: imageArray">
 												<li class="wikipedia_image_list_item">
 													<a data-bind="attr: { href: $data }" target="_blank">
