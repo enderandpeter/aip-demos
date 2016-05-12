@@ -447,6 +447,13 @@ window.addEventListener('load', function(){
     				}
     			  };
     			  
+    			  /**
+    			   * Update the InfoWindow for this marker
+    			   */
+    			  marker.updateInfoWindow = function(){
+    				  self.infoWindow.setContent(document.querySelector('#infowindow'));
+    			  }
+    			  
     			  marker.openStreetView = function(){
     				  if(event && event.stopPropagation){
     					event.stopPropagation();
