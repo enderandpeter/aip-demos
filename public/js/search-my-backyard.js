@@ -467,13 +467,23 @@ window.addEventListener('load', function(){
     				  });
     			  }
     			  
-    			  marker.goToLocation = function(){
+    			  /*
+    			   * Go to the marker and show the InfoWindow
+    			   */
+    			  marker.goToLocation = function(event){
     				  if(event && event.stopPropagation){
       					event.stopPropagation();
       				  }
     				  map.panTo(marker.getPosition());
     				  marker.updateInfoWindow();
     				  self.infoWindow.open(map, marker);
+    				  
+    				  /*
+    				   * Scroll to the marker list item
+    				   */    				  
+    				  $('#marker_menu').animate({
+    				        scrollTop: $('#marker_list_item_' + self.markers().indexOf(marker)).offset().top - $('#marker_menu').offset().top + $('#marker_menu').scrollTop()
+    				    }, 500);
     				  
     				  /*
     				   * Enable the download state
