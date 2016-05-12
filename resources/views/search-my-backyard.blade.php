@@ -128,7 +128,7 @@
 			<div id="infowindow_content" class="autofilled">
 				<div data-bind="ifnot: downloading">
 				<ul id="infowindow_main_list" class="nav nav-tabs" data-bind="foreach: services()">
-					<li role="presentation"><a href="#" data-bind="text: serviceName, css: { active: showView }, click: showTab"></a></li>
+					<li role="presentation" data-bind="css: { active: showView }"><a href="#" data-bind="text: serviceName, click: showTab"></a></li>
 				</ul>
 				</div>
 				<div class="progress_container" data-bind="if: downloading">
@@ -182,8 +182,13 @@
 							</div>
 						</div>
 						<div id="streetview_container" data-bind="if: getService('streetview').showView">
-							<div id="streetview_content" data-bind="if: getService('streetview').data().length !== 0">
-								<h3 data-bind="text: getService('streetview').serviceName"></h3>
+							<h3 data-bind="text: getService('streetview').serviceName"></h3>
+							<div id="streetview_content" data-bind="if: getService('streetview').data().length === 0">								
+								<div data-bind="if: getService('streetview').data().length === 0">								
+									<h4>No Street View images found.</h4>
+								</div>																							
+							</div>
+							<div data-bind="ifnot: getService('streetview').data().length === 0">								
 								<ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: getService('streetview').data">
 									<li class="streetview_image_list_item">
 										<a data-bind="attr: { href: image }" target="_blank">
@@ -191,7 +196,7 @@
 										</a>	
 									</li>
 								</ul>
-							</div>
+							</div>	
 						</div>
 						<div id="wikipedia_container" data-bind="if: getService('wikipedia').showView">
 							<div id="wikipedia_content" data-bind="if: getService('wikipedia').data().length !== 0">
