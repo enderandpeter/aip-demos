@@ -454,7 +454,7 @@ window.addEventListener('load', function(){
     				  self.infoWindow.setContent(document.querySelector('#infowindow'));
     			  }
     			  
-    			  marker.openStreetView = function(event){
+    			  marker.openStreetView = function(element, event){
     				  if(event && event.stopPropagation){
     					event.stopPropagation();
     				  }
@@ -470,7 +470,7 @@ window.addEventListener('load', function(){
     			  /*
     			   * Go to the marker and show the InfoWindow
     			   */
-    			  marker.goToLocation = function(event){
+    			  marker.goToLocation = function(element, event){
     				  if(event && event.stopPropagation){
       					event.stopPropagation();
       				  }
