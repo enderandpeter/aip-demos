@@ -144,7 +144,7 @@
 									<li class="business_list_item media">						
 									<div class="business_info media-left">
 										<div class="business_img">
-											<img class="media-object" data-bind="attr: { src: $data.image_url }">
+											<img class="media-object" data-bind="attr: { src: $data.image_url.replace(/http:/, '') }">
 										</div>							
 									</div>
 									<div class="media-body">
@@ -156,7 +156,7 @@
 											<tel data-bind="text: $data.display_phone"></tel>
 										</header>
 										<div class="rating">							
-											<img class="rating_img" data-bind="attr: { src: rating_img_url_small }" />
+											<img class="rating_img" data-bind="attr: { src: rating_img_url_small.replace(/http:/, '') }" />
 											<span data-bind="text: rating"></span>
 										</div>
 									
@@ -164,7 +164,7 @@
 											<ul data-bind="foreach: reviews" class="list-unstyled media-list">
 												<li class="review_list_item media">
 													<div class="user media-left">
-														<img class="media-object" data-bind="attr: { src: user.image_url, title: user.name }" />
+														<img class="media-object" data-bind="attr: { src: user.image_url.replace(/http:/, ''), title: user.name }" />
 													</div>
 													<div class="media-body">									
 														<div class="review_excerpt" data-bind="text: excerpt"></div>
