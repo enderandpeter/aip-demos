@@ -26,11 +26,10 @@
 			</header>		
 			<div class="hide" id="siteinfo">
 				<p>Welcome to <em>Search My Backyard!</em>, a JavaScript-based web app for searching locations around the world and finding out more about them.
-				Please allow the web app to discover your location. Then click anywhere on the map to create a marker. Your location will be saved in the <strong>Locations</strong> list.</p> 
-				<h2>Coming Soon!</h2>
-				<p>With the help of sites like Google Maps, Yelp, and Wikipedia, you can search any location in the world (by Country, State/Province, City, Street,
-				 Address, etc.) and get a wealth of information in once place. Check out interesting facts, news articles, images, and well-reviewed locations 
-				 about anywhere on the planet, just like it was your own neighborhood!</p>
+				Please allow the web app to discover your location. Then click anywhere on the map to create a marker. Your location will be saved in the <strong>Locations</strong> list.</p>
+				<p>Click the marker or marker icon in the list item to center on the location and show information from Google Maps, Yelp, and Wikipedia about the location. Click the Street icon
+				to go to a Google Street view panorama, if available. You can show/hide or remove individual markers in the list as well as click the list entries to select them and 
+				use the buttons at the top of the <em>Saved Locations</em> section for bulk actions. Click <em>Clear/select markers</em> to select all markers or clear the selection.</p>
 				 <p><strong>Note:</strong> Please close this infobox to enable the fullscreen button.</p>
 			</div>
 			<div id="messages" data-bind="css: { show: type, error: type() === 'error', success: type() === 'success', warning: type() === 'warning' }, text: message">			
