@@ -20,3 +20,7 @@ Route::get('search-my-backyard', function () {
 });
 
 Route::post('search-my-backyard', ['uses' => 'LocationDataController@postLocation', 'as' => 'postLocation']);
+
+Route::get('frogger', function () {
+	return view('frogger');
+});

@@ -1,0 +1,218 @@
+@charset 'utf-8';
+@import url(https://fonts.googleapis.com/css?family=Chewy);
+
+body {
+    text-align: center;
+}
+#volumeControls{
+	width: 505px;
+}
+
+#volumeControls > div{
+	float: left
+}
+
+#volumeControls > button{
+	float: right;
+	font-size: 1em;
+}
+#canvasContainer{
+	width: 505px;
+	margin: 0 auto;
+	position: relative;
+}
+#canvasOverlay {
+    width: 505px;
+    height: 536px;
+    position: absolute;    
+    display: none;
+    top: 50px;
+    color: white;
+    font-family: Chewy;
+}
+
+#canvasOverlay.active {
+	display: block;
+}
+
+#canvasOverlay.gameover {
+	animation-name: gameover;
+	animation-duration: 3s;
+	background-color: rgba(0,0,0,0.8);
+}
+
+#canvasOverlay.character-select {
+	animation-name: gamestart;
+	animation-duration: 3s;
+	background-color: rgba(255,255,255,0.8);
+}
+
+#canvasOverlay.character-select #bottom_caption{
+	display: none;
+}
+
+@keyframes gameover {
+	from {
+		background-color: rgba(0,0,0,0);
+	}
+	
+	to {
+		background-color: rgba(0,0,0,0.8);
+	}
+}
+
+@keyframes gamestart {
+	from {
+		background-color: rgba(0,0,0,0);
+	}
+	
+	to {
+		background-color: rgba(255,255,255,0.8);
+	}
+}
+
+.empty {
+    height: 100%;
+    vertical-align: middle;
+    display: inline-block;
+}
+#main_caption, #player_selection {
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 2em;
+}
+#main_caption{
+	height: 60px;
+    width: 305px;
+}
+
+#main_caption.playerSelect{
+	height: 305px;
+	width: 300px;
+	overflow: hidden;
+}
+
+#playerSelectCursor {
+    background-image: url('/resources/frogger/images/Selector.png');
+    width: 101px;
+    height: 171px;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 147px;
+    left: 200px;
+    z-index: 4;
+    display: none;
+}
+#playerSelectCursor.active{
+	display: block;
+}
+#playerSelectListContainer{
+	display: none;
+}
+#playerSelectList h2 {
+    margin: 0;
+    position: absolute;
+    width: 200px;
+    color: white;
+    text-shadow: gray 5px 8px;
+    font-size: 1.6em;
+}
+#player_selection {
+	height: 310px;
+    width: 280px;
+}
+#playerSelectList {
+    width: 1300px;
+    display: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    height: 310px;
+    z-index: 4;
+    transition-property: left, right;
+    transition-duration: 1s;
+}
+#playerSelectList.active {
+	display: inline-block;
+}
+.playerBox {
+    list-style-type: none;
+    display: inline-block;
+    border: black solid thin;
+    width: 200px;
+    height: 300px;
+    margin: 0 20px;
+   	background-repeat: no-repeat;
+    background-position: 50% 38%;
+}
+
+#boy.playerBox {
+	background-image: url('/resources/frogger/images/char-boy.png');
+}
+
+#cat-girl.playerBox {
+	background-image: url('/resources/frogger/images/char-cat-girl.png');
+}
+
+#horn-girl.playerBox{
+	background-image: url('/resources/frogger/images/char-horn-girl.png');
+}
+
+#pink-girl.playerBox{
+	background-image: url('/resources/frogger/images/char-pink-girl.png');
+}
+
+#princess-girl.playerBox{
+	background-image: url('/resources/frogger/images/char-princess-girl.png');
+}
+
+#bottom_caption {
+    display: inline-block;
+    width: 400px;
+    height: 28px;
+    position: relative;
+    bottom: 26px;
+}
+#volumeControls {
+    position: absolute;
+}
+#dashboard{
+	margin: 0 auto;
+	position: absolute;
+	top: 1em;
+	width: 505px;
+	text-align: right;
+	font-family: Chewy;
+	color: white;
+	font-size: 2em;
+}
+#scoreboard {
+	display: inline-block;
+}
+
+#livespanel{
+	margin: 0;
+	position: relative;
+    top: 15px;
+    height: 60px;
+}
+
+#livespanel, #livespanel li{
+	display: inline-block;
+	padding: 0;
+}
+
+#livespanel li{
+	list-style-type: none;
+	width: 45px;
+    height: 60px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin: 0;
+}
+
+#score {
+	display: inline-block;	
+}

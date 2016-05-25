@@ -24,5 +24,6 @@
 	</div>
 	<ul>
 		<li><a href="search-my-backyard">Search my Backyard!</a> — <a href="https://www.udacity.com">Udacity</a> — <a href="https://www.udacity.com/course/javascript-design-patterns--ud989" target="_blank">JavaScript Design Patterns</a>  final project</li>
+		<li><a href="frogger">Effective JavaScript: Frogger</a> — <a href="https://www.udacity.com">Udacity</a> — <a href="https://www.udacity.com/course/object-oriented-javascript--ud015" target="_blank">Object-Oriented JavaScript</a>  final project</li>
 	</ul>
 @endsection
