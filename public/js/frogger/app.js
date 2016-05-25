@@ -226,7 +226,7 @@ Enemy.prototype.update = function(dt) {
 		player.score(player.score() - this.pointDamage);
 		player.changeHealth(-1);
 		if(gameData.gameSettings.soundOn()){
-			sc.play('sounds/hit.wav');
+			sc.play('resources/frogger/sounds/hit.wav');
 		}		
 		player.reset();
 	}
