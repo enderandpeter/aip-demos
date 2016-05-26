@@ -496,7 +496,7 @@ Item.prototype.getSprite = function(){
  * Draw the item on the canvas
  */
 Item.prototype.render = function(){
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.width, this.height);
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y - 50);
 }
 
 /**
@@ -570,8 +570,10 @@ Rock.prototype.constructor = Rock;
 Rock.prototype.update = function(){	
 	// Don't let the player move past a structure
 	if(this.gridX === player.getGridX() && this.gridY === player.getGridY()){
-		if(player.prevX !== null && player.prevY !== null){
-			player.x = player.prevX;
+		if(player.prevX !== null){
+			player.x = player.prevX;			
+		}
+		if(player.prevY !== null){
 			player.y = player.prevY;
 		}
 	}
@@ -677,6 +679,13 @@ Heart.prototype.update = function(){
 		player.changeHealth(1);	
 	}
 };
+
+/**
+ * Draw the heart on the canvas
+ */
+Heart.prototype.render = function(){
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y - 20);
+}
 
 /**
  * A list of players to start the game with

@@ -16,6 +16,27 @@ body {
 	float: right;
 	font-size: 1em;
 }
+.audioControl label {
+    height: 3em;
+    width: 7em;
+    margin-bottom: 0;
+    padding: 1em;
+}
+.audioControl {
+    border: thin solid black;
+    height: 3em;
+    margin-right: 2em;
+    width: 9em;
+}
+#itemGrid .description {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 2em;
+}
+.itemImage {
+    max-width: 30%;
+    width: 20%;
+}
 #canvasContainer{
 	width: 505px;
 	margin: 0 auto;

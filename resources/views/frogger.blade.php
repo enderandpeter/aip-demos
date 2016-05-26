@@ -33,8 +33,52 @@
 			    	Choose your character with the Left and Right arrow keys. Press the Up or Down arrow key to select the character. The game is reminiscent of Frogger in that the directional arrows will
 			    	move you around the map. 
 			    </p>
+			    	<div id="itemGrid" class="container-fluid">
+			    		<div class="row">
+			    			<div class="col-md-6 image-column">
+			    				<img class="itemImage" src="/resources/frogger/images/Gem Blue.png">
+			    			</div>			    					    		
+			    			<div class="col-md-6 description">100 points</div>
+			    		</div>
+			    		<div class="row">
+			    			<div class="col-md-6 image-column">
+			    				<img class="itemImage" src="/resources/frogger/images/Gem Green.png">
+			    			</div>			    		
+			    			<div class="col-md-6 description">200 points</div>
+			    		</div>
+			    		<div class="row">
+			    			<div class="col-md-6 image-column">
+			    				<img class="itemImage" src="/resources/frogger/images/Gem Orange.png">
+			    			</div>
+			    			<div class="col-md-6 description">300 points</div>
+			    		</div>			
+			    		<div class="row">
+			    			<div class="col-md-6 image-column">
+			    				<img class="itemImage" src="/resources/frogger/images/Heart.png">
+			    			</div>
+			    			<div class="col-md-6 description">300 points, Extra Life</div>
+			    		</div>
+			    		<div class="row">
+			    			<div class="col-md-6 image-column">
+			    				<img class="itemImage" src="/resources/frogger/images/Rock.png">
+			    			</div>
+			    			<div class="col-md-6 description">An impassable structure</div>
+			    		</div>
+			    	</div>
 			    <p>
-			    	The goal is to collect gems and hearts to score points and make it across the map to get more items. If a bug hits your character, you will loose a life and 500 points. If you loose more than three lives or get a score under zero, the game ends.
+			    	If a bug hits your character, you will loose a life and 500 points. If you loose more than three lives or get a score under zero, the game ends.
+			    </p>
+			    <h2>Credits</h2>
+			    <p>
+			    	<div class="creditLine">
+			    		<strong>Created by: </strong> Spencer Williams IV
+			    	</div>
+			    	<div class="creditLine">
+			    		<strong>Music: </strong> <a href="http://freesound.org/people/edtijo/sounds/240376/">Nodens (Field Song) by axtoncrolley</a>
+			    	</div>
+			    	<div class="creditLine">
+			    		<strong>Sounds: </strong> Created with <a href="http://www.bfxr.net/">Bxfr</a>
+			    	</div>
 			    </p>
 		      </div>
 		      <div class="modal-footer">
@@ -48,11 +92,11 @@
 	<div id="canvasContainer">
 	<div id="playerSelectCursor" data-bind="css: { active: gameState() === 'character-select' }"></div>
 	<div id="volumeControls">    
-	  <div id="musicControlContainer">
+	  <div id="musicControlContainer" class="audioControl">
 	  	<label for="musicControl">Music</label>
 	    <input type="checkbox" id="musicControl" value="Music" data-bind="checked: gameSettings.musicOn(), click: gameSettings.toggleMusic">
 	  </div>
-	  <div>
+	  <div id="soundControlContainer" class="audioControl">
 	    <label for="soundControl">Sound</label>
 	  	<input type="checkbox" id="soundControl" value="Sound" data-bind="checked: gameSettings.soundOn(), click: gameSettings.toggleSound">
 	  </div>
