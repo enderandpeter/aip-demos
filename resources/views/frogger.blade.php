@@ -77,7 +77,7 @@
 	</div>
 	
 	<div id="playerSelectListContainer">
-		<ul id="playerSelectList" style="right: 0px;" data-bind="css: { active: active }, foreach: characters">
+		<ul id="playerSelectList" style="right: 7px;" data-bind="css: { active: active }, foreach: characters">
 			<li class="playerBox" data-bind="css: { selected: selected() }, attr: { id: id}">
 				<h2 data-bind="text: name"></h2>
 			</li>
