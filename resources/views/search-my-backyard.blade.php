@@ -10,8 +10,17 @@
 @include('scripts.bootstrap')
 @include('scripts.ko')
 @include('scripts.google-maps')
+
 @push ('scripts')
 	<script src="js/search-my-backyard.js"></script>
+@endpush
+
+@push('nav-list-items')	
+	@if ( Route::current()->getPath() === 'search-my-backyard' )
+		<li class="active">Search my Backyard</li>
+	@else
+		<li><a href="/search-my-backyard">Search my Backyard</a></li>
+	@endif
 @endpush
 
 @section('body-content')

@@ -29,6 +29,7 @@ address{
 
 #map {
     height: 100%;
+    top: -1.5em;
 }
 
 #map h1 {

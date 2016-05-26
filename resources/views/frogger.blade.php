@@ -17,6 +17,14 @@
     <script src="js/frogger/engine.js"></script>
 @endpush
 
+@push('nav-list-items')	
+	@if ( Route::current()->getPath() === 'frogger' )
+		<li class="active">Frogger</li>
+	@else
+		<li><a href="/frogger">Frogger</a></li>
+	@endif
+@endpush
+
 @section('body-content')
 	<div id="modalContainer">
 		<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">

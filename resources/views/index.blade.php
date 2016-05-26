@@ -9,10 +9,6 @@
 @include('scripts.bootstrap')
 
 @section('body-content')
-	<ol class="breadcrumb">
-	  <li><a href="{{ env('MAIN_URL', 'http://aninternetpresence.net') }}" target="_blank">An Internet Presence</a></li>
-	  <li class="active">Demos</li>
-	</ol>
 	<div class="page-header">
 	  <h1>An Internet Presence - Demos</h1>
 	</div>
