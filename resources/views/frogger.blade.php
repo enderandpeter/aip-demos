@@ -27,7 +27,7 @@
 		        <h2 class="modal-title">About this game</h2>
 		      </div>
 		      <div class="modal-body">
-		        <p>This is the <a href="https://classroom.udacity.com/courses/ud015/lessons/3072058665/concepts/30962186380923" target="_blank">final project</a> for the <a href="https://www.udacity.com/course/object-oriented-javascript--ud015">Object-Oriented JavaScript Udacity course</a>. You can find other demonstrations on the <a href="/">Demo site.</a></p>
+		        <p>This is the <a href="https://classroom.udacity.com/courses/ud015/lessons/3072058665/concepts/30962186380923" target="_blank">final project</a> for the <a href="https://www.udacity.com/course/object-oriented-javascript--ud015" target="_blank">Object-Oriented JavaScript Udacity course</a>. You can find other demonstrations on the <a href="/">Demo site.</a></p>
 			    <h3>How to Play</h3>
 			    <p>
 			    	Choose your character with the Left and Right arrow keys. Press the Up or Down arrow key to select the character. The game is reminiscent of Frogger in that the directional arrows will
@@ -74,10 +74,10 @@
 			    		<strong>Created by: </strong> Spencer Williams IV
 			    	</div>
 			    	<div class="creditLine">
-			    		<strong>Music: </strong> <a href="http://freesound.org/people/edtijo/sounds/240376/">Nodens (Field Song) by axtoncrolley</a>
+			    		<strong>Music: </strong> <a href="http://freesound.org/people/axtoncrolley/sounds/172707/" target="_blank">Nodens (Field Song) by axtoncrolley</a>
 			    	</div>
 			    	<div class="creditLine">
-			    		<strong>Sounds: </strong> Created with <a href="http://www.bfxr.net/">Bxfr</a>
+			    		<strong>Sounds: </strong> Created with <a href="http://www.bfxr.net/" target="_blank">Bxfr</a>
 			    	</div>
 			    </p>
 		      </div>
