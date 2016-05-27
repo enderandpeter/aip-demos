@@ -1,6 +1,6 @@
 # An Internet Presence - Demos
 
-This is the Laravel site for An Internet Presence which demonstrates web applications created by the site author. It is essentially a gallery of
+This is the Laravel site for [An Internet Presence](http://aninternetpresence.net/) which demonstrates web applications created by the site author. It is essentially a gallery of
 exhibitions. Projects that were inspired by online code schools will be noted.
 
 ## Search My Backyard!
