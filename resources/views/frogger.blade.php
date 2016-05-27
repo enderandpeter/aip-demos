@@ -25,6 +25,10 @@
 	@endif
 @endpush
 
+@section('title')
+Effective JavaScript: Frogger
+@endsection
+
 @section('body-content')
 	<div id="modalContainer">
 		<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">

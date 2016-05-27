@@ -23,6 +23,10 @@
 	@endif
 @endpush
 
+@section('title')
+Search My Backyard!
+@endsection
+
 @section('body-content')
 	<div id="map"></div>
 	<div id="uicontrols">	

@@ -8,7 +8,7 @@
 	@stack('css')
 	<meta charset="utf-8">
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<title>AIP | Demos @hasSection('title') @yield('title') @else @endif</title>
+	<title>AIP | Demos @hasSection('title') | @yield('title') @else @endif</title>
 </head>
 <body>
 	@include('header')
