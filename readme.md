@@ -3,7 +3,7 @@
 This is the Laravel site for [An Internet Presence](http://aninternetpresence.net/) which demonstrates web applications created by the site author. It is essentially a gallery of
 exhibitions. Projects that were inspired by online code schools will be noted.
 
-<a href="https://demos.aninternetpresence.net/search-my-backyard"><h2>Search My Backyard</h2></a>
+<a href="https://demos.aninternetpresence.net/search-my-backyard" target="_blank"><h2>Search My Backyard</h2></a>
 
 An intereactive map powered by the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial). After a user
 agrees to share their location, it will center to that location. Click the map to create markers which show up in the list. Click a marker or the
@@ -17,7 +17,7 @@ This is the [final project](https://classroom.udacity.com/courses/ud989/lessons/
 ### Bugs
 * In Firefox, the Street View panorama may show a gray background when first loaded.
 
-<a href="https://demos.aninternetpresence.net/frogger"><h2>Effective JavaScript: Frogger</h2></a>
+<a href="https://demos.aninternetpresence.net/frogger" target="_blank"><h2>Effective JavaScript: Frogger</h2></a>
 
 An HTML5 Canvas / JavaScript game created from provided and a few created assets. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the leve, use the directional keys to move around and collect gems to score points. Hearts replinish health and points. Keep making it across the other side until you run out of life or points.
 
