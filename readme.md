@@ -1,27 +1,26 @@
-# Laravel PHP Framework
+# An Internet Presence - Demos
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+This is the Laravel site for An Internet Presence which demonstrates web applications created by the site author. It is essentially a gallery of
+exhibitions. Projects that were inspired by online code schools will be noted.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Search My Backyard!
+An intereactive map powered by the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial). After a user
+agrees to share their location, it will center to that location. Click the map to create markers which show up in the list. Click a marker or the
+marker icon for the list item to center to the location and show an info window with [Yelp reviews](http://www.yelp.com/developers/documentation), [Street View images](https://developers.google.com/maps/documentation/streetview/intro), and [Wikipedia article images](https://www.mediawiki.org/wiki/API:Main_page) for that area. Click the street icon to open a Street View at the marker. You can also show/hide markers and
+remove the individually or in bulk.
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+Code can be found at `resources/views/search-my-backyard.blade.php`
 
-## Official Documentation
+This is the [final project](https://classroom.udacity.com/courses/ud989/lessons/3580848605/concepts/35254789990923) for [JavaScript Design Patterns](https://www.udacity.com/course/javascript-design-patterns--ud989). 
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+### Bugs
+* In Firefox, the Street View panorama may show a gray background when first loaded.
 
-## Contributing
+## Essential JavaScript: Frogger
+An HTML5 Canvas / JavaScript game created from provided and a few created assets. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the leve, use the directional keys to move around and collect gems to score points. Hearts replinish health and points. Keep making it across the other side until you run out of life or points.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+This is the [final project](https://classroom.udacity.com/courses/ud015/lessons/3072058665/concepts/31018886370923) for [Object-Oriented JavaScript](https://www.udacity.com/course/object-oriented-javascript--ud015).
 
-## Security Vulnerabilities
+<hr>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+As always, please feel free to share feedback and suggestions. It is not likely that too many of these will be expanded upon, but if there is anything you would really like to see built out even more, just let me know and I will consider taking another look.
