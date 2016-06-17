@@ -25,6 +25,7 @@ Route::get('frogger', function () {
 	return view('frogger');
 });
 
-Route::get('event-planner', function () {
-	return view('event-planner');
-});
+Route::get('event-planner', [
+		'uses' => 'EventPlanner@getCalendar',
+		'as' => 'get-calendar'
+]);
