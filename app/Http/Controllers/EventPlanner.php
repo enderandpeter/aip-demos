@@ -13,7 +13,7 @@ use Input;
 class EventPlanner extends Controller
 {		
 	/**
-	 * Get the requested calender by month and year
+	 * Get the requested calendar by month and year
 	 * 
 	 * @param Request $request
 	 */
@@ -28,17 +28,19 @@ class EventPlanner extends Controller
     		$this->setInputs($request, $date, $month, $year);
     		
     		$this->validate($request, [
-    				'month' => 'numeric|min:1|max:12',
-    				'year' => 'digits:4',
     				'date' => 'required|date_format:n Y'
     		]);
     	} else if(!session('errors')) {
-    		$this->setInputs($request, $date, $month, $year);
+    		$this->setInputs($request, $date);
     	} else {
+    		/*
+    		 * If the requested calendar date could not be determined, set the default values
+    		 * for the current month and year.
+    		 */
     		$month = $currentDate->month;
     		$year = $currentDate->year;
     		$date = $month . ' ' . $year;
-    		$this->setInputs($request, $date, $month, $year);
+    		$this->setInputs($request, $date);
     	}
     	
     	$calendarDate = Carbon::createFromFormat('n Y', $date);
@@ -56,15 +58,11 @@ class EventPlanner extends Controller
 	 * Set the expected request inputs
 	 * 
 	 * @param Request $request The request for which the inputs are being set
-	 * @param string $date A date of the format 'n Y'
-	 * @param integer $month The month
-	 * @param integer $year The year
+	 * @param string $date The date in the format 'n Y'
 	 */
-	private function setInputs($request, $date, $month, $year){
+	private function setInputs(Request $request, string $date){
 		$request->replace([
 				'date' => $request->input('date', $date),
-				'month' => $month,
-				'year' => $year
 		]);
 	}
 }
