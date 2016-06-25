@@ -18,9 +18,13 @@
 	<div class="page-header">
 		<h2>Demos</h2>
 	</div>
-	<ul>
-		<li><a href="search-my-backyard">Search my Backyard!</a> — <a href="https://www.udacity.com" target="_blank">Udacity</a> — <a href="https://www.udacity.com/course/javascript-design-patterns--ud989" target="_blank">JavaScript Design Patterns</a>  final project</li>
-		<li><a href="frogger">Effective JavaScript: Frogger</a> — <a href="https://www.udacity.com" target="_blank">Udacity</a> — <a href="https://www.udacity.com/course/object-oriented-javascript--ud015" target="_blank">Object-Oriented JavaScript</a>  final project</li>
-		<li><a href="{{ env('BRL_URL', 'http://brl.aninternetpresence.net') }}" target="_blank">Booj Reading List</a> — <a href="http://booj.com/" target="_blank">Booj</a> — <a href="https://github.com/enderandpeter/boojbooks" target="_blank">Application Code Test</a></li>
-	</ul>
+	<dl class="dl-horizontal">
+		<dt><a target="_blank" href="https://www.udacity.com">Udacity</a></dt>
+			<dd><a href="search-my-backyard">Search my Backyard!</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/javascript-design-patterns--ud989">JavaScript Design Patterns</a>  final project</dd>
+			<dd><a href="frogger">Effective JavaScript: Frogger</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/object-oriented-javascript--ud015">Object-Oriented JavaScript</a>  final project</dd>
+		<dt><a target="_blank" href="http://booj.com/">Booj</a></dt>
+			<dd><a target="_blank" href="http://brl.aninternetpresence.local">Booj Reading List</a> &mdash; <a target="_blank" href="https://github.com/enderandpeter/boojbooks">Application Code Test</a></dd>
+		<dt><a href="https://www.blender.org/" target="_blank">Blender</a></dt>
+			<dd><a href="resources/yellow-submarine/videos/my_yellow_submarine.mp4">Yellow Submarine</a> (<a href="resources/yellow-submarine/models/YellowSub.blend">My first 3D model!</a>) &mdash; <a href="http://gryllus.net/Blender/3D.html" target="_blank">Neal Hirsig's Blender 3D Design Course</a> &mdash; <a href="http://gryllus.net/Blender/PDFTutorials/01AYellowSubmarine_iTunesU/YellowSubmarine.pdf" target="_blank">Yellow Submarine tutorial</a></dd>
+	</dl>
 @endsection
