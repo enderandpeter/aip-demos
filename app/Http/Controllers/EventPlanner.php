@@ -60,7 +60,11 @@ class EventPlanner extends Controller
 	 * @param Request $request The request for which the inputs are being set
 	 * @param string $date The date in the format 'n Y'
 	 */
-	private function setInputs(Request $request, string $date){
+	private function setInputs(Request $request, $date = ''){
+		if(empty($date)){
+			return;
+		}
+		
 		$request->replace([
 				'date' => $request->input('date', $date),
 		]);

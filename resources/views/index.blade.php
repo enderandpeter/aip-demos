@@ -18,10 +18,11 @@
 	<div class="page-header">
 		<h2>Demos</h2>
 	</div>
-	<dl class="dl-horizontal">
+	<dl class="dl-horizontal" id="demos-list">
 		<dt><a target="_blank" href="https://www.udacity.com">Udacity</a></dt>
-			<dd><a href="search-my-backyard">Search my Backyard!</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/javascript-design-patterns--ud989">JavaScript Design Patterns</a>  final project</dd>
-			<dd><a href="frogger">Effective JavaScript: Frogger</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/object-oriented-javascript--ud015">Object-Oriented JavaScript</a>  final project</dd>
+			<dd><a href="search-my-backyard">Search my Backyard!</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/javascript-design-patterns--ud989">JavaScript Design Patterns</a> final project</dd>
+			<dd><a href="frogger">Effective JavaScript: Frogger</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/object-oriented-javascript--ud015">Object-Oriented JavaScript</a> final project</dd>
+			<dd><a href="event-planner">Event Planner</a> — <a href="https://www.udacity.com/course/building-high-conversion-web-forms--ud890" target="_blank">Building High Conversion Web Forms</a> final project</dd>
 		<dt><a target="_blank" href="http://booj.com/">Booj</a></dt>
 			<dd><a target="_blank" href="http://brl.aninternetpresence.local">Booj Reading List</a> &mdash; <a target="_blank" href="https://github.com/enderandpeter/boojbooks">Application Code Test</a></dd>
 		<dt><a href="https://www.blender.org/" target="_blank">Blender</a></dt>

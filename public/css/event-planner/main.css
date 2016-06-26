@@ -15,6 +15,14 @@ td.calendar-day {
 	position: relative;
 }
 
+.today {
+    background-color: #edfeff;
+}
+
+.today .day-number {
+    background-color: #111;
+}
+
 * html div.calendar-day {
 	height: 80px;
 }
