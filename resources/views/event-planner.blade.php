@@ -1,3 +1,9 @@
+<?php 
+	use \Carbon\Carbon;
+	use DateTime;
+	use DateInterval;
+	use DatePeriod;
+?>
 @extends('layouts.master')
 
 @include('css.bootstrap')
@@ -38,11 +44,11 @@ Event Planner
 
 if(!empty($date)){	
 	// Create date
-	$viewdate = \Carbon\Carbon::createFromFormat('n Y', $date);
+	$viewdate = Carbon::createFromFormat('n Y', $date);
 	$month = $viewdate->month;
 	$year = $viewdate->year;
 	
-	$currentDate = \Carbon\Carbon::now();
+	$currentDate = Carbon::now();
 	$currentDay = $currentDate->day; 
 	
 	/* draws a calendar */
@@ -73,7 +79,7 @@ if(!empty($date)){
 	/* keep going with days.... */
 	for($list_day = 1; $list_day <= $days_in_month; $list_day++):
 		$calendar_day_class = 'calendar-day';
-		if($list_day === $currentDay){
+		if($list_day === $currentDay && $viewdate->month === $currentDate->month && $viewdate->year === $currentDate->year){
 			$calendar_day_class .= ' today';
 		}
 		$calendar.= '<td class="' . $calendar_day_class . '">';
@@ -109,6 +115,32 @@ if(!empty($date)){
 	$calendar.= '</table>';
 ?>	
 	<h2>{{ $calendarHeading }}</h2>
+	<form id="setDate" method="get">
+	  <select id="month" name="month">
+	    <?php	    			    
+		    $begin = new DateTime( $viewdate->copy()->startofYear() );
+		    $end = new DateTime( $viewdate->copy()->endofYear() );
+		    
+		    $interval = DateInterval::createFromDateString('1 month');
+		    $period = new DatePeriod($begin, $interval, $end);
+		?>    
+		    @foreach($period as $datetime)
+		    	<?php 
+		    		$selected = '';
+			    	$carbonDate = Carbon::instance($datetime);
+			    	$monthName = $carbonDate->format('F');
+			    	$monthNumber = $carbonDate->format('n');
+			    	
+			    	if($viewdate->month === (int) $monthNumber){
+			    		$selected = ' selected="selected"';
+			    	}
+		    	?>
+		    	<option value="{{ $monthNumber }}"{{ $selected }}>{{ $monthName }}</option>
+		    @endforeach
+	    
+	  </select>
+	  <input type="number" name="year" id="year" value="{{ $viewdate->year }}" />
+	</form>
 	{!! $calendar !!}
 <?php 
 } // if $month and $year
