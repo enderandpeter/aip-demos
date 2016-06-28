@@ -1,12 +1,19 @@
-@CHARSET "UTF-8";
+@charset "UTF-8";
+
+/* calendar forms */
+
+#setDate {
+    display: inline;
+}
+
+#goToToday {
+    display: inline-block;
+    margin-left: 2em;
+}
 
 /* calendar */
 table.calendar {
 	border-left: 1px solid #999;
-}
-
-tr.calendar-row {
-	
 }
 
 td.calendar-day {

@@ -146,7 +146,13 @@ if(!empty($date)){
 	  	<label for="year">Enter Year: </label>
 	  	<input type="number" name="year" id="year" class="form-control" value="{{ $viewdate->year }}" />
 	  </div>
+	  <button class="btn btn-default" type="submit">Go</button>
 	</form>
+	<form id="goToToday" class="form-inline" method="get">
+		<input type="hidden" name="month" id="month" value="{{ $currentDate->month }}"/>
+		<input type="hidden" name="year" id="year" value="{{ $currentDate->year }}" />
+		<button class="btn btn-default" type="submit">Today</button>
+	</form>	
 	{!! $calendar !!}
 <?php 
 } // if $month and $year
