@@ -15,11 +15,11 @@ td.calendar-day {
 	position: relative;
 }
 
-.today {
+#today {
     background-color: #edfeff;
 }
 
-.today .day-number {
+#today .day-number {
     background-color: #111;
 }
 

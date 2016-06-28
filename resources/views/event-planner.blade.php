@@ -1,8 +1,5 @@
 <?php 
-	use \Carbon\Carbon;
-	use DateTime;
-	use DateInterval;
-	use DatePeriod;
+	use Carbon\Carbon;
 ?>
 @extends('layouts.master')
 
@@ -41,7 +38,9 @@ Event Planner
 
 <?php
 // Courtesy of David Walsh; https://davidwalsh.name/php-calendar
-
+/*
+ * Only show a calendar if a $date variable was sent to this view
+ */
 if(!empty($date)){	
 	// Create date
 	$viewdate = Carbon::createFromFormat('n Y', $date);
@@ -79,10 +78,11 @@ if(!empty($date)){
 	/* keep going with days.... */
 	for($list_day = 1; $list_day <= $days_in_month; $list_day++):
 		$calendar_day_class = 'calendar-day';
+		$calendar_day_id_attr = '';
 		if($list_day === $currentDay && $viewdate->month === $currentDate->month && $viewdate->year === $currentDate->year){
-			$calendar_day_class .= ' today';
+			$calendar_day_id_attr .= ' id="today" ';
 		}
-		$calendar.= '<td class="' . $calendar_day_class . '">';
+		$calendar.= '<td ' . $calendar_day_id_attr . 'class="' . $calendar_day_class .'">';
 			/* add in the day number */
 			$calendar.= '<div class="day-number">'.$list_day.'</div>';
 	
@@ -114,32 +114,38 @@ if(!empty($date)){
 	/* end the table */
 	$calendar.= '</table>';
 ?>	
-	<h2>{{ $calendarHeading }}</h2>
-	<form id="setDate" method="get">
-	  <select id="month" name="month">
-	    <?php	    			    
-		    $begin = new DateTime( $viewdate->copy()->startofYear() );
-		    $end = new DateTime( $viewdate->copy()->endofYear() );
+	<h2 id="calendarHeading">{{ $calendarHeading }}</h2>
+	<form id="setDate" method="get" class="form-inline">
+	  <div class="form-group">
+	  	<label for="month">Enter Month: </label>
+		<select id="month" name="month" class="form-control">
+		    <?php	    			    
+			    $begin = new DateTime( $viewdate->copy()->startofYear() );
+			    $end = new DateTime( $viewdate->copy()->endofYear() );
+			    
+			    $interval = DateInterval::createFromDateString('1 month');
+			    $period = new DatePeriod($begin, $interval, $end);
+			?>    
+			    @foreach($period as $datetime)
+			    	<?php 
+			    		$selected = '';
+				    	$carbonDate = Carbon::instance($datetime);
+				    	$monthName = $carbonDate->format('F');
+				    	$monthNumber = $carbonDate->format('n');
+				    	
+				    	if($viewdate->month === (int) $monthNumber){
+				    		$selected = ' selected="selected"';
+				    	}
+			    	?>
+			    	<option value="{{ $monthNumber }}"{{ $selected }}>{{ $monthName }}</option>
+			    @endforeach
 		    
-		    $interval = DateInterval::createFromDateString('1 month');
-		    $period = new DatePeriod($begin, $interval, $end);
-		?>    
-		    @foreach($period as $datetime)
-		    	<?php 
-		    		$selected = '';
-			    	$carbonDate = Carbon::instance($datetime);
-			    	$monthName = $carbonDate->format('F');
-			    	$monthNumber = $carbonDate->format('n');
-			    	
-			    	if($viewdate->month === (int) $monthNumber){
-			    		$selected = ' selected="selected"';
-			    	}
-		    	?>
-		    	<option value="{{ $monthNumber }}"{{ $selected }}>{{ $monthName }}</option>
-		    @endforeach
-	    
-	  </select>
-	  <input type="number" name="year" id="year" value="{{ $viewdate->year }}" />
+		</select>
+	  </div>
+	  <div class="form-group">
+	  	<label for="year">Enter Year: </label>
+	  	<input type="number" name="year" id="year" class="form-control" value="{{ $viewdate->year }}" />
+	  </div>
 	</form>
 	{!! $calendar !!}
 <?php 
