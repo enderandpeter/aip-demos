@@ -42,17 +42,17 @@ Message to Mozilla
 	and are mostly unfamiliar with continuous integration. The most commonly hiring companies are wealth management, payment processing and 
 	investment companies that have been doing things the same way forever and are downright terrified of change.  The story is typically the same:
 	they are rightly frustrated with their well-spirited yet rather shoddy homebrewed frameworks and are reluctant to use established 
-	ones like Laravel or Phalcon for instance.</p>
+	ones like Laravel or Phalcon, for instance.</p>
 	
-	<p>From what I can tell from <a href="http://www.whatcanidoformozilla.org/#!/progornoprog/proglang/php/">What I Can Do for Mozilla</a>, most of your PHP
-	work deals with WordPress. I have actually made <a href="https://github.com/enderandpeter/wpgithooks/tree/wpaddons">git hooks</a> for deploying WordPress 
+	<p>From what I can tell from <a href="http://www.whatcanidoformozilla.org/#!/progornoprog/proglang/php/" target="_blank">What I Can Do for Mozilla</a>, most of your PHP
+	work deals with WordPress. I have actually made <a href="https://github.com/enderandpeter/wpgithooks/tree/wpaddons" target="_blank">git hooks</a> for deploying WordPress 
 	with WP-CLI using different server names and it even works with multi-site, but too few people in this state understand WordPress enough to be impressed by that.
-	Combine a tool like this with <a href="https://versionpress.net/">VersionPress</a>, and you cannot possibly lose.</p>
+	Combine a tool like this with <a href="https://versionpress.net/" target="_blank">VersionPress</a>, and you cannot possibly lose.</p>
 	
 	<p>Here are some online profiles of my experience:</p>
 	<ul>
-		<li><a href="http://stackoverflow.com/cv/spenceriv">Stack Careers</a></li>
-		<li><a href="https://www.linkedin.com/in/spencerwilliamsiv">LinkedIn</a></li>
+		<li><a href="http://stackoverflow.com/cv/spenceriv" target="_blank">Stack Careers</a></li>
+		<li><a href="https://www.linkedin.com/in/spencerwilliamsiv" target="_blank">LinkedIn</a></li>
 	</ul>
 	
 	<p>You can also see some of my demos on <a href="{{ env('APP_URL', 'http://demos.aninternetpresence.net') }}">this site</a>.</p>
