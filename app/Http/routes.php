@@ -26,9 +26,13 @@ Route::get('frogger', function () {
 });
 
 Route::get('event-planner', [
-		'uses' => 'EventPlanner@getCalendar',
-		'as' => 'get-calendar'
+		'uses' => 'CalendarEventController@index',
+		'as' => 'event-planner'
 ]);
+
+Route::group(array('prefix' => 'event-planner'), function() {
+	Route::resource('photo', 'CalendarEventController');
+});
 
 Route::get('message-to-mozilla', function () {
 	return view('message-to-mozilla');
