@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\EventPlanner;
 
 use Illuminate\Database\Eloquent\Model;
 
