@@ -29,3 +29,7 @@ Route::get('event-planner', [
 		'uses' => 'EventPlanner@getCalendar',
 		'as' => 'get-calendar'
 ]);
+
+Route::get('message-to-mozilla', function () {
+	return view('message-to-mozilla');
+});
