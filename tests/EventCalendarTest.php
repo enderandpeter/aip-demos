@@ -28,6 +28,12 @@ class EventCalendarTest extends TestCase
         	 ->seeIsSelected('#month', $date->format('n')) // Header should have current date
         	 ->seeInField('#year', $date->format('Y'))
         	 ->seeInElement('#today', $date->format('j')); // The current day should be in the appropriate element
+        
+        	 $this->visit('/event-planner/events')
+        	 ->seeInElement('#calendarHeading', $headerText) // Header text should be present
+        	 ->seeIsSelected('#month', $date->format('n')) // Header should have current date
+        	 ->seeInField('#year', $date->format('Y'))
+        	 ->seeInElement('#today', $date->format('j')); // The current day should be in the appropriate element
     }
     
     /**
@@ -44,6 +50,12 @@ class EventCalendarTest extends TestCase
     		 ->type($date->year, '#year')
     		 ->press('Go')
     		 ->see($date->format($dateHeaderFormat));
+    	
+    		 $this->visit('/event-planner/events')
+    		 ->select($date->month, '#month')
+    		 ->type($date->year, '#year')
+    		 ->press('Go')
+    		 ->see($date->format($dateHeaderFormat));
     }
     
     /**
@@ -55,6 +67,10 @@ class EventCalendarTest extends TestCase
     	$dateHeaderFormat = 'F Y';
     	 
     	$this->visit('/event-planner')
+    	->press('Today')
+    	->see($date->format($dateHeaderFormat));
+    	
+    	$this->visit('/event-planner/events')
     	->press('Today')
     	->see($date->format($dateHeaderFormat));
     }

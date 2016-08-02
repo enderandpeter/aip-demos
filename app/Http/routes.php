@@ -31,7 +31,7 @@ Route::get('event-planner', [
 ]);
 
 Route::group(array('prefix' => 'event-planner'), function() {
-	Route::resource('photo', 'CalendarEventController');
+	Route::resource('events', 'CalendarEventController');
 });
 
 Route::get('message-to-mozilla', function () {
