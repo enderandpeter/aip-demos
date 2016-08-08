@@ -30,10 +30,46 @@ Route::get('event-planner', [
 		'as' => 'event-planner'
 ]);
 
+
 Route::group(array('prefix' => 'event-planner'), function() {
 	Route::resource('events', 'CalendarEventController');
-});
-
-Route::get('message-to-mozilla', function () {
-	return view('message-to-mozilla');
+	
+	/* TODO: Put these in a single function call, as in the style of Route::auth() */
+	// Authentication Routes...
+	Route::get('login', [
+			'uses' => 'Auth\EventPlanner\AuthController@showLoginForm',
+			'as' => 'event-planner.login.show'
+	]);
+	Route::post('login', [
+			'uses' => 'Auth\EventPlanner\AuthController@login',
+			'as' => 'event-planner.login.post'
+	]);
+	Route::get('logout', [
+			'uses' => 'Auth\EventPlanner\AuthController@logout',
+			'as' => 'event-planner.logout'
+	]);
+	
+	// Registration Routes...
+	Route::get('register', [
+			'uses' =>	'Auth\EventPlanner\AuthController@showRegistrationForm',
+			'as' => 'event-planner.register.show'
+	]);
+	Route::post('register', [
+			'uses' => 'Auth\EventPlanner\AuthController@register',
+			'as' => 'event-planner.register.post'
+	]);
+	
+	// Password Reset Routes...
+	Route::get('password/reset/{token?}', [
+			'uses' => 'Auth\EventPlanner\PasswordController@showResetForm',
+			'as' => 'event-planner.password-reset.show'
+	]);
+	Route::post('password/email', [
+			'uses' => 'Auth\EventPlanner\PasswordController@sendResetLinkEmail',
+			'as' => 'event-planner.password-reset.email'
+	]);
+	Route::post('password/reset', [
+			'uses' => 'Auth\EventPlanner\PasswordController@reset',
+			'as' => 'event-planner.password-reset.post'
+	]);
 });

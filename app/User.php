@@ -24,13 +24,4 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     
-    /**
-     * Get all calendar events for this user
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function calendarEvents()
-    {
-    	return $this->hasMany('App\CalendarEvents');
-    }
 }
