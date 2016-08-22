@@ -12,7 +12,7 @@ class CreateCalendarEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('calendar_events', function (Blueprint $table) {
+        Schema::create('eventplanner_calendarevents', function (Blueprint $table) {
             $table->increments('id');            
             $table->date('start_date')->comment('The start date of the event');
             $table->date('end_date')->comment('The end date of the event');
@@ -29,7 +29,7 @@ class CreateCalendarEventsTable extends Migration
              * A users can have many calendar events
              */
             $table->integer('user_id')->unsigned()->comment('The ID of the user that owns this event');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('eventplanner_users')->onDelete('cascade')->onUpdate('cascade');
             
             $table->timestamps();
         });
@@ -42,6 +42,6 @@ class CreateCalendarEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('calendar_events');
+        Schema::drop('eventplanner_calendarevents');
     }
 }

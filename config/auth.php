@@ -45,6 +45,10 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+    	'eventplanner' => [
+    		'driver' => 'session',
+    		'provider' => 'eventplanner_users',
+    	],
     ],
 
     /*
@@ -67,8 +71,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\User::class, // This class is currently not usable
         ],
+    	'eventplanner_users' => [
+    		'driver' => 'eloquent',
+    		'model' => App\EventPlanner\User::class,
+    	],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -96,10 +104,10 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'eventplanner_users' => [
+            'provider' => 'eventplanner_users',
             'email' => 'auth.emails.password',
-            'table' => 'password_resets',
+            'table' => 'eventplanner_password_resets',
             'expire' => 60,
         ],
     ],

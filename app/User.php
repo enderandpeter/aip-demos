@@ -4,7 +4,15 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+/**
+ * The main User class that all others are based on.
+ * 
+ * All web applications in the site that have user registration should have a model class that
+ * extends this one. 
+ * 
+ * @author Spencer
+ */
+abstract class User extends Authenticatable
 {
     /**
      * The attributes that are mass assignable.
