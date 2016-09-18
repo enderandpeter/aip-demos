@@ -36,6 +36,25 @@ Event Planner
     </div>
 @endif
 
+@if ($logged_in)	
+	<div id="banner">
+		<div id="user_controls">
+			<div id="user_info">
+				<span id="user_greeting">Hello, {{ $user->name }}!</span>
+				<span id="auth_controls">
+					<a href="{{ route('event-planner.logout') }}">Logout</a>
+				</span>
+			</div>
+		</div>
+	</div>
+@else
+	<div id="guest_welcome" class="container">
+		<div class="well">
+			Welcome to Event Planner! Please <a href="{{ route('event-planner.login.show') }}" id="banner-sign-in-link">sign in</a> or <a href="{{ route('event-planner.register.show') }}" id="banner-register-link">create an account</a> to get started.
+		</div>
+	</div>
+@endif
+
 <?php
 // Courtesy of David Walsh; https://davidwalsh.name/php-calendar
 /*

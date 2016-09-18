@@ -1,5 +1,23 @@
 @charset "UTF-8";
 
+/* General */
+
+nav .breadcrumb {
+	margin-bottom: 0;
+}
+
+#banner {
+    width: 100%;
+    position: relative;
+    height: 2em;
+    background-color: aliceblue;
+}
+
+#user_controls{
+	position: absolute;
+	right: 2em;
+}
+
 /* calendar forms */
 
 #setDate {

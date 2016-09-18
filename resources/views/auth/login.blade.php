@@ -1,13 +1,45 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
-@section('content')
+@include('css.bootstrap')
+@push('css')
+	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
+@endpush
+
+@include('scripts.jquery')
+@include('scripts.ko')
+@include('scripts.bootstrap')
+
+@push('nav-list-items')	
+	@if ( Route::current()->getPath() === 'event-planner' )
+		<li class="active">Event Planner</li>
+	@else
+		<li><a href="/event-planner">Event Planner</a></li>
+	@endif
+@endpush
+
+@section('title')
+Event Planner
+@endsection
+
+@section('body-content')
+
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('event-planner.login.post') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -54,7 +86,7 @@
                                     <i class="fa fa-btn fa-sign-in"></i>Login
                                 </button>
 
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+                                <a class="btn btn-link" href="{{ route('event-planner.password-reset.show') }}">Forgot Your Password?</a>
                             </div>
                         </div>
                     </form>

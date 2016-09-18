@@ -6,8 +6,19 @@ use Illuminate\Http\Request;
 
 use App\EventPlanner\CalendarRequest;
 
+use Auth;
+
 class CalendarEventController extends Controller
 {
+	/**
+	 * Get the guard that this controller uses for user authentication. 
+	 * 
+	 * @return string The name of guard for this controller
+	 */
+	protected function getGuard(){
+		return 'eventplanner';
+	}
+	
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +27,11 @@ class CalendarEventController extends Controller
     public function index(Request $request)
     {
     	$calendarData = CalendarRequest::getCalendarData($request, $this);
-    	$viewdata = array_merge($request->input(), $calendarData);
+    	$logged_in = Auth::guard($this->getGuard())->check();
+    	$viewdata = array_merge($request->input(), $calendarData, [
+    			'logged_in' => $logged_in,
+    			'user' => Auth::guard($this->getGuard())->user()
+    	]);
     	
     	return view('event-planner')->with($viewdata);
     }    
