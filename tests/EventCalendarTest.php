@@ -105,19 +105,19 @@ class EventCalendarTest extends TestCase
     			],
     			'event-planner.events.destroy' => [
     					'methods' => ['DELETE'],
-    					'path' => 'event-planner/events/{events}'
+    					'path' => 'event-planner/events/{event}'
     			],
     			'event-planner.events.show' => [
     					'methods' => ['GET', 'HEAD'],
-    					'path' => 'event-planner/events/{events}'
+    					'path' => 'event-planner/events/{event}'
     			],
     			'event-planner.events.update' => [
     					'methods' => ['PUT', 'PATCH'],
-    					'path' => 'event-planner/events/{events}'
+    					'path' => 'event-planner/events/{event}'
     			],
     			'event-planner.events.edit' => [
     					'methods' => ['GET', 'HEAD'],
-    					'path' => 'event-planner/events/{events}/edit'
+    					'path' => 'event-planner/events/{event}/edit'
     			],
     			'event-planner.login.show' => [
     					'methods' => ['GET', 'HEAD'],
@@ -128,7 +128,7 @@ class EventCalendarTest extends TestCase
     					'path' => 'event-planner/login'
     			],
     			'event-planner.logout' => [
-    					'methods' => ['GET', 'HEAD'],
+    					'methods' => ['POST'],
     					'path' => 'event-planner/logout'
     			],
     			'event-planner.password-reset.email' => [

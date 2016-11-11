@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\EventPlanner;
 
 use Illuminate\Http\Request;
 
 use App\EventPlanner\CalendarRequest;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class CalendarEventController extends Controller
 {

@@ -2,17 +2,17 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
+| This file is where you may define all of the routes that are handled
+| by your application. Just tell Laravel the URIs it should respond
+| to using a Closure or controller method. Build something great!
 |
 */
 
 Route::get('/', function () {
-    return view('index');
+	return view('index');
 });
 
 Route::get('search-my-backyard', function () {
@@ -30,46 +30,45 @@ Route::get('event-planner', [
 		'as' => 'event-planner'
 ]);
 
-
-Route::group(array('prefix' => 'event-planner'), function() {
+Route::group(['as' => 'event-planner.', 'prefix' => 'event-planner'], function() {
 	Route::resource('events', 'CalendarEventController');
-	
-	/* TODO: Put these in a single function call, as in the style of Route::auth() */
+
+	/* TODO: Put these in a single function call, as in the style of Auth::routes() */
 	// Authentication Routes...
 	Route::get('login', [
-			'uses' => 'Auth\EventPlanner\AuthController@showLoginForm',
+			'uses' => 'Auth\EventPlanner\LoginController@showLoginForm',
 			'as' => 'event-planner.login.show'
 	]);
 	Route::post('login', [
-			'uses' => 'Auth\EventPlanner\AuthController@login',
+			'uses' => 'Auth\EventPlanner\LoginController@login',
 			'as' => 'event-planner.login.post'
 	]);
-	Route::get('logout', [
-			'uses' => 'Auth\EventPlanner\AuthController@logout',
+	Route::post('logout', [
+			'uses' => 'Auth\EventPlanner\LoginController@logout',
 			'as' => 'event-planner.logout'
 	]);
-	
+
 	// Registration Routes...
 	Route::get('register', [
-			'uses' =>	'Auth\EventPlanner\AuthController@showRegistrationForm',
+			'uses' =>	'Auth\EventPlanner\RegisterController@showRegistrationForm',
 			'as' => 'event-planner.register.show'
 	]);
 	Route::post('register', [
-			'uses' => 'Auth\EventPlanner\AuthController@register',
+			'uses' => 'Auth\EventPlanner\RegisterController@register',
 			'as' => 'event-planner.register.post'
 	]);
-	
+
 	// Password Reset Routes...
 	Route::get('password/reset/{token?}', [
-			'uses' => 'Auth\EventPlanner\PasswordController@showResetForm',
+			'uses' => 'Auth\EventPlanner\ResetPasswordController@showResetForm',
 			'as' => 'event-planner.password-reset.show'
 	]);
 	Route::post('password/email', [
-			'uses' => 'Auth\EventPlanner\PasswordController@sendResetLinkEmail',
+			'uses' => 'Auth\EventPlanner\ResetPasswordController@sendResetLinkEmail',
 			'as' => 'event-planner.password-reset.email'
 	]);
 	Route::post('password/reset', [
-			'uses' => 'Auth\EventPlanner\PasswordController@reset',
+			'uses' => 'Auth\EventPlanner\ResetPasswordController@reset',
 			'as' => 'event-planner.password-reset.post'
 	]);
 });
