@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\EventPlanner\Auth;
 
 use App\EventPlanner\User;
-use App\Http\Controllers\RegisterController as SiteRegisterController;
+use App\Http\Controllers\Auth\RegisterController as SiteRegisterController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +23,7 @@ class RegisterController extends SiteRegisterController
      *
      * @var string
      */
-    protected $redirectTo = '/event-planner';
+    protected $redirectTo = '';
 
     /**
      * Create a new controller instance.
@@ -33,6 +33,7 @@ class RegisterController extends SiteRegisterController
     public function __construct()
     {
         $this->middleware('guest');
+        $this->redirectTo = route('event-planner');
     }
 
     /**

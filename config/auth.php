@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'eventplanner',
         'passwords' => 'users',
     ],
 
@@ -36,14 +36,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
-        'api' => [
+        'eventplanner_api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'eventplanner_users',
         ],
     	'eventplanner' => [
     		'driver' => 'session',
@@ -69,14 +64,14 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class, // This class is currently not usable
-        ],
+       // 'users' => [
+       //    'driver' => 'eloquent',
+       //     'model' => App\User::class, // This class is currently not usable
+       // ],
     	'eventplanner_users' => [
     		'driver' => 'eloquent',
     		'model' => App\EventPlanner\User::class,
-    	],
+    	]
 
         // 'users' => [
         //     'driver' => 'database',

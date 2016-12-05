@@ -42,7 +42,10 @@ Event Planner
 			<div id="user_info">
 				<span id="user_greeting">Hello, {{ $user->name }}!</span>
 				<span id="auth_controls">
-					<a href="{{ route('event-planner.logout') }}">Logout</a>
+					<form id="logout-form" action="{{ route('event-planner.logout') }}" method="POST">
+						<button id="logout-button">Logout</button>
+					    {{ csrf_field() }}
+                    </form>
 				</span>
 			</div>
 		</div>

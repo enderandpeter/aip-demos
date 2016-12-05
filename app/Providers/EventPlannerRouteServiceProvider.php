@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class EventPlannerRouteServiceProvider extends RouteServiceProvider
 {
     /**
      * This namespace is applied to your controller routes.
@@ -14,7 +13,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'App\Http\Controllers';
+    protected $namespace = 'App\Http\Controllers\EventPlanner';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -36,10 +35,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-    	$this->mapApiRoutes();
-        $this->mapWebRoutes();
-
-        //
+    	parent::map();
     }
 
     /**
@@ -52,9 +48,9 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::group([
-            'namespace' => $this->namespace,
+            'namespace' => $this->namespace, 'middleware' => 'eventplanner',
         ], function () {
-            require base_path('routes/web.php');
+            require base_path('routes/eventplanner.php');
         });
     }
     
@@ -68,10 +64,11 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
     	Route::group([
+    			'middleware' => 'eventplanner_api',
     			'namespace' => $this->namespace,
     			'prefix' => 'api',
     	], function () {
-    		require base_path('routes/api.php');
+    		require base_path('routes/eventplanner_api.php');
     	});
     }
 }

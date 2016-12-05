@@ -7,13 +7,21 @@ use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends SiteResetPasswordController
 {
-
+	/**
+	 * The authentication guard that should be used.
+	 *
+	 */
+	protected function guard()
+	{
+		return Auth::guard('eventplanner');
+	}
+	
     /**
      * Where to redirect users after resetting their password.
      *
      * @var string
      */
-    protected $redirectTo = '/event-planner';
+    protected $redirectTo = '';
 
     /**
      * Create a new controller instance.
@@ -23,6 +31,7 @@ class ResetPasswordController extends SiteResetPasswordController
     public function __construct()
     {
         $this->middleware('guest');
+        $this->redirectTo = route('event-planner');
     }
     
     /**
@@ -30,8 +39,8 @@ class ResetPasswordController extends SiteResetPasswordController
      *
      * @return PasswordBroker
      */
-    protected function broker()
+    public function broker()
     {
-    	return Password::broker('event-planner');
+    	return Password::broker('eventplanner_users');
     }
 }

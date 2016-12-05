@@ -6,6 +6,10 @@ nav .breadcrumb {
 	margin-bottom: 0;
 }
 
+#logout-form {
+    display: inline;
+}
+
 #banner {
     width: 100%;
     position: relative;

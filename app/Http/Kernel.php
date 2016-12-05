@@ -23,7 +23,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
-        'web' => [
+        'eventplanner' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
@@ -32,7 +32,7 @@ class Kernel extends HttpKernel
         	\Illuminate\Routing\Middleware\SubstituteBindings::class
         ],
 
-        'api' => [
+        'eventplanner_api' => [
             'throttle:60,1',
         	'bindings'
         ],

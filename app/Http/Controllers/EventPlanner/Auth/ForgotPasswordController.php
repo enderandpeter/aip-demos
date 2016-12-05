@@ -24,6 +24,6 @@ class ForgotPasswordController extends SiteForgetPasswordController
      */
     protected function broker()
     {
-    	return Password::broker('event-planner');
+    	return Password::broker('eventplanner_users');
     }
 }

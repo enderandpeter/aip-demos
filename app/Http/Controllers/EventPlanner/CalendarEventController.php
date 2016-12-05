@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\EventPlanner;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller as Controller; 
 
 use App\EventPlanner\CalendarRequest;
 
