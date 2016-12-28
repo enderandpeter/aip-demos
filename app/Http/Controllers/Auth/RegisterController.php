@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use App\EventPlanner\ValidationData;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -38,6 +39,50 @@ abstract class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
+    
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+    	/*
+    	 * Get the validation messages for each input in the register form so they can be loaded and
+    	 * shown by the frontend validation. 
+    	 */
+    	$validationData = new ValidationData();
+    	$validationRules = $validationData->getData( 'register' );
+    	
+    	$messages = [];
+    	foreach( $validationRules as $name => $ruleString ){    		
+    		$messageTemplate = [ 'attribute' => $name ];    		
+    		$rules = explode( '|', $ruleString );
+    		foreach( $rules as $rule ){
+    			if( strpos( $rule, ':' ) !== false ){
+    				$rulename = explode( ':', $rule )[ 0 ];
+    			} else {
+    				$rulename = $rule;
+    			}    			
+    			$messageName = "validation.$rulename";
+    			switch( $rulename ){
+    				case 'unique':
+    					continue;    				
+    				case 'min':
+    					$messageTemplate = $messageTemplate + ['min' => explode( ':', $rule )[ 1 ] ];
+    				case 'max':
+    					$messageTemplate = $messageTemplate + [ 'max' => explode( ':', $rule )[ 1 ] ];
+    					$messageName .= ".string";
+    			}
+    			$messages[ $name ][ $rulename ] = trans( $messageName, $messageTemplate );
+    		}
+    	}
+    	
+    	$viewData = [
+    		'validationMessages' => json_encode( $messages )
+    	];
+    	return view('auth.register', $viewData);
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -47,11 +92,8 @@ abstract class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+    	$validationData = new ValidationData();
+        return Validator::make($data, $validationData->getData('register'));
     }
 
     /**

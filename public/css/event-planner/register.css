@@ -1,0 +1,15 @@
+@CHARSET "utf-8";
+
+@import 'main.css';
+
+#register-form input.invalid{
+	border-color: red;
+}
+
+#register-form.invalid :invalid{
+	border-color: red;
+}
+
+#register-form strong{
+	display: block;
+}

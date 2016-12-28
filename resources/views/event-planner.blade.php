@@ -1,7 +1,7 @@
 <?php 
 	use Carbon\Carbon;
 ?>
-@extends('layouts.master')
+@extends('layouts.event-planner')
 
 @include('css.bootstrap')
 @push('css')

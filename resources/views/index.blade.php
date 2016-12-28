@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.index')
 
 @include('css.bootstrap')
 @push('css')
@@ -28,5 +28,5 @@
 		<dt><a href="https://www.blender.org/" target="_blank">Blender</a></dt>
 			<dd><a href="resources/yellow-submarine/videos/my_yellow_submarine.mp4">Yellow Submarine</a> (<a href="resources/yellow-submarine/models/YellowSub.blend">My first 3D model!</a>) &mdash; <a href="http://gryllus.net/Blender/3D.html" target="_blank">Neal Hirsig's Blender 3D Design Course</a> &mdash; <a href="http://gryllus.net/Blender/PDFTutorials/01AYellowSubmarine_iTunesU/YellowSubmarine.pdf" target="_blank">Yellow Submarine tutorial</a></dd>
 			<dd><a href="resources/castle/Castle_Texture.png">Castle (Textured)</a> (<a href="resources/castle/models/Castle_Texture.blend">2nd 3D model</a>) &mdash; <a href="http://gryllus.net/Blender/3D.html" target="_blank">Neal Hirsig's Blender 3D Design Course</a> &mdash; <a href="http://gryllus.net/Blender/PDFTutorials/02BCastleTexturing_ITunesU/CastleTexturing.pdf" target="_blank">Castle Texturing tutorial</a></dd>
-	</dl>\
+	</dl>
 @endsection

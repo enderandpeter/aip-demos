@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.search-my-backyard')
 
 @include('css.bootstrap')
 @push('css')
