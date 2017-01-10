@@ -93,7 +93,6 @@ jQuery(function($){
 		}
 		
 		$thisInput = $('#register-form input[name=password]');
-		$thisInput.closest('.form-group').addClass('has-error')
 		
 		if(!this.checkValidity()){
 			isValid = false;
@@ -107,7 +106,6 @@ jQuery(function($){
 		if($(this).val().length > $(this).attr('maxlength')){
 			isValid = false;
 			
-			$(this).closest('.form-group').addClass('has-error');
 			ruleName = 'max';
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
@@ -116,7 +114,6 @@ jQuery(function($){
 		if($(this).val().length < $(this).attr('minlength')){
 			isValid = false;
 			
-			$(this).closest('.form-group').addClass('has-error');
 			ruleName = 'min';
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];				
@@ -134,6 +131,7 @@ jQuery(function($){
 			$(this).closest('.form-group').removeClass('has-error');
 			$(this).next('span.help-block').remove();
 		} else {
+			$(this).closest('.form-group').addClass('has-error');
 			for(var inputMessageRule in inputMessages){
 				var inputMessage = inputMessages[inputMessageRule];
 				var ruleMessageId = $thisInput.attr('name') + '-' + inputMessageRule;
