@@ -2,7 +2,30 @@ jQuery(function($){
 	var validationMessages = JSON.parse(window.sessionStorage.getItem('validationMessages'));
 	validationMessages.password_confirmation = validationMessages.password;
 	
-	$('#register-form input').blur(function(event){
+	var $register_button = $('#register_button');
+	var $register_form = $('#register-form');
+	
+	/*
+	 * Check the entire form's validity and set its view appropriately
+	 * 
+	 * @param boolean additionalCheck If present, also use this condition to
+	 * determine validity. 
+	 */
+	function checkFormValidity(additionalCheck){
+		if (additionalCheck === undefined){
+			additionalCheck = true;
+		}
+		
+		if($register_form[0].checkValidity() && additionalCheck){
+			$register_button.removeAttr('disabled');
+		} else{
+			$register_button.attr('disabled', 'disabled');
+		}
+	}
+	
+	checkFormValidity();
+	
+	$register_form.find('input').blur(function(event){
 		var $thisInput = $(this); 
 		var ruleName = '';
 		var inputMessages = {};
@@ -63,8 +86,8 @@ jQuery(function($){
 		
 		if(isValid){
 			$(this).closest('.form-group').removeClass('has-error');
-			$help_block.remove();
-		} else {
+			$help_block.remove();			
+		} else {			
 			for(var inputMessageRule in inputMessages){
 				var inputMessage = inputMessages[inputMessageRule];
 				var ruleMessageId = $thisInput.attr('name') + '-' + inputMessageRule;
@@ -75,9 +98,11 @@ jQuery(function($){
 				}
 			}
 		}
+		
+		checkFormValidity();
 	});
 	
-	$('#register-form input[name^=password]').on('change keyup', function(event){
+	$register_form.find('input[name^=password]').on('change keyup blur', function(event){
 		var ruleName = '';
 		var inputMessages = [];
 		var isValid = true;
@@ -92,7 +117,7 @@ jQuery(function($){
 			$help_block.empty();
 		}
 		
-		$thisInput = $('#register-form input[name=password]');
+		$thisInput = $(this);
 		
 		if(!this.checkValidity()){
 			isValid = false;
@@ -108,7 +133,7 @@ jQuery(function($){
 			
 			ruleName = 'max';
 			
-			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
+			inputMessages[ruleName] = validationMessages[$thisInput.attr('name')][ruleName];
 		} 
 		
 		if($(this).val().length < $(this).attr('minlength')){
@@ -116,10 +141,10 @@ jQuery(function($){
 			
 			ruleName = 'min';
 			
-			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];				
+			inputMessages[ruleName] = validationMessages[$thisInput.attr('name')][ruleName];				
 		} 
 		
-		if($('#register-form input[name=password]').val() !== $('#register-form input[name=password_confirmation]').val()){
+		if($('#register-form').find('input[name=password]').val() !== $('#register-form').find('input[name=password_confirmation]').val()){
 			isValid = false;
 			
 			ruleName = 'confirmed';	
@@ -128,9 +153,11 @@ jQuery(function($){
 		}
 		
 		if(isValid){
-			$(this).closest('.form-group').removeClass('has-error');
-			$(this).next('span.help-block').remove();
+			$('input[name^=password]').closest('.form-group').removeClass('has-error');
+			$('input[name^=password]').next('span.help-block').remove();
+			$register_button.removeAttr('disabled');
 		} else {
+			$register_button.attr('disabled', 'disabled');
 			$(this).closest('.form-group').addClass('has-error');
 			for(var inputMessageRule in inputMessages){
 				var inputMessage = inputMessages[inputMessageRule];
@@ -142,5 +169,7 @@ jQuery(function($){
 				}
 			}
 		}
+		
+		checkFormValidity(isValid);
 	});	
 });
