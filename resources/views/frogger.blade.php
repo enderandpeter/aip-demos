@@ -18,7 +18,7 @@
 @endpush
 
 @push('nav-list-items')	
-	@if ( Route::current()->getPath() === 'frogger' )
+	@if ( Route::current()->uri() === 'frogger' )
 		<li class="active">Frogger</li>
 	@else
 		<li><a href="/frogger">Frogger</a></li>

@@ -16,7 +16,7 @@
 @endpush
 
 @push('nav-list-items')	
-	@if ( Route::current()->getPath() === 'search-my-backyard' )
+	@if ( Route::current()->uri() === 'search-my-backyard' )
 		<li class="active">Search my Backyard</li>
 	@else
 		<li><a href="/search-my-backyard">Search my Backyard</a></li>

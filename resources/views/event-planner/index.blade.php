@@ -13,7 +13,7 @@
 @include('scripts.bootstrap')
 
 @push('nav-list-items')	
-	@if ( Route::current()->getPath() === 'event-planner' )
+	@if ( Route::currentRouteName() === 'event-planner' )
 		<li class="active">Event Planner</li>
 	@else
 		<li><a href="/event-planner">Event Planner</a></li>

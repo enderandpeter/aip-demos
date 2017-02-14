@@ -10,7 +10,7 @@
 @include('scripts.bootstrap')
 
 @push('nav-list-items')	
-	@if ( Route::current()->getPath() === 'message-to-mozilla' )
+	@if ( Route::current()->uri() === 'message-to-mozilla' )
 		<li class="active">Message to Mozilla</li>
 	@else
 		<li><a href="/message-to-mozilla">Message to Mozilla</a></li>

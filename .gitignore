@@ -1,6 +1,9 @@
 /vendor
 /node_modules
 /public/storage
+/public/hot
+/.idea
+/storage/*.key
 Homestead.yaml
 Homestead.json
 .env
