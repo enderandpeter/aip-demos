@@ -5,16 +5,16 @@
 	<link rel="stylesheet" type="text/css" href="/css/event-planner/register.css" />
 @endpush
 
+@include('scripts.jquery')
+@include('scripts.ko')
+@include('scripts.bootstrap')
+
 @push ('scripts')
 	<script src="/js/event-planner/register.js"></script>
 	<script>
 		window.sessionStorage.setItem('validationMessages', '<?php echo $validationMessages ?>'); 
 	</script>
 @endpush
-
-@include('scripts.jquery')
-@include('scripts.ko')
-@include('scripts.bootstrap')
 
 @push('nav-list-items')	
 	@if ( Route::current()->uri() === 'event-planner' )
@@ -53,7 +53,7 @@ Event Planner
                             <label class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">
-                                <input type="text" id="register-name" class="form-control" autofocus required name="name" value="{{ old('name') }}" title="Your display name">
+                                <input type="text" id="name" class="form-control" autofocus required maxlength="255" name="name" value="{{ old('name') }}" title="Your display name">
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -67,7 +67,7 @@ Event Planner
                             <label class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input type="email" class="form-control" required name="email" value="{{ old('email') }}" title="A verifiable address that will be your username">
+                                <input type="email" class="form-control" required id="email" name="email" maxlength="255" value="{{ old('email') }}" title="A verifiable address that will be your username">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -81,7 +81,7 @@ Event Planner
                             <label class="col-md-4 control-label">Password</label>
 
                             <div class="col-md-6">
-                                <input type="password" class="form-control" minlength="6" name="password" required title="Min. 6 chars">
+                                <input type="password" class="form-control" minlength="6" maxlength="255" name="password" id="password" required title="Min. 6 chars">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -95,7 +95,7 @@ Event Planner
                             <label class="col-md-4 control-label">Confirm Password</label>
 
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="password_confirmation" minlength="6" title="Please enter your password again" required>
+                                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" minlength="6" maxlength="255" title="Please enter your password again" required>
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">

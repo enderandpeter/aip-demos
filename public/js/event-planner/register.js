@@ -49,11 +49,11 @@ jQuery(function($){
 				ruleName = 'required';
 			}
 			
-			if(this.validity.rangeOverflow){
+			if(this.validity.tooLong){
 				ruleName = 'max';
 			}
 			
-			if(this.validity.rangeUnderflow){
+			if(this.validity.tooShort){
 				ruleName = 'min';				
 			}
 			
@@ -128,7 +128,7 @@ jQuery(function($){
 			}
 		}
 		
-		if($(this).val().length > $(this).attr('maxlength')){
+		if(this.validity.tooLong){
 			isValid = false;
 			
 			ruleName = 'max';
@@ -136,7 +136,7 @@ jQuery(function($){
 			inputMessages[ruleName] = validationMessages[$thisInput.attr('name')][ruleName];
 		} 
 		
-		if($(this).val().length < $(this).attr('minlength')){
+		if(this.validity.tooShort){
 			isValid = false;
 			
 			ruleName = 'min';

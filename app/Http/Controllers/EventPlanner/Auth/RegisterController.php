@@ -46,7 +46,7 @@ class RegisterController extends SiteRegisterController
 	{
 		return Validator::make($data, [
 				'name' => 'required|max:255',				
-				'password' => 'required|min:6|confirmed',
+				'password' => 'required|min:6|max:255|confirmed',
 				'email' => 'required|email|max:255|unique:eventplanner_users'
 		]);
 	}

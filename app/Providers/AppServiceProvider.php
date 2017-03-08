@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use Validator;
 
 use Laravel\Dusk\DuskServiceProvider;
@@ -28,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
         	
         	return $pass;
         });
+        
+        Schema::defaultStringLength(191);
     }
 
     /**
