@@ -5,10 +5,6 @@
 	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
 @endpush
 
-@include('scripts.jquery')
-@include('scripts.ko')
-@include('scripts.bootstrap')
-
 @include('nav.demos')
 
 @section('title')

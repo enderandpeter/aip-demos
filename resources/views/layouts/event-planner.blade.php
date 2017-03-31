@@ -8,6 +8,10 @@
 	@endif
 @endpush
 
+@include('scripts.jquery')
+@include('scripts.ko')
+@include('scripts.bootstrap')
+
 @section('body')
 <body id="event-planner-body">
 	@include('header')
