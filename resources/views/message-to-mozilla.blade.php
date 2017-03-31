@@ -9,6 +9,8 @@
 @include('scripts.ko')
 @include('scripts.bootstrap')
 
+@include('nav.demos')
+
 @push('nav-list-items')	
 	@if ( Route::current()->uri() === 'message-to-mozilla' )
 		<li class="active">Message to Mozilla</li>

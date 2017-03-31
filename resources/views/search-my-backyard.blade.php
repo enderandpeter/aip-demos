@@ -15,13 +15,7 @@
 	<script src="js/search-my-backyard.js"></script>
 @endpush
 
-@push('nav-list-items')	
-	@if ( Route::current()->uri() === 'search-my-backyard' )
-		<li class="active">Search my Backyard</li>
-	@else
-		<li><a href="/search-my-backyard">Search my Backyard</a></li>
-	@endif
-@endpush
+@include('nav.demos')
 
 @section('title')
 Search My Backyard!

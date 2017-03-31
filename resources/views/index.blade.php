@@ -8,6 +8,8 @@
 @include('scripts.jquery')
 @include('scripts.bootstrap')
 
+@include('nav.demos')
+
 @section('body-content')
 	<div class="page-header">
 	  <h1>An Internet Presence - Demos</h1>

@@ -1,6 +1,3 @@
-<?php 
-	use Carbon\Carbon;
-?>
 @extends('layouts.event-planner')
 
 @include('css.bootstrap')
@@ -12,13 +9,7 @@
 @include('scripts.ko')
 @include('scripts.bootstrap')
 
-@push('nav-list-items')	
-	@if ( Route::currentRouteName() === 'event-planner' )
-		<li class="active">Event Planner</li>
-	@else
-		<li><a href="/event-planner">Event Planner</a></li>
-	@endif
-@endpush
+@include('nav.demos')
 
 @section('title')
 Event Planner

@@ -17,13 +17,7 @@
     <script src="js/frogger/engine.js"></script>
 @endpush
 
-@push('nav-list-items')	
-	@if ( Route::current()->uri() === 'frogger' )
-		<li class="active">Frogger</li>
-	@else
-		<li><a href="/frogger">Frogger</a></li>
-	@endif
-@endpush
+@include('nav.demos')
 
 @section('title')
 Effective JavaScript: Frogger
