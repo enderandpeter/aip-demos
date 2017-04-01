@@ -5,8 +5,6 @@
 	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
 @endpush
 
-@include('nav.demos')
-
 @section('title')
 Event Planner
 @endsection

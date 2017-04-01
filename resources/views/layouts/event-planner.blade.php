@@ -1,5 +1,6 @@
 @extends('layouts.master')
 
+@include('nav.demos')
 @push('nav-list-items')	
 	@if ( Route::currentRouteName() === 'event-planner' )
 		<li class="active">Event Planner</li>
