@@ -1,5 +1,10 @@
 @extends('layouts.event-planner')
 
+@include('css.bootstrap')
+@push('css')
+	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
+@endpush
+
 @section('title')
 Event Planner
 @endsection

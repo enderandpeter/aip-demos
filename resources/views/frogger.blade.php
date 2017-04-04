@@ -5,18 +5,6 @@
 	<link rel="stylesheet" type="text/css" href="css/frogger/style.css" />
 @endpush
 
-{{-- These are being manually added because including the template with @push commands will include them after these instead of before --}}
-@push ('scripts')	
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
-	<script src="js/frogger/main.js"></script>
-    <script src="js/frogger/resources.js"></script>
-    <script src="js/frogger/app.js"></script>
-    <script src="js/frogger/engine.js"></script>
-@endpush
-
 @include('nav.demos')
 
 @section('title')

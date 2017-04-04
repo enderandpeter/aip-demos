@@ -8,6 +8,16 @@
 	@endif
 @endpush
 
+@include('scripts.jquery')
+@include('scripts.ko')
+@include('scripts.bootstrap')
+@push ('scripts')	
+	<script src="js/frogger/main.js"></script>
+    <script src="js/frogger/resources.js"></script>
+    <script src="js/frogger/app.js"></script>
+    <script src="js/frogger/engine.js"></script>
+@endpush
+
 @section('body')
 <body id="frogger-body">
 	@include('header')

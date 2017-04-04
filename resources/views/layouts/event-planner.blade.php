@@ -9,6 +9,11 @@
 	@endif
 @endpush
 
+@include('css.bootstrap')
+@push('css')
+	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
+@endpush
+
 @include('scripts.jquery')
 @include('scripts.ko')
 @include('scripts.bootstrap')
