@@ -1,7 +1,7 @@
 @push('nav-list-items')	
 	@if ( Route::current()->uri() === '/' )
-		<li class="active">Demos</li>
+		<li class="breadcrumb-item active">Demos</li>
 	@else
-		<li><a href="/">Demos</a></li>
+		<li class="breadcrumb-item"><a href="/">Demos</a></li>
 	@endif
 @endpush

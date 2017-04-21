@@ -2,15 +2,18 @@
 
 @push('nav-list-items')	
 	@if ( Route::current()->uri() === 'frogger' )
-		<li class="active">Frogger</li>
+		<li class="breadcrumb-item active">Frogger</li>
 	@else
-		<li><a href="/frogger">Frogger</a></li>
+		<li class="breadcrumb-item"><a href="/frogger">Frogger</a></li>
 	@endif
 @endpush
 
-@include('scripts.jquery')
-@include('scripts.ko')
+@include('css.main')
+@include('css.bootstrap')
+
 @include('scripts.bootstrap')
+@include('scripts.ko')
+@include('scripts.jquery')
 @push ('scripts')	
 	<script src="js/frogger/main.js"></script>
     <script src="js/frogger/resources.js"></script>

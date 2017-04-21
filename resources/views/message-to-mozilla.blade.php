@@ -1,13 +1,14 @@
 @extends('layouts.master')
 
+@include('css.main')
 @include('css.bootstrap')
 @push('css')
 	<link rel="stylesheet" type="text/css" href="css/message-to-mozilla/style.css" />
 @endpush
 
-@include('scripts.jquery')
-@include('scripts.ko')
 @include('scripts.bootstrap')
+@include('scripts.ko')
+@include('scripts.jquery')
 
 @include('nav.demos')
 

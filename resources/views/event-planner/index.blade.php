@@ -31,10 +31,11 @@ Event Planner
 		</div>
 	</div>
 @else
-	<div id="guest_welcome" class="container">
-		<div class="well">
-			Welcome to Event Planner! Please <a href="{{ route('event-planner.login.show') }}" id="banner-sign-in-link">sign in</a> or <a href="{{ route('event-planner.register.show') }}" id="banner-register-link">create an account</a> to get started.
-		</div>
+	<div id="guest_welcome" class="container mb-4">
+		<h1 id="main-heading">
+			<div>Welcome to Event Planner!</div> 
+			<small class="new-user-intro">Please <a href="{{ route('event-planner.login.show') }}" id="banner-sign-in-link">sign in</a> or <a href="{{ route('event-planner.register.show') }}" id="banner-register-link">create an account</a> to get started.</small>
+		</h1>
 	</div>
 @endif
 
@@ -43,32 +44,30 @@ Event Planner
   Only show a calendar if a $date variable was sent to this view 
  --}}
 @if(!empty($date))
+  <div class="container" id="calendar">
 	<h2 id="calendarHeading">{{ $calendarHeading }}</h2>
-	<form id="setDate" method="get" class="form-inline">
+	<form id="setDate" method="get" class="form-inline mb-2">
 	  <div class="form-group">
-	  	<label for="month">Enter Month: </label>
-		<select id="month" name="month" class="form-control">		    
+	  	<label for="month" class="mb-2 mr-sm-2 mb-sm-0">Enter Month: </label>
+		<select id="month" name="month" class="form-control mb-2 mr-sm-2 mb-sm-0">		    
 			    @foreach($calendarSelectionOptions as $calendarSelectionOption)			    	
 			    	<option value="{{ $calendarSelectionOption['monthNumber'] }}"{{ $calendarSelectionOption['selected'] }}>{{ $calendarSelectionOption['monthName'] }}</option>
 			    @endforeach
 		</select>
+	  	<label for="year" class="mb-2 mr-sm-2 mb-sm-0">Enter Year: </label>
+	  	<input type="number" name="year" id="year" class="form-control mb-2 mr-sm-2 mb-sm-0" value="{{ $viewdate->year }}" />
+	  
+	  	<input type="hidden" name="day" value="1" />
+	  	
+	  	<button class="btn btn-primary mb-2 mr-sm-2 mb-sm-0" type="submit" name="submit" value="go">Go</button>
+	  	<button class="btn btn-primary mb-2 mr-sm-2 mb-sm-0" type="submit" name="submit" value="today">Today</button>
 	  </div>
-	  <div class="form-group">
-	  	<label for="year">Enter Year: </label>
-	  	<input type="number" name="year" id="year" class="form-control" value="{{ $viewdate->year }}" />
-	  </div>
-	  <button class="btn btn-default" type="submit">Go</button>
-	</form>
-	<form id="goToToday" class="form-inline" method="get">
-		<input type="hidden" name="month" id="month" value="{{ $currentDate->month }}"/>
-		<input type="hidden" name="year" id="year" value="{{ $currentDate->year }}" />
-		<button class="btn btn-default" type="submit">Today</button>
 	</form>
 	
 	{{-- draws a calendar --}}
 	
 	{{-- draw table --}}
-	<table cellpadding="0" cellspacing="0" class="calendar">
+	<table cellpadding="0" cellspacing="0" class="calendar table table-responsive">
 		<tr class="calendar-row">
 			<td class="calendar-day-head">
 				<?php 
@@ -127,6 +126,6 @@ Event Planner
 	{{-- end the table --}}
 </table>	
 @endif {{-- endif $date --}}
-
+</div>
 
 @endsection

@@ -32,15 +32,16 @@ class CalendarEventController extends Controller
      */
     public function index(Request $request)
     {
-    	$calendarData = CalendarRequest::getCalendarData($request, $this);
+    	$calendarData = (new CalendarRequest)->getCalendarData($request);
     	$logged_in = Auth::guard($this->getGuard())->check();
     	
-    	$viewdate = Carbon::createFromFormat('n Y', $request->input('date'));
+    	$currentDate = $calendarData['currentDate'];
+    	$currentDay = $currentDate->day;
+    	
+    	$viewdate = $calendarData['calendarDate'];
+    	
     	$month = $viewdate->month;
     	$year = $viewdate->year;
-    	
-    	$currentDate = Carbon::now();
-    	$currentDay = $currentDate->day;
     	
     	/* Initial days and weeks vars ... */
     	$running_day = date('w',mktime(0, 0, 0, $month, 1, $year));
@@ -102,9 +103,25 @@ class CalendarEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+    	$calendarData = (new CalendarRequest)->getCalendarData($request);
+    	
+    	$calendarDate = $calendarData['calendarDate'];
+    	$calendarData['calendarHeading'] = $calendarDate->toFormattedDateString();  
+    	
+    	if(!Auth::guard($this->getGuard())->user()){
+        	return redirect()->route('event-planner');
+        } 
+        
+        $viewdata = [
+        	'user' => 	Auth::guard($this->getGuard())->user(),
+        	'calendarData' => $calendarData,
+        	'startDate' => $calendarDate->format('Y/m/d')
+        ];
+        
+        return view('event-planner.create')->with($viewdata);
+        
     }
 
     /**

@@ -1,6 +1,5 @@
 @extends('layouts.frogger')
 
-@include('css.bootstrap')
 @push('css')
 	<link rel="stylesheet" type="text/css" href="css/frogger/style.css" />
 @endpush

@@ -1,15 +1,10 @@
 @extends('layouts.search-my-backyard')
 
-@include('css.bootstrap')
 @push('css')
 	<link rel="stylesheet" type="text/css" href="css/search-my-backyard.css" />
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 
-@include('scripts.jquery')
-@include('scripts.bootstrap')
-@include('scripts.ko')
-@include('scripts.google-maps')
 
 @push ('scripts')
 	<script src="js/search-my-backyard.js"></script>

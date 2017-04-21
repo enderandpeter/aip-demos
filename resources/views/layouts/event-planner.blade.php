@@ -3,20 +3,24 @@
 @include('nav.demos')
 @push('nav-list-items')	
 	@if ( Route::currentRouteName() === 'event-planner' )
-		<li class="active">Event Planner</li>
+		<li class="breadcrumb-item active">Event Planner</li>
 	@else
-		<li><a href="/event-planner">Event Planner</a></li>
+		<li class="breadcrumb-item"><a href="/event-planner">Event Planner</a></li>
 	@endif
 @endpush
 
-@include('css.bootstrap')
+
+@include('css.main')
+@include('css.bootstrap4')
+
 @push('css')
 	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
 @endpush
 
-@include('scripts.jquery')
+@include('scripts.bootstrap4')
 @include('scripts.ko')
-@include('scripts.bootstrap')
+@include('scripts.jquery')
+
 
 @section('body')
 <body id="event-planner-body">

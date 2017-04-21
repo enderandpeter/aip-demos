@@ -1,14 +1,5 @@
 @extends('layouts.event-planner')
 
-@include('css.bootstrap')
-@push('css')
-	<link rel="stylesheet" type="text/css" href="/css/event-planner/register.css" />
-@endpush
-
-@include('scripts.jquery')
-@include('scripts.ko')
-@include('scripts.bootstrap')
-
 @push ('scripts')
 	<script src="/js/event-planner/register.js"></script>
 	<script>
@@ -16,13 +7,9 @@
 	</script>
 @endpush
 
-@push('nav-list-items')	
-	@if ( Route::current()->uri() === 'event-planner' )
-		<li class="active">Event Planner</li>
-	@else
-		<li><a href="/event-planner">Event Planner</a></li>
-	@endif
-@endpush
+@include('css.datetimepicker')
+
+@include('scripts.datetimepicker')
 
 @section('title')
 Event Planner

@@ -1,22 +1,5 @@
 @extends('layouts.event-planner')
 
-@include('css.bootstrap')
-@push('css')
-	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
-@endpush
-
-@include('scripts.jquery')
-@include('scripts.ko')
-@include('scripts.bootstrap')
-
-@push('nav-list-items')	
-	@if ( Route::currentRouteName() === 'event-planner' )
-		<li class="active">Event Planner</li>
-	@else
-		<li><a href="{{ route('event-planner') }}">Event Planner</a></li>
-	@endif
-@endpush
-
 @section('title')
 Event Planner
 @endsection

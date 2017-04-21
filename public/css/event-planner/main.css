@@ -1,5 +1,7 @@
 @charset "utf-8";
 
+/* Extra small devices (portrait phones, less than 576px) */
+
 /* General */
 
 nav .breadcrumb {
@@ -25,7 +27,7 @@ nav .breadcrumb {
 /* calendar forms */
 
 #setDate {
-    display: inline;
+   
 }
 
 #goToToday {
@@ -99,3 +101,22 @@ td.calendar-day, td.calendar-day-np {
 	height: 120px;
 	max-height: 120px;
 }
+
+/* Extra small devices (portrait phones, less than 576px */
+@media (max-width: 575px) { }
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+	.table-responsive{
+		display: table;
+	}
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {  }
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  }
