@@ -14,7 +14,7 @@
 @include('css.bootstrap4')
 
 @push('css')
-	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
+	<link rel="stylesheet" type="text/css" href="/css/event-planner/register.css" />
 @endpush
 
 @include('scripts.bootstrap4')

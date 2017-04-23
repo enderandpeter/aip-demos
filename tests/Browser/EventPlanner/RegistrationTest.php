@@ -26,17 +26,17 @@ class RegistrationTest extends DuskTestCase
 			 * Confirm the error text when submitting empty fields to the registration form
 			 */
 			$browser->visit( route( 'event-planner.register.show' ) )
-			->type( 'name', '' )
-			->type( 'email', '' )
-			->type( 'password', '' )
-			->type( 'password_confirmation', '' )
-			->assertSee( 'The name field is required.' )
-			->assertSee( 'The email field is required.' )
-			->assertSee( 'The password field is required.' )
-			->press( 'Register' )
-			->assertSee( 'The name field is required.' )
-			->assertSee( 'The email field is required.' )
-			->assertSee( 'The password field is required.' );
+				->type( 'name', '' )
+				->type( 'email', '' )
+				->type( 'password', '' )
+				->type( 'password_confirmation', '' )
+				->assertSee( 'The name field is required.' )
+				->assertSee( 'The email field is required.' )
+				->assertSee( 'The password field is required.' )
+				->press( 'Register' )
+				->assertSee( 'The name field is required.' )
+				->assertSee( 'The email field is required.' )
+				->assertSee( 'The password field is required.' );
 			$this->assertNull( User::first() );			
 			
 		});		
@@ -55,7 +55,7 @@ class RegistrationTest extends DuskTestCase
 			 * Visit the registration page and enter fields that are too long
 			 */
 			$browser->visit( route( 'event-planner.register.show' ) )
-			->assertSee('E-Mail Address');
+				->assertSee('E-Mail Address');
 				
 			/*
 			 * Confirm the error text when submitting oversized data
@@ -64,19 +64,19 @@ class RegistrationTest extends DuskTestCase
 			$shortclearpass = str_random( 3 );
 			$name = str_random( 256 );
 			$browser->type( 'name', $name )
-			->type( 'email', str_random( 256 ) . '@example.com' )
-			->type( 'password', $clearpass )
-			->type( 'password_confirmation', $clearpass )
-			//->assertSee( 'The name may not be greater than 255 characters.' )
-			->assertSee( 'The email must be a valid email address.' )
-			//->assertSee( 'The email may not be greater than 255 characters.' )
-			->press( 'Register' )
-			->assertSee( 'The email must be a valid email address.' )
-			->type( 'password', $shortclearpass )
-			->assertSee( 'The password must be at least 6 characters.' )
-			->type( 'password_confirmation', $shortclearpass )
-			->press( 'Register' )
-			->assertSee( 'The password must be at least 6 characters.' );
+				->type( 'email', str_random( 256 ) . '@example.com' )
+				->type( 'password', $clearpass )
+				->type( 'password_confirmation', $clearpass )
+				//->assertSee( 'The name may not be greater than 255 characters.' )
+				->assertSee( 'The email must be a valid email address.' )
+				//->assertSee( 'The email may not be greater than 255 characters.' )
+				->press( 'Register' )
+				->assertSee( 'The email must be a valid email address.' )
+				->type( 'password', $shortclearpass )
+				->assertSee( 'The password must be at least 6 characters.' )
+				->type( 'password_confirmation', $shortclearpass )
+				->press( 'Register' )
+				->assertSee( 'The password must be at least 6 characters.' );
 			$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );			
 		});
 	}
@@ -92,18 +92,17 @@ class RegistrationTest extends DuskTestCase
 			$password_confirmation = str_random( 8 );
 		
 			$browser->visit( route( 'event-planner.register.show' ) )
-			->type( 'password', $password )
-			->type( 'password_confirmation', $password_confirmation )
-			->assertSee('The password confirmation does not match')
-			->press( 'Register' )
-			->assertSee('The password confirmation does not match');		
+				->type( 'password', $password )
+				->type( 'password_confirmation', $password_confirmation )
+				->assertSee('The password confirmation does not match')
+				->press( 'Register' )
+				->assertSee('The password confirmation does not match');		
 			$this->assertNull( User::first() );
 		});
 	}
 	
 	/**
-	 * Test a user's successful registration
-	 * @group reg
+	 * Test a user's successful registration	 
 	 * @return void
 	 */
 	public function testSuccessfulRegistration(){
@@ -120,14 +119,16 @@ class RegistrationTest extends DuskTestCase
 			]);
 			
 			$browser->visit( route( 'event-planner.register.show' ) )
-			->assertSee( 'E-Mail Address' )
-			->type( 'name', $user->name )
-			->type( 'email', $user->email )
-			->type( 'password', $clearpass )
-			->type( 'password_confirmation', $clearpass)
-			->press( 'Register' )
-			->assertSee( "Hello, $user->name!" );				
+				->assertSee( 'E-Mail Address' )
+				->type( 'name', $user->name )
+				->type( 'email', $user->email )
+				->type( 'password', $clearpass )
+				->type( 'password_confirmation', $clearpass)
+				->press( 'Register' )
+				->assertSee( "Hello, $user->name!" );				
 			$this->assertFalse( User::where( 'name', $user->name )->get()->isEmpty() );
+			
+			$user->delete();
 		});
 		
 	}

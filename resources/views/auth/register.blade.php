@@ -31,7 +31,7 @@ Event Planner
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
+                <legend>Register</legend>
                 <div class="panel-body">
                     <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ route('event-planner.register.post') }}">
                         {!! csrf_field() !!}
