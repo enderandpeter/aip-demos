@@ -24,7 +24,7 @@ class RegisterController extends SiteRegisterController
      *
      * @var string
      */
-    protected $redirectTo = '';
+    protected $redirectTo = route('event-planner');
 
     /**
      * Create a new controller instance.
@@ -34,7 +34,6 @@ class RegisterController extends SiteRegisterController
     public function __construct()
     {
         $this->middleware('guest');
-        $this->redirectTo = route('event-planner');
     }
 
     /**

@@ -13,6 +13,16 @@ class ValidationData extends \App\ValidationData{
 				'name' => 'required|max:255',				
 				'password' => 'required|min:6|max:255|confirmed',
 				'email' => 'required|email|max:255|unique:eventplanner_users'						
+			],
+			'create-event' => [
+				'name' => 'required|max:255',
+				'type' => 'required|max:191',
+				'host' => 'required|max:191',
+				'start_date' => 'required|max:255|date_format:m/d/Y H:i|before_or_equal:end_date',
+				'end_date' => 'required|max:255|date_format:m/d/Y H:i|after_or_equal:start_date',
+				'guest_list' => 'required|max:1000',
+				'location' => 'required|max:191',
+				'guest_message' => 'required|max:5000',
 			]
 		];
 	}

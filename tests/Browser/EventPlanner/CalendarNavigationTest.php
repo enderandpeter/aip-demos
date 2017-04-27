@@ -17,7 +17,8 @@ class CalendarNavigationTest extends DuskTestCase
 	
 	/**
      * Test to confirm that current date appears on default event page
-     *
+     * 
+     * @group date
      * @return void
      */
     public function testCurrentDate()
@@ -49,6 +50,7 @@ class CalendarNavigationTest extends DuskTestCase
     /**
      * Test to make sure the date entered into the form is loaded
      *
+     * @group gotodate
      * @return void
      */
     public function testGoToDate(){
@@ -66,14 +68,13 @@ class CalendarNavigationTest extends DuskTestCase
 	    		->select( '#month', (string) $date->month )
 	    		->type( '#year', $date->year )
 	    		->press( 'Go' )
-	    		->assertSee( $date->format( $dateHeaderFormat) ); // Something is preventing a date format of more than one character to work in the test
+	    		->assertSee( $date->format( $dateHeaderFormat) );	    	
     	});
-    	
     }
     
     /**
      * Test to make sure the current date will load when the button is clicked
-     * 
+     * @group gotocurrent
      * @return void
      */
     public function testGoToCurrentDate(){

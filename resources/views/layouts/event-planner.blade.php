@@ -13,10 +13,6 @@
 @include('css.main')
 @include('css.bootstrap4')
 
-@push('css')
-	<link rel="stylesheet" type="text/css" href="/css/event-planner/register.css" />
-@endpush
-
 @include('scripts.bootstrap4')
 @include('scripts.ko')
 @include('scripts.jquery')

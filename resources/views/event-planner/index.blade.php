@@ -6,6 +6,10 @@ Event Planner
 
 @section('body-content')
 
+@push('css')
+	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
+@endpush
+
 @if (count($errors) > 0)
     <div class="alert alert-danger">
         <ul>

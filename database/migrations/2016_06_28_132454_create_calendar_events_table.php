@@ -14,12 +14,10 @@ class CreateCalendarEventsTable extends Migration
     {
         Schema::create('eventplanner_calendarevents', function (Blueprint $table) {
             $table->increments('id');            
-            $table->date('start_date')->comment('The start datetime of the event');
-            $table->date('end_date')->comment('The end datetime of the event');
-            $table->time('start_time')->nullable()->comment('The start time of the event, if set');
-            $table->time('end_time')->nullable()->comment('The end time of the event, if set');
+            $table->dateTime('start_date')->comment('The start datetime of the event');
+            $table->dateTime('end_date')->comment('The end datetime of the event');            
             $table->string('type', 30)->comment('The user-provided type of event (birthday, wedding, etc.)');
-            $table->string('title')->comment('The name of the event');
+            $table->string('name')->comment('The name of the event');
             $table->string('host')->nullable()->comment('Event host (could be an individual’s name or an organization)');
             $table->text('description')->nullable()->comment('A description for the event');
             $table->text('guest_list')->nullable()->comment('A JSON-encoded list of guests');

@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+@import 'main.css';
+
+#main-content{
+  padding: 2em 0;
+}
+
+form input.invalid{
+	border-color: red;
+}
+
+form.invalid :invalid{
+	border-color: red;
+}

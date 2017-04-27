@@ -14,7 +14,7 @@ use DateTime;
 use DateInterval;
 use DatePeriod;
 
-class CalendarEventController extends Controller
+class CalendarEventController extends EventPlannerController
 {
 	/**
 	 * Get the guard that this controller uses for user authentication. 
@@ -103,24 +103,27 @@ class CalendarEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create( Request $request )
     {
-    	$calendarData = (new CalendarRequest)->getCalendarData($request);
+    	$calendarData = ( new CalendarRequest )->getCalendarData( $request );
     	
-    	$calendarDate = $calendarData['calendarDate'];
-    	$calendarData['calendarHeading'] = $calendarDate->toFormattedDateString();  
+    	$calendarDate = $calendarData[ 'calendarDate' ];
+    	$calendarData[ 'calendarHeading' ] = $calendarDate->toFormattedDateString();  
     	
-    	if(!Auth::guard($this->getGuard())->user()){
-        	return redirect()->route('event-planner');
+    	if( !Auth::guard( $this->getGuard() )->user() ){
+        	return redirect()->route( 'event-planner' );
         } 
         
+        $validationMessages = json_encode( $this->getValidationMessagesArray( 'create-event' ) );
+        
         $viewdata = [
-        	'user' => 	Auth::guard($this->getGuard())->user(),
+        	'user' => 	Auth::guard( $this->getGuard() )->user(),
         	'calendarData' => $calendarData,
-        	'startDate' => $calendarDate->format('Y/m/d')
+        	'startDate' => $calendarDate->format( 'Y/m/d' ),
+        	'validationMessages' => $validationMessages
         ];
         
-        return view('event-planner.create')->with($viewdata);
+        return view( 'event-planner.create' )->with( $viewdata );
         
     }
 
