@@ -18,6 +18,7 @@ class CalendarNavigationTest extends DuskTestCase
 	/**
      * Test to confirm that current date appears on default event page
      * 
+     * @group currentdate
      * @group date
      * @return void
      */
@@ -51,6 +52,7 @@ class CalendarNavigationTest extends DuskTestCase
      * Test to make sure the date entered into the form is loaded
      *
      * @group gotodate
+     * @group date
      * @return void
      */
     public function testGoToDate(){
@@ -75,6 +77,7 @@ class CalendarNavigationTest extends DuskTestCase
     /**
      * Test to make sure the current date will load when the button is clicked
      * @group gotocurrent
+     * @group date
      * @return void
      */
     public function testGoToCurrentDate(){

@@ -125,10 +125,8 @@ class RegistrationTest extends DuskTestCase
 				->type( 'password', $clearpass )
 				->type( 'password_confirmation', $clearpass)
 				->press( 'Register' )
-				->assertSee( "Hello, $user->name!" );				
+				->assertSee( "Hello, $user->name!" );
 			$this->assertFalse( User::where( 'name', $user->name )->get()->isEmpty() );
-			
-			$user->delete();
 		});
 		
 	}

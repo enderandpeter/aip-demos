@@ -90,6 +90,7 @@ function validateForm(form, button){
 		if(!this.checkValidity()){
 			isValid = false;
 			$(this).closest('.form-group').addClass('has-danger');	
+			$(this).addClass('form-control-danger');
 			
 			if(this.validity.valueMissing){
 				ruleName = 'required';
@@ -115,6 +116,8 @@ function validateForm(form, button){
 			isValid = false;
 			
 			$(this).closest('.form-group').addClass('has-danger');
+			$(this).addClass('form-control-danger');
+			
 			ruleName = 'max';
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
@@ -125,6 +128,7 @@ function validateForm(form, button){
 			isValid = false;
 			
 			$(this).closest('.form-group').addClass('has-danger');
+			$(this).addClass('form-control-danger');
 			ruleName = 'min';
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];						
@@ -132,6 +136,7 @@ function validateForm(form, button){
 		
 		if(isValid){
 			$(this).closest('.form-group').removeClass('has-danger');
+			$(this).removeClass('form-control-danger');
 			$help_block.remove();			
 		} else {			
 			for(var inputMessageRule in inputMessages){
@@ -168,6 +173,7 @@ function validateForm(form, button){
 		
 		isValid = false;
 		$(this).closest('.form-group').addClass('has-danger');
+		$(this).addClass('form-control-danger');
 		
 		if( ($('#start_date').datetimepicker('getValue') && $('#end_date').datetimepicker('getValue')) &&
 				($('#start_date').datetimepicker('getValue') > $('#end_date').datetimepicker('getValue'))){
@@ -182,6 +188,7 @@ function validateForm(form, button){
 		
 		if(isValid){
 			$(this).closest('.form-group').removeClass('has-danger');
+			$(this).removeClass('form-control-danger');
 			$help_block.remove();			
 		} else {			
 			for(var inputMessageRule in inputMessages){
