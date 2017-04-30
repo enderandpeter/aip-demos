@@ -14,12 +14,20 @@ Code can be found at `resources/views/search-my-backyard.blade.php`
 
 This is the [final project](https://classroom.udacity.com/courses/ud989/lessons/3580848605/concepts/35254789990923) for [JavaScript Design Patterns](https://www.udacity.com/course/javascript-design-patterns--ud989). 
 
-### Bugs
-* In Firefox, the Street View panorama may show a gray background when first loaded.
+## Tests
+Typically, you can run the [Laravel Dusk](https://laravel.com/docs/5.4/dusk) tests and the regular PHPUnit ones:
 
+    php artisan dusk && vendor/bin/phpunit 
+
+## Bugs
+* In Firefox, the Street View panorama may show a gray background when first loaded.
+* The current state of Dusk is causing issues when the tests that use `loginAs` are ran at the same time, but running them separately should result in them passing:
+
+    php artisan dusk --group=currentdate && php artisan dusk --group=gotodate && php artisan dusk --group=gotocurrent && vendor/bin/phpunit
+    
 <a href="https://demos.aninternetpresence.net/frogger" target="_blank"><h2>Effective JavaScript: Frogger</h2></a>
 
-An HTML5 Canvas / JavaScript game created from provided and a few created assets. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the leve, use the directional keys to move around and collect gems to score points. Hearts replinish health and points. Keep making it across the other side until you run out of life or points.
+An HTML5 Canvas / JavaScript game created from provided and a few created assets. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the level, use the directional keys to move around and collect gems to score points. Hearts replinish health and points. Keep making it across the other side until you run out of life or points.
 
 This is the [final project](https://classroom.udacity.com/courses/ud015/lessons/3072058665/concepts/31018886370923) for [Object-Oriented JavaScript](https://www.udacity.com/course/object-oriented-javascript--ud015).
 

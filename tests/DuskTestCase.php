@@ -5,10 +5,11 @@ namespace Tests;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
+use App\Testing\InitialiseDatabaseTrait;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    use CreatesApplication;
+	use CreatesApplication, InitialiseDatabaseTrait;
 
     /**
      * Prepare for Dusk test execution.
@@ -31,5 +32,11 @@ abstract class DuskTestCase extends BaseTestCase
         return RemoteWebDriver::create(
             'http://localhost:9515', DesiredCapabilities::chrome()
         );
+    }
+    
+    public function setUpTraits()
+    {
+    	$this->backupDatabase();
+    	parent::setUpTraits();
     }
 }
