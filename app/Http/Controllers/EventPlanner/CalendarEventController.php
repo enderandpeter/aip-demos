@@ -48,9 +48,9 @@ class CalendarEventController extends EventPlannerController
     	$days_in_month = date('t',mktime(0,0,0, $month, 1, $year));
     	$days_in_this_week = 1;
     	$day_counter = 0;
-    	$dates_array = array();
+    	$dates_array = [];
     	
-    	$headings = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+    	$headings = [ 'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday' ];
     	
     	$begin = new DateTime( $viewdate->copy()->startofYear() );
     	$end = new DateTime( $viewdate->copy()->endofYear() );

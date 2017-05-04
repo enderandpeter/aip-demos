@@ -9,7 +9,3 @@
 #register-form.invalid :invalid{
 	border-color: red;
 }
-
-#register-form strong{
-	display: block;
-}

@@ -24,6 +24,10 @@ nav .breadcrumb {
 	right: 2em;
 }
 
+.help-block strong{
+	display: block;
+}
+
 /* calendar forms */
 
 #goToToday {

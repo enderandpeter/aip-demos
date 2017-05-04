@@ -48,27 +48,27 @@ Event Planner
 
 <div class="container" id="main-content">
 <h2 id="create-calendar-event-heading">Create a Calendar Event for {{ $calendarData['calendarHeading'] }}</h2>
-	<form id="create-calendar-event-form">
+	<form id="create-calendar-event-form" method="post" action="{{ route( 'event-planner.events.store' ) }}">
 		<div class="form-group">
 			<label for="title">Name of Event </label>
 			<input type="text" autofocus name="name" id="name" required maxlength="191" class="form-control" />
 		</div>
 		<div class="form-group">
-			<label>Type of Event </label>
+			<label for="type">Type of Event </label>
 			<input type="text" name="type" id="type" required maxlength="191" class="form-control" />
 			<small id="event-type-help" class="form-text">E.g., Birthday Party, Conference Talk, Wedding, etc.</small>
 		</div>
 		<div class="form-group">
-			<label>Host of the Event </label>
+			<label for="host">Host of the Event </label>
 			<input type="text" name="host" required maxlength="191" class="form-control" />
 			<small id="event-type-help" class="form-text">E.g., An individual’s name or an organization, etc.</small>
 		</div>
 		<div class="form-group">
-			<label>Start Date / Time </label>
+			<label for="start_date">Start Date / Time </label>
 			<input type="text" name="start_date" required id="start_date" data-startdate="{{ $startDate }}" class="form-control date" />
 		</div>
 		<div class="form-group">
-			<label>End Date / Time </label>
+			<label for="end_date">End Date / Time </label>
 			<input type="text" name="end_date" required id="end_date" class="form-control date" />
 		</div>
 		<div class="form-group">
