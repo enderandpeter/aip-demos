@@ -159,6 +159,7 @@ function validateForm(form, button){
 		var ruleName = '';
 		var inputMessages = {};
 		var isValid = true;
+		var datesValid = true;
 		
 		var $help_block = $(this).next('span.help-block');		
 		if($help_block.length === 0){
@@ -170,25 +171,50 @@ function validateForm(form, button){
 			$help_block.empty();
 		}
 		
-		
-		isValid = false;
 		$(this).closest('.form-group').addClass('has-danger');
 		$(this).addClass('form-control-danger');
 		
+		if(!this.checkValidity()){
+			isValid = false;
+			
+			if(this.validity.valueMissing){
+				ruleName = 'required';
+			}
+			
+			if(this.validity.tooLong){
+				ruleName = 'max';
+			}
+			
+			if(this.validity.tooShort){
+				ruleName = 'min';				
+			}
+			
+			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
+		}		
+		
 		if( ($('#start_date').datetimepicker('getValue') && $('#end_date').datetimepicker('getValue')) &&
 				($('#start_date').datetimepicker('getValue') > $('#end_date').datetimepicker('getValue'))){
+			isValid = false;
+			datesValid = false;
 			
 			ruleName = $(this).attr('id') === 'start_date' ? 'before_or_equal' : 'after_or_equal';
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
 			inputMessages[ruleName] = inputMessages[ruleName].replace(/:date/, $(this).attr('id') === 'start_date' ? 'end_date' : 'start_date');
 		} else {
-			isValid = true;
+			
 		}
 		
 		if(isValid){
-			$(this).closest('.form-group').removeClass('has-danger');
-			$(this).removeClass('form-control-danger');
+			var $elements;
+			if(datesValid){
+				$elements = $('.date')
+				$help_block = $elements.next('span.help-block');	
+			} else {
+				$elements = $(this)
+			}
+			$elements.closest('.form-group').removeClass('has-danger');
+			$elements.removeClass('form-control-danger');
 			$help_block.remove();			
 		} else {			
 			for(var inputMessageRule in inputMessages){

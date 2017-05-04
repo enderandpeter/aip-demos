@@ -15,9 +15,9 @@ class FrontendTest extends DuskTestCase
      */
     public function testBasicFrontend()
     {
-        $this->browse(function (Browser $browser) {
+        $this->browse(function ( Browser $browser ) {
             $browser->visit( route( 'event-planner' ) )
-                    ->assertSee('Welcome to Event Planner!');
+                    ->assertSee( 'Welcome to Event Planner!' );
         });
     }
 }

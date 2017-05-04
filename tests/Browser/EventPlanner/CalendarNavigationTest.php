@@ -19,14 +19,14 @@ class CalendarNavigationTest extends DuskTestCase
      * Test to confirm that current date appears on default event page
      * 
      * @group currentdate
-     * @group date
+     * @group loginas
      * @return void
      */
     public function testCurrentDate()
     {
     	$user = factory( User::class )->create();
     	
-    	$this->browse( function ( Browser $browser ) use ( $user ) {
+    	$this->browse(function ( Browser $browser ) use ( $user ) {
     		$date = Carbon::now();
     		
     		$dateHeaderFormat = 'F Y';
@@ -52,7 +52,7 @@ class CalendarNavigationTest extends DuskTestCase
      * Test to make sure the date entered into the form is loaded
      *
      * @group gotodate
-     * @group date
+     * @group loginas
      * @return void
      */
     public function testGoToDate(){
@@ -77,7 +77,7 @@ class CalendarNavigationTest extends DuskTestCase
     /**
      * Test to make sure the current date will load when the button is clicked
      * @group gotocurrent
-     * @group date
+     * @group loginas
      * @return void
      */
     public function testGoToCurrentDate(){

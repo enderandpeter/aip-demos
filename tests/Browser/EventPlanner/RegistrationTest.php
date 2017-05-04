@@ -8,17 +8,22 @@ use App\EventPlanner\User as User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 
+use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
+
 class RegistrationTest extends DuskTestCase
 {
-	use DatabaseMigrations;
+	use DatabaseMigrations, ValidatesEventPlannerRequests;	
+	
 	/**
 	 * Make sure empty fields return the expected errors
-	 *
+	 * @group register-required
 	 * @return void
 	 */
 	public function testRequiredFields()
 	{
-		$this->browse(function (Browser $browser) {
+		$this->browse(function ( Browser $browser ) {
+			$validationArray = $this->getValidationMessagesArray( 'register' );
+			
 			$browser->visit( route( 'event-planner' ) )
 			->assertSee( 'Welcome to Event Planner!' );
 				
@@ -30,13 +35,13 @@ class RegistrationTest extends DuskTestCase
 				->type( 'email', '' )
 				->type( 'password', '' )
 				->type( 'password_confirmation', '' )
-				->assertSee( 'The name field is required.' )
-				->assertSee( 'The email field is required.' )
-				->assertSee( 'The password field is required.' )
+				->assertSee( $validationArray[ 'name' ][ 'required' ] )
+				->assertSee( $validationArray[ 'email' ][ 'required' ] )
+				->assertSee( $validationArray[ 'password' ][ 'required' ] )
 				->press( 'Register' )
-				->assertSee( 'The name field is required.' )
-				->assertSee( 'The email field is required.' )
-				->assertSee( 'The password field is required.' );
+				->assertSee( $validationArray[ 'name' ][ 'required' ] )
+				->assertSee( $validationArray[ 'email' ][ 'required' ] )
+				->assertSee( $validationArray[ 'password' ][ 'required' ] );
 			$this->assertNull( User::first() );			
 			
 		});		
@@ -47,10 +52,13 @@ class RegistrationTest extends DuskTestCase
 	 * Test the maximum length restraints for the registration form
 	 *
 	 * @TODO Find a way to confirm maxlength message
+	 * @group register-fieldlengths
 	 * @return void
 	 */
 	public function testFieldLengths(){
-		$this->browse(function (Browser $browser) {
+		$this->browse(function ( Browser $browser ) {			
+			$validationArray = $this->getValidationMessagesArray( 'register' );
+			
 			/*
 			 * Visit the registration page and enter fields that are too long
 			 */
@@ -68,35 +76,37 @@ class RegistrationTest extends DuskTestCase
 				->type( 'password', $clearpass )
 				->type( 'password_confirmation', $clearpass )
 				//->assertSee( 'The name may not be greater than 255 characters.' )
-				->assertSee( 'The email must be a valid email address.' )
+				->assertSee( $validationArray[ 'email' ][ 'email' ] )
 				//->assertSee( 'The email may not be greater than 255 characters.' )
 				->press( 'Register' )
-				->assertSee( 'The email must be a valid email address.' )
+				->assertSee( $validationArray[ 'email' ][ 'email' ] )
 				->type( 'password', $shortclearpass )
-				->assertSee( 'The password must be at least 6 characters.' )
+				->assertSee( $validationArray[ 'password' ][ 'min' ] )
 				->type( 'password_confirmation', $shortclearpass )
 				->press( 'Register' )
-				->assertSee( 'The password must be at least 6 characters.' );
+				->assertSee( $validationArray[ 'password' ][ 'min' ] );
 			$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );			
 		});
 	}
 	
 	/**
 	 * Test the rules for validating the password
-	 * 
+	 * @group register-passwordvalidation
 	 * @return void
 	 */
 	public function testPasswordValidation(){
 		$this->browse(function (Browser $browser) {		
+			$validationArray = $this->getValidationMessagesArray( 'register' );
+			
 			$password = str_random( 7 );
 			$password_confirmation = str_random( 8 );
 		
 			$browser->visit( route( 'event-planner.register.show' ) )
 				->type( 'password', $password )
 				->type( 'password_confirmation', $password_confirmation )
-				->assertSee('The password confirmation does not match')
+				->assertSee( $validationArray[ 'password' ][ 'confirmed' ] )
 				->press( 'Register' )
-				->assertSee('The password confirmation does not match');		
+				->assertSee( $validationArray[ 'password' ][ 'confirmed' ] );		
 			$this->assertNull( User::first() );
 		});
 	}
@@ -109,7 +119,7 @@ class RegistrationTest extends DuskTestCase
 		/*
 		 * Visit the Registration page and confirm a user can successfully create an account
 		 */
-		$this->browse(function (Browser $browser) {
+		$this->browse(function ( Browser $browser ) {
 			/*
 			 * Create a user for registration
 			 */
@@ -123,7 +133,7 @@ class RegistrationTest extends DuskTestCase
 				->type( 'name', $user->name )
 				->type( 'email', $user->email )
 				->type( 'password', $clearpass )
-				->type( 'password_confirmation', $clearpass)
+				->type( 'password_confirmation', $clearpass )
 				->press( 'Register' )
 				->assertSee( "Hello, $user->name!" );
 			$this->assertFalse( User::where( 'name', $user->name )->get()->isEmpty() );

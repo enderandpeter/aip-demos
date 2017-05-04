@@ -65,11 +65,11 @@ Event Planner
 		</div>
 		<div class="form-group">
 			<label>Start Date / Time </label>
-			<input type="text" name="start_date" required id="start_date" data-startdate="{{ $startDate }}" class="form-control" />
+			<input type="text" name="start_date" required id="start_date" data-startdate="{{ $startDate }}" class="form-control date" />
 		</div>
 		<div class="form-group">
 			<label>End Date / Time </label>
-			<input type="text" name="end_date" required id="end_date" class="form-control" />
+			<input type="text" name="end_date" required id="end_date" class="form-control date" />
 		</div>
 		<div class="form-group">
 			<label for="guest_list">Guest List </label>

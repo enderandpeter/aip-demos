@@ -12,6 +12,9 @@
         <testsuite name="Browser Test Suite">
             <directory suffix="Test.php">./tests/Browser</directory>
         </testsuite>
+        <testsuite name="Event Planner Browser Test Suite">
+            <directory suffix="Test.php">./tests/Browser/EventPlanner</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">

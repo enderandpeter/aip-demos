@@ -23,7 +23,7 @@ Typically, you can run the [Laravel Dusk](https://laravel.com/docs/5.4/dusk) tes
 * In Firefox, the Street View panorama may show a gray background when first loaded.
 * The current state of Dusk is causing issues when the tests that use `loginAs` are ran at the same time, but running them separately should result in them passing:
 
-    php artisan dusk --group=currentdate && php artisan dusk --group=gotodate && php artisan dusk --group=gotocurrent && vendor/bin/phpunit
+    php artisan dusk --group=currentdate && php artisan dusk --group=gotodate && php artisan dusk --group=gotocurrent && php artisan dusk --group=createtoday && php artisan dusk --exclude-group=loginas && vendor/bin/phpunit
     
 <a href="https://demos.aninternetpresence.net/frogger" target="_blank"><h2>Effective JavaScript: Frogger</h2></a>
 
