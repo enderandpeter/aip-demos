@@ -57,6 +57,7 @@ class CreateCalendarEventTest extends DuskTestCase
      * Test to make sure user is warned if date input is out of order.
      * 
      * @group create-datefields
+     * @group loginas
      * @return void
      */
     public function testDateFields(){
