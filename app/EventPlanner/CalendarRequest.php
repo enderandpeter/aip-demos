@@ -50,7 +50,7 @@ class CalendarRequest{
 		} else {
 			$month = $currentDate->month;
 			$year = $currentDate->year;
-			$date = $month . ' ' . $year;
+			$date = $month . ' ' . $day . ' ' . $year;
 			self::setInputs($request, $date, $month, $day, $year);
 		}
 		 

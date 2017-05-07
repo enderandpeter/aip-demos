@@ -19,7 +19,6 @@ class CreateCalendarEventsTable extends Migration
             $table->string('type', 30)->comment('The user-provided type of event (birthday, wedding, etc.)');
             $table->string('name')->comment('The name of the event');
             $table->string('host')->nullable()->comment('Event host (could be an individual’s name or an organization)');
-            $table->text('description')->nullable()->comment('A description for the event');
             $table->text('guest_list')->nullable()->comment('A JSON-encoded list of guests');
             $table->string('location')->comment('The event location');
             $table->text('guest_message')->nullable()->comment('A message for the guests');

@@ -1,6 +1,7 @@
 <?php
 namespace App\EventPlanner;
 
+use Illuminate\Support\Facades\Auth;
 /**
  * Validation rules for the Event Planner site.
  * @author Spencer
@@ -22,7 +23,8 @@ class ValidationData extends \App\ValidationData{
 				'end_date' => 'required|max:255|date_format:m/d/Y H:i|after_or_equal:start_date',
 				'guest_list' => 'required|max:1000',
 				'location' => 'required|max:191',
-				'guest_message' => 'required|max:5000',
+				'guest_message' => 'max:5000',
+				'user_id' => 'required|in:' . Auth::user()->id
 			]
 		];
 	}

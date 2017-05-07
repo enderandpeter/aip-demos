@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as Controller; 
 
 use App\EventPlanner\CalendarRequest;
-
+use App\EventPlanner\CalendarEvent;
+use App\EventPlanner\ValidationData;
 use Illuminate\Support\Facades\Auth;
 
 use Carbon\Carbon;
@@ -133,9 +134,33 @@ class CalendarEventController extends EventPlannerController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( Request $request )
     {
-        //
+    	$validationData = new ValidationData();
+    	$validationRules = $validationData->getData( 'create-event' );
+    	
+    	$start_date = new Carbon( $request->start_date );
+    	$end_date = new Carbon( $request->end_date ) ;
+    	
+    	$request->replace( array_merge( $request->all(), [ 
+    			'user_id' => Auth::user()->id, 
+    			'start_date' => $start_date->format( 'm/d/Y H:i' ),
+    			'end_date' => $end_date->format( 'm/d/Y H:i' )
+    	] ) );
+    	$this->validate( $request, $validationRules );
+    	
+    	$request->replace( array_merge( $request->all(), [
+    			'start_date' => $start_date,
+    			'end_date' => $end_date
+    	] ) );
+    	
+    	$calendarEvent = CalendarEvent::create( $request->all() );
+    	
+    	$data = [
+    		'success' => 'The event was created successfully.'
+    	];
+    	
+    	return redirect( route( 'event-planner.events.show', $calendarEvent->id ) )->with( $data );
     }
 
     /**
@@ -144,9 +169,26 @@ class CalendarEventController extends EventPlannerController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show( $id )
     {
-        //
+    	$calendarEvent = CalendarEvent::findOrFail( $id );
+    	
+    	$calendarData = [
+    			'calendarDate' => $calendarEvent->start_date,
+    			'calendarHeading' => $calendarEvent->start_date->toFormattedDateString()
+    	];
+    	
+        $data = [
+        	'user' => 	Auth::guard( $this->getGuard() )->user(),
+        	'calendarEvent' => $calendarEvent,
+        	'calendarData' => $calendarData,
+        ];
+        
+        if( session('success') ){
+        	$data['success'] = session('success');
+        }
+        
+        return view( 'event-planner.show' )->with( $data );
     }
 
     /**

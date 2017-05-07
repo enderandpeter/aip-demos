@@ -34,7 +34,7 @@ class RegisterController extends SiteRegisterController
     public function __construct()
     {
         $this->middleware('guest');
-        $this->redirectTo = route( 'event-planner' ) ;
+        $this->redirectTo = route( 'event-planner' );
     }
 
     /**

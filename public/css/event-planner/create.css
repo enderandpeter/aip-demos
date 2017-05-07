@@ -2,8 +2,10 @@
 
 @import 'main.css';
 
+/* Extra small devices (portrait phones, less than 576px) */
+
 #main-content{
-  padding: 2em 0;
+  padding: 2em 2em;
 }
 
 form input.invalid{
@@ -13,3 +15,19 @@ form input.invalid{
 form.invalid :invalid{
 	border-color: red;
 }
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+	#main-content{
+  		padding: 2em 0;
+	}
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {  }
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  }
