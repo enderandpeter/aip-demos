@@ -16,8 +16,8 @@ trait InitialiseDatabaseTrait
 		}
 		
 		$db = $this->app->make('db')->connection();
-		if (!file_exists($db->getDatabaseName())) {
-			touch($db->getDatabaseName());
-		}
+		
+		file_put_contents($db->getDatabaseName(), '');
+		
 	}
 }

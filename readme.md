@@ -5,7 +5,7 @@ exhibitions. Projects that were inspired by online code schools will be noted.
 
 <a href="https://demos.aninternetpresence.net/search-my-backyard" target="_blank"><h2>Search My Backyard</h2></a>
 
-An intereactive map powered by the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial). After a user
+An interactive map powered by the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial). After a user
 agrees to share their location, it will center to that location. Click the map to create markers which show up in the list. Click a marker or the
 marker icon for the list item to center to the location and show an info window with [Yelp reviews](http://www.yelp.com/developers/documentation), [Street View images](https://developers.google.com/maps/documentation/streetview/intro), and [Wikipedia article images](https://www.mediawiki.org/wiki/API:Main_page) for that area. Click the street icon to open a Street View at the marker. You can also show/hide markers and
 remove the individually or in bulk.
@@ -23,7 +23,7 @@ Typically, you can run the [Laravel Dusk](https://laravel.com/docs/5.4/dusk) tes
 * In Firefox, the Street View panorama may show a gray background when first loaded.
 * The current state of Dusk is causing issues when the tests that use `loginAs` are ran at the same time, but running them separately should result in them passing:
 
-    php artisan dusk --group=currentdate && php artisan dusk --group=gotodate && php artisan dusk --group=gotocurrent && php artisan dusk --group=create-today && php artisan dusk --group=create-datefields && php artisan dusk --exclude-group=loginas && vendor/bin/phpunit
+    `php artisan dusk --group=currentdate && php artisan dusk --group=gotodate && php artisan dusk --group=gotocurrent && php artisan dusk --group=create-today && php artisan dusk --group=create-datefields && php artisan dusk --exclude-group=loginas && vendor/bin/phpunit`
     
 <a href="https://demos.aninternetpresence.net/frogger" target="_blank"><h2>Effective JavaScript: Frogger</h2></a>
 
