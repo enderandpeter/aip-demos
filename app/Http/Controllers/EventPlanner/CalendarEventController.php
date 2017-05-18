@@ -139,13 +139,34 @@ class CalendarEventController extends EventPlannerController
     	$validationData = new ValidationData();
     	$validationRules = $validationData->getData( 'create-event' );
     	
-    	$start_date = new Carbon( $request->start_date );
-    	$end_date = new Carbon( $request->end_date ) ;
+    	if( !empty( $request->start_date ) ){
+    		try{
+    			$start_date = new Carbon( $request->start_date );
+    			$start_date_input = $start_date->format( 'm/d/Y H:i' );
+    		}
+    		catch ( Exception $e ){
+    			$start_date = '';
+    		}
+    	} else {
+    		$start_date_input = $request->start_date;
+    	}    	
+
+    	if( !empty( $request->end_date ) ){
+    		try{
+    			$end_date = new Carbon( $request->end_date ) ;
+    			$end_date_input = $end_date->format( 'm/d/Y H:i' );
+    		}
+    		catch ( Exception $e ){
+    			$end_date = '';
+    		}
+    	} else {
+    		$end_date_input = $request->end_date;
+    	}
     	
     	$request->replace( array_merge( $request->all(), [ 
     			'user_id' => Auth::user()->id, 
-    			'start_date' => $start_date->format( 'm/d/Y H:i' ),
-    			'end_date' => $end_date->format( 'm/d/Y H:i' )
+    			'start_date' => $start_date_input,
+    			'end_date' => $end_date_input
     	] ) );
     	$this->validate( $request, $validationRules );
     	
