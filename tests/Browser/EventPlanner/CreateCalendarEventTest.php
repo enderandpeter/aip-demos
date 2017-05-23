@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 use App\EventPlanner\User as User;
 use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
+use App\EventPlanner\CalendarEvent;
 
 class CreateCalendarEventTest extends DuskTestCase
 {
@@ -61,9 +62,9 @@ class CreateCalendarEventTest extends DuskTestCase
      * @return void
      */
     public function testDateFields(){
-    	$this->browse( function ( Browser $browser ) {
+    	$this->browse( function ( Browser $browser ) {	    	
+	    	$date = Carbon::now();	    	
 	    	$user = factory( User::class )->create();
-	    	$date = Carbon::now();
 	    	
 	    	$calendarHeading = $date->toFormattedDateString();
 	    	
@@ -85,6 +86,59 @@ class CreateCalendarEventTest extends DuskTestCase
 	    		->click( '#start_date' )
 	    		->click( '.container' )
 	    		->assertSee( str_replace( ":date", "end_date", $validationArray[ 'start_date' ][ 'before_or_equal' ] ) );	    		
+    	});
+    }
+    
+    /**
+     * Test the successful creation of a calendar event
+     * 
+     * @group create-success
+     * @group loginas
+     * @return void
+     */
+    public function testSuccessfulCreation(){
+    	$this->browse( function ( Browser $browser ) {
+    		$date = Carbon::now();
+    		$user = factory( User::class )->create();
+    		
+    		$calendarHeading = $date->toFormattedDateString();
+    		
+    		$name = str_random( 20 );
+    		$type = str_random( 30 );
+    		$host = str_random( 40 );
+    		$guest_list = str_random( 500 );
+    		$location = str_random( 20 );
+    		$guest_message = str_random( 300 );
+    		
+    		$start_date = clone $date;
+    		$start_date->hour( 11 )->minute( 0 );
+    		
+    		$end_date = clone $date;
+    		$end_date->hour( 12 )->minute( 0 );
+    		$date_format = 'm/d/y H:i';
+    		$show_date_format = 'm/d/y H:i';
+    		
+    		$browser->loginAs( $user, 'eventplanner' )
+	    		->visit( route( 'event-planner.events.create' ) )
+	    		->type( 'name', $name )
+	    		->type( 'type', $type)
+	    		->type( 'host', $host)
+	    		->type( 'start_date', $start_date->format( $date_format ) )
+	    		->type( 'end_date', $end_date->format( $date_format ) )
+	    		->type( 'guest_list', $guest_list )
+	    		->type( 'location', $location)
+	    		->type( 'guest_message', $guest_message )	    		
+	    		->press( 'Create' )
+	    		->assertRouteIs( 'event-planner.events.show', CalendarEvent::first()->id )
+	    		->assertSee( 'Well done!' )
+    			->assertSeeIn( '#name', $name )
+    			->assertSeeIn( '#type', $type)
+    			->assertSeeIn( '#host', $host)
+    			->assertSeeIn( '#start_date', $start_date->format( CalendarEvent::$show_date_format ) )
+    			->assertSeeIn( '#end_date', $end_date->format( CalendarEvent::$show_date_format ) )
+    			->assertSeeIn( '#guest_list', $guest_list )
+    			->assertSeeIn( '#location', $location)
+    			->assertSeeIn( '#guest_message', $guest_message );
     	});
     }
 }

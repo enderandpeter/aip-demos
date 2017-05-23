@@ -37,7 +37,7 @@ class RegistrationTest extends TestCase
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( ['name', 'email', 'password'] );
+		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
 		$this->assertNull( User::first() );
 	}
 	
@@ -62,7 +62,7 @@ class RegistrationTest extends TestCase
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( ['name', 'email', 'password'] );		
+		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );		
 		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
 		
 		$clearpass = str_random( 3 );
@@ -78,7 +78,7 @@ class RegistrationTest extends TestCase
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( ['name', 'email', 'password'] );
+		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
 		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
 	}
 	
@@ -104,7 +104,7 @@ class RegistrationTest extends TestCase
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( ['password'] );			
+		->assertSessionHasErrors( [ 'password' ] );			
 		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
 	}
 }

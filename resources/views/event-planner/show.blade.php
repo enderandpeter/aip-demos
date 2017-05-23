@@ -49,53 +49,50 @@ Event Planner
 	<div id="show-calendar-event-div">
 		<div class="row">
 			<div class="col">
-				<h2>Name of Event </h2>
+				<h3>Name of Event </h3>
 				<div id="name">{{ $calendarEvent->name }}</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<h2>Type of Event </h2>
+				<h3>Type of Event </h3>
 				<div id="type">{{ $calendarEvent->type }}</div>
-				<small id="event-type-help" class="form-text">E.g., Birthday Party, Conference Talk, Wedding, etc.</small>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<h2>Host of the Event </h2>
+				<h3>Host of the Event </h3>
 				<div id="host">{{ $calendarEvent->host }}</div>
-				<small id="event-type-help" class="form-text">E.g., An individual’s name or an organization, etc.</small>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<h2>Start Date / Time </h2>
-				<div id="start_date">{{ $calendarEvent->start_date }}</div>
+				<h3>Start Date / Time </h3>
+				<div id="start_date">{{ $calendarEvent->showStartDate() }}</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<h2>End Date / Time </h2>
-				<div id="end_date">{{ $calendarEvent->end_date }}</div>
+				<h3>End Date / Time </h3>
+				<div id="end_date">{{ $calendarEvent->showEndDate() }}</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<h2 >Guest List </h2>
+				<h3>Guest List </h3>
 				<div id="guest_list">{{ $calendarEvent->guest_list }}</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<h2>Location</h2>
+				<h3>Location</h3>
 				<div id="location">{{ $calendarEvent->location }}</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<h2>Message</h2>
+				<h3>Message</h3>
 				<div id="guest_message">{{ $calendarEvent->guest_message }}</div>
-				<small id="message-help" class="form-text">An optional message to the guests with additional information about the event</small>
 			</div>
 		</div>
 		<a href="{{ route( 'event-planner.events.edit', $calendarEvent->id ) }}" type="submit" class="btn btn-primary">Edit</a>		

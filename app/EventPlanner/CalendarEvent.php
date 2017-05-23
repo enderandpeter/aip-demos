@@ -22,6 +22,8 @@ class CalendarEvent extends Model
      */
     protected $dates = [ 'start_date', 'end_date' ];
     
+    public static $show_date_format = 'm/d/y g:i a';
+    
     /**
      * Get the user that owns the comment.
      * 
@@ -29,6 +31,15 @@ class CalendarEvent extends Model
      */
     public function user()
     {
-    	return $this->belongsTo('App\EventPlanner\User');
+    	return $this->belongsTo( 'App\EventPlanner\User' );
     }
+    
+    public function showStartDate(){
+    	return $this->start_date->format( self::$show_date_format );
+    }
+    
+    public function showEndDate(){
+    	return $this->end_date->format( self::$show_date_format );
+    }
+    
 }
