@@ -39,8 +39,11 @@ Event Planner
 </div>
 
 @isset ( $success )
-	<div class="alert alert-success" role="alert">
-	  <strong>Well done!</strong> {{ $success }}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    	<span aria-hidden="true">&times;</span>
+	  	</button>
+		<strong>Well done!</strong> {{ $success }}
 	</div>
 @endisset
 
@@ -53,43 +56,43 @@ Event Planner
 				<div id="name">{{ $calendarEvent->name }}</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-2">
 			<div class="col">
 				<h3>Type of Event </h3>
 				<div id="type">{{ $calendarEvent->type }}</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-2">
 			<div class="col">
 				<h3>Host of the Event </h3>
 				<div id="host">{{ $calendarEvent->host }}</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-2">
 			<div class="col">
 				<h3>Start Date / Time </h3>
 				<div id="start_date">{{ $calendarEvent->showStartDate() }}</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-2">
 			<div class="col">
 				<h3>End Date / Time </h3>
 				<div id="end_date">{{ $calendarEvent->showEndDate() }}</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-2">
 			<div class="col">
 				<h3>Guest List </h3>
 				<div id="guest_list">{{ $calendarEvent->guest_list }}</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-2">
 			<div class="col">
 				<h3>Location</h3>
 				<div id="location">{{ $calendarEvent->location }}</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-2">
 			<div class="col">
 				<h3>Message</h3>
 				<div id="guest_message">{{ $calendarEvent->guest_message }}</div>

@@ -46,7 +46,7 @@ Event Planner
 @endif
 
 <div class="container" id="main-content">
-<h2 id="create-calendar-event-heading">Create a Calendar Event for {{ $calendarData['calendarHeading'] }}</h2>
+<h2 id="create-calendar-event-heading">Edit Calendar Event for {{ $calendarData['calendarHeading'] }}</h2>
 	<form id="create-calendar-event-form" method="post" action="{{ route( 'event-planner.events.store' ) }}">
 		{{ csrf_field() }}
 		<div class="form-group mb-2">
