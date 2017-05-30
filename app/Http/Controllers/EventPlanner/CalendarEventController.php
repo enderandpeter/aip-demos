@@ -142,7 +142,7 @@ class CalendarEventController extends EventPlannerController
     	if( !empty( $request->start_date ) ){
     		try{
     			$start_date = new Carbon( $request->start_date );
-    			$start_date_input = $start_date->format( 'm/d/Y H:i' );
+    			$start_date_input = $start_date->format( 'm/d/Y g:i a' );
     		}
     		catch ( Exception $e ){
     			$start_date = '';
@@ -154,7 +154,7 @@ class CalendarEventController extends EventPlannerController
     	if( !empty( $request->end_date ) ){
     		try{
     			$end_date = new Carbon( $request->end_date ) ;
-    			$end_date_input = $end_date->format( 'm/d/Y H:i' );
+    			$end_date_input = $end_date->format( 'm/d/Y g:i a' );
     		}
     		catch ( Exception $e ){
     			$end_date = '';
@@ -218,9 +218,33 @@ class CalendarEventController extends EventPlannerController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
-        //
+    	$calendarEvent = CalendarEvent::findOrFail( $id );    	
+    	
+    	$calendarData = [
+    			'calendarDate' => $calendarEvent->start_date,
+    			'calendarHeading' => $calendarEvent->start_date->toFormattedDateString()
+    	];
+    	
+    	$validationMessages = json_encode( $this->getValidationMessagesArray( 'create-event' ) );
+    	
+    	$data = [
+    			'user' => 	Auth::guard( $this->getGuard() )->user(),
+    			'calendarEvent' => $calendarEvent,
+    			'calendarData' => $calendarData,
+    			'validationMessages' => $validationMessages,
+    			'date_format' => CalendarEvent::$date_format    			
+    	];    	
+    	
+    	$calendarEventArray = $calendarEvent->toArray();
+    	
+    	$calendarEventArray[ 'start_date' ] = $calendarEvent->showStartDate();
+    	$calendarEventArray[ 'end_date' ] = $calendarEvent->showEndDate();
+    	
+    	$data = array_merge( $data, $calendarEventArray );
+    	
+    	return view( 'event-planner.edit' )->with( $data );
     }
 
     /**
@@ -232,7 +256,55 @@ class CalendarEventController extends EventPlannerController
      */
     public function update(Request $request, $id)
     {
-        //
+    	$calendarEvent = CalendarEvent::findOrFail( $id );  
+    	
+    	$validationData = new ValidationData();
+    	$validationRules = $validationData->getData( 'create-event' );
+    	
+    	if( !empty( $request->start_date ) ){
+    		try{
+    			$start_date = new Carbon( $request->start_date );
+    			$start_date_input = $start_date->format( 'm/d/Y g:i a' );
+    		}
+    		catch ( Exception $e ){
+    			$start_date = '';
+    		}
+    	} else {
+    		$start_date_input = $request->start_date;
+    	}
+    	
+    	if( !empty( $request->end_date ) ){
+    		try{
+    			$end_date = new Carbon( $request->end_date ) ;
+    			$end_date_input = $end_date->format( 'm/d/Y g:i a' );
+    		}
+    		catch ( Exception $e ){
+    			$end_date = '';
+    		}
+    	} else {
+    		$end_date_input = $request->end_date;
+    	}
+    	
+    	$request->replace( array_merge( $request->all(), [
+    			'user_id' => Auth::user()->id,
+    			'start_date' => $start_date_input,
+    			'end_date' => $end_date_input
+    	] ) );
+    	$this->validate( $request, $validationRules );
+    	
+    	$request->replace( array_merge( $request->all(), [
+    			'start_date' => $start_date,
+    			'end_date' => $end_date
+    	] ) );
+    	
+    	$calendarEvent->fill( $request->all() );
+    	$calendarEvent->save();
+    	
+    	$data = [
+    			'success' => 'The event was edited successfully.'
+    	];
+    	
+    	return redirect( route( 'event-planner.events.show', $calendarEvent->id ) )->with( $data );
     }
 
     /**

@@ -4,10 +4,6 @@
 Event Planner
 @endsection
 
-@include('css.datetimepicker')
-
-@include('scripts.datetimepicker')
-
 @push('css')
 	<link rel="stylesheet" type="text/css" href="/css/event-planner/create.css" />
 @endpush
@@ -51,7 +47,7 @@ Event Planner
 <h2 id="create-calendar-event-heading">Create a Calendar Event for {{ $calendarData['calendarHeading'] }}</h2>
 	<div id="show-calendar-event-div">
 		<div class="row">
-			<div class="col">
+			<div class="col mb-2">
 				<h3>Name of Event </h3>
 				<div id="name">{{ $calendarEvent->name }}</div>
 			</div>
@@ -98,7 +94,7 @@ Event Planner
 				<div id="guest_message">{{ $calendarEvent->guest_message }}</div>
 			</div>
 		</div>
-		<a href="{{ route( 'event-planner.events.edit', $calendarEvent->id ) }}" type="submit" class="btn btn-primary">Edit</a>		
+		<a href="{{ route( 'event-planner.events.edit', $calendarEvent->id ) }}" class="btn btn-primary">Edit</a>		
 	</div>
 </div>
 

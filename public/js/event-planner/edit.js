@@ -1,10 +1,10 @@
 jQuery(function($){
 	var $start_date = $('#start_date'),
-		$end_date = $('#end_date'),
-		$calender_heading = $('#calendar-heading'),
-		dateFormat = 'm/d/yy',
-		timeFormat = 'h:mm tt';
-	
+	$end_date = $('#end_date'),
+	$calender_heading = $('#calendar-heading'),
+	dateFormat = 'm/d/yy',
+	timeFormat = 'h:mm tt';
+
 	$start_date.on('change', function(event){
 		$calender_heading.text($.datepicker.formatDate( "M d, yy", $(this).datepicker('getDate') ));		
 	});
@@ -195,6 +195,8 @@ function validateForm(form, button){
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
 			inputMessages[ruleName] = inputMessages[ruleName].replace(/:date/, $(this).attr('id') === 'start_date' ? 'end_date' : 'start_date');
+		} else {
+			
 		}
 		
 		if(isValid){

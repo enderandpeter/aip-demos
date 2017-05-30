@@ -22,7 +22,7 @@ class CalendarEvent extends Model
      */
     protected $dates = [ 'start_date', 'end_date' ];
     
-    public static $show_date_format = 'm/d/y g:i a';
+    public static $date_format = 'm/d/Y g:i a';
     
     /**
      * Get the user that owns the comment.
@@ -35,11 +35,19 @@ class CalendarEvent extends Model
     }
     
     public function showStartDate(){
-    	return $this->start_date->format( self::$show_date_format );
+    	return $this->start_date->format( self::$date_format );
     }
     
     public function showEndDate(){
-    	return $this->end_date->format( self::$show_date_format );
+    	return $this->end_date->format( self::$date_format );
+    }
+    
+    public function editStartDate(){
+    	return $this->start_date->format( self::$date_format );
+    }
+    
+    public function editEndDate(){
+    	return $this->end_date->format( self::$date_format );
     }
     
 }

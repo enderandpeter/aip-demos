@@ -4,7 +4,8 @@
 Event Planner
 @endsection
 
-@include('css.datetimepicker')
+@include('css.timepicker')
+@include('css.jquery-ui-theme-smoothness')
 
 @push ('scripts')
 	<script src="/js/event-planner/create.js"></script>
@@ -13,7 +14,8 @@ Event Planner
 	</script>
 @endpush
 
-@include('scripts.datetimepicker')
+@include('scripts.timepicker')
+@include('scripts.jquery-ui')
 
 @push('css')
 	<link rel="stylesheet" type="text/css" href="/css/event-planner/create.css" />
@@ -46,7 +48,7 @@ Event Planner
 @endif
 
 <div class="container" id="main-content">
-<h2 id="create-calendar-event-heading">Create a Calendar Event for {{ $calendarData['calendarHeading'] }}</h2>
+<h2 id="create-calendar-event-heading">Create a Calendar Event for <span id="calendar-heading">{{ $calendarData['calendarHeading'] }}</span></h2>
 	<form id="create-calendar-event-form" method="post" action="{{ route( 'event-planner.events.store' ) }}">
 		{{ csrf_field() }}
 		<div class="form-group mb-2">
@@ -65,7 +67,7 @@ Event Planner
 		</div>
 		<div class="form-group">
 			<label for="start_date">Start Date / Time </label>
-			<input type="text" name="start_date" required id="start_date" data-startdate="{{ $startDate }}" class="form-control date" value="{{ old('start_date') }}" />
+			<input type="text" name="start_date" required id="start_date" class="form-control date" value="{{ old('start_date') }}" />
 		</div>
 		<div class="form-group">
 			<label for="end_date">End Date / Time </label>

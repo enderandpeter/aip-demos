@@ -73,7 +73,7 @@ class CreateCalendarEventTest extends DuskTestCase
 	    	
 	    	$end_date = clone $date;
 	    	$end_date->hour( 11 )->minute( 0 );
-	    	$date_format = 'm/d/y H:i';
+	    	$date_format = CalendarEvent::$date_format;
 	    	
 	    	$validationArray = $this->getValidationMessagesArray( 'create-event' );
 	    	
