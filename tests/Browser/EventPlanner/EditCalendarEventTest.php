@@ -55,37 +55,114 @@ class EditCalendarEventTest extends DuskTestCase
 	}
 	
 	/**
-	 * Test to make sure user is warned if date input is out of order.
+	 * Test to make sure user is warned if start_date is not before start_date
 	 *
-	 * @group create-datefields
+	 * @group edit-startdatefield
 	 * @group loginas
 	 * @return void
 	 */
-	public function testDateFields(){
+	public function testStartDateFields(){
 		$this->browse( function ( Browser $browser ) {
 			$caldendarEvent = factory( CalendarEvent::class )->create();
 			$user = User::find( $caldendarEvent->user_id );
 			
-			$calendarHeading = $caldendarEvent->start_date->toFormattedDateString();
+			$date = clone $caldendarEvent->end_date;
 			
-			$start_date = clone $date;
-			$start_date->hour( 12 )->minute( 0 );
+			$start_date = $date->addHour();
 			
-			$end_date = clone $date;
-			$end_date->hour( 11 )->minute( 0 );
-			$date_format = 'm/d/y H:i';
+			$calendarHeading = $start_date->toFormattedDateString();
+			
+			$date_format = CalendarEvent::$date_format;
 			
 			$validationArray = $this->getValidationMessagesArray( 'create-event' );
 			
 			$browser->loginAs( $user, 'eventplanner' )
 			->visit( route( 'event-planner.events.edit', $caldendarEvent->id ) )
 			->type( 'start_date', $start_date->format( $date_format ) )
-			->type( 'end_date', $end_date->format( $date_format ) )
-			->click( '.container' )
-			->assertSee( str_replace( ":date", "start_date", $validationArray[ 'end_date' ][ 'after_or_equal' ] ) )
-			->click( '#start_date' )
-			->click( '.container' )
 			->assertSee( str_replace( ":date", "end_date", $validationArray[ 'start_date' ][ 'before_or_equal' ] ) );
+		});
+	}
+	
+	/**
+	 * Test to make sure user is warned if end_date is before start_date
+	 *
+	 * @group edit-enddatefield
+	 * @group loginas
+	 * @return void
+	 */
+	public function testEndDateFields(){
+		$this->browse( function ( Browser $browser ) {
+			$caldendarEvent = factory( CalendarEvent::class )->create();
+			$user = User::find( $caldendarEvent->user_id );			
+			
+			$start_date = $caldendarEvent->start_date;
+			$end_date = $caldendarEvent->start_date->subHour();
+			
+			$calendarHeading = $start_date->toFormattedDateString();
+			
+			$date_format = CalendarEvent::$date_format;
+			
+			$validationArray = $this->getValidationMessagesArray( 'create-event' );
+			
+			$browser->loginAs( $user, 'eventplanner' )
+			->visit( route( 'event-planner.events.edit', $caldendarEvent->id ) )
+			->type( 'end_date', $end_date->format( $date_format ) )
+			->assertSee( str_replace( ":date", "start_date", $validationArray[ 'end_date' ][ 'after_or_equal' ] ) );
+		});
+	}
+	
+	/**
+	 * Test the successful update of a calendar event
+	 *
+	 * @group edit-success
+	 * @group loginas
+	 * @return void
+	 */
+	public function testSuccessfulUpdate(){
+		$this->browse( function ( Browser $browser ) {
+			$caldendarEvent = factory( CalendarEvent::class )->create();
+			$user = User::find( $caldendarEvent->user_id );			
+			
+			$date = $caldendarEvent->start_date; 
+			
+			$calendarHeading = $date->toFormattedDateString();
+			
+			$name = str_random( 20 );
+			$type = str_random( 30 );
+			$host = str_random( 40 );
+			$guest_list = str_random( 500 );
+			$location = str_random( 20 );
+			$guest_message = str_random( 300 );
+			
+			$start_date = clone $date;
+			$start_date->hour( 11 )->minute( 0 );
+			
+			$end_date = clone $date;
+			$end_date->hour( 12 )->minute( 0 );
+			
+			$browser->loginAs( $user, 'eventplanner' )
+			->visit( route( 'event-planner.events.edit', $caldendarEvent->id) )
+			->type( 'name', $name )
+			->type( 'type', $type)
+			->type( 'host', $host)
+			->type( 'start_date', $start_date->format( CalendarEvent::$date_format) )
+			->click( '.ui-datepicker-close' )
+			->type( 'end_date', $end_date->format( CalendarEvent::$date_format) )
+			->click( '.ui-datepicker-close' )
+			->type( 'guest_list', $guest_list )
+			->type( 'location', $location)
+			->type( 'guest_message', $guest_message )
+			->press( 'Update' )
+			->assertRouteIs( 'event-planner.events.show', CalendarEvent::first()->id )
+			->assertSee( 'Well done!' )
+			->assertSeeIn( '#name', $name )
+			->assertSeeIn( '#type', $type)
+			->assertSeeIn( '#host', $host)
+			->assertSeeIn( '#start_date', $start_date->format( CalendarEvent::$date_format ) )
+			->assertSeeIn( '#end_date', $end_date->format( CalendarEvent::$date_format ) )
+			->assertSeeIn( '#guest_list', $guest_list )
+			->assertSeeIn( '#location', $location)
+			->assertSeeIn( '#guest_message', $guest_message );
 		});
 	}
 }

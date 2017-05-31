@@ -56,12 +56,43 @@ class CreateCalendarEventTest extends DuskTestCase
     
     /**
      * Test to make sure user is warned if date input is out of order.
-     * 
-     * @group create-datefields
+     *
+     * @group create-startdatefield
      * @group loginas
      * @return void
      */
-    public function testDateFields(){
+    public function testStartDateField(){
+    	$this->browse( function ( Browser $browser ) {
+    		$date = Carbon::now();
+    		$user = factory( User::class )->create();
+    		
+    		$calendarHeading = $date->toFormattedDateString();
+    		
+    		$start_date = clone $date;
+    		$start_date->hour( 12 )->minute( 0 );
+    		
+    		$end_date = clone $date;
+    		$end_date->hour( 11 )->minute( 0 );
+    		$date_format = CalendarEvent::$date_format;
+    		
+    		$validationArray = $this->getValidationMessagesArray( 'create-event' );
+    		
+    		$browser->loginAs( $user, 'eventplanner' )
+    		->visit( route( 'event-planner.events.create' ) )
+    		->type( 'end_date', $end_date->format( $date_format ) )
+    		->type( 'start_date', $start_date->format( $date_format ) )    		
+    		->assertSee( str_replace( ":date", "end_date", $validationArray[ 'start_date' ][ 'before_or_equal' ] ) );
+    	});
+    }
+    
+    /**
+     * Test to make sure user is warned if date input is out of order.
+     * 
+     * @group create-enddatefield
+     * @group loginas
+     * @return void
+     */
+    public function testEndDateField(){
     	$this->browse( function ( Browser $browser ) {	    	
 	    	$date = Carbon::now();	    	
 	    	$user = factory( User::class )->create();
@@ -81,11 +112,7 @@ class CreateCalendarEventTest extends DuskTestCase
 	    		->visit( route( 'event-planner.events.create' ) )
 	    		->type( 'start_date', $start_date->format( $date_format ) )
 	    		->type( 'end_date', $end_date->format( $date_format ) )
-	    		->click( '.container' )
-	    		->assertSee( str_replace( ":date", "start_date", $validationArray[ 'end_date' ][ 'after_or_equal' ] ) )
-	    		->click( '#start_date' )
-	    		->click( '.container' )
-	    		->assertSee( str_replace( ":date", "end_date", $validationArray[ 'start_date' ][ 'before_or_equal' ] ) );	    		
+	    		->assertSee( str_replace( ":date", "start_date", $validationArray[ 'end_date' ][ 'after_or_equal' ] ) );	    		
     	});
     }
     

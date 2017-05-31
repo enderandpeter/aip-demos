@@ -58,12 +58,12 @@ Event Planner
 		<div class="form-group">
 			<label for="type">Type of Event </label>
 			<input type="text" name="type" id="type" required maxlength="191" class="form-control" value="{{ old('type') }}" />
-			<small id="event-type-help" class="form-text">E.g., Birthday Party, Conference Talk, Wedding, etc.</small>
+			<small id="event-type-help" class="form-text text-muted">E.g., Birthday Party, Conference Talk, Wedding, etc.</small>
 		</div>
 		<div class="form-group">
 			<label for="host">Host of the Event </label>
 			<input type="text" name="host" required maxlength="191" class="form-control" value="{{ old('host') }}" />
-			<small id="event-type-help" class="form-text">E.g., An individual’s name or an organization, etc.</small>
+			<small id="event-type-help" class="form-text text-muted">E.g., An individual’s name or an organization, etc.</small>
 		</div>
 		<div class="form-group">
 			<label for="start_date">Start Date / Time </label>
@@ -84,7 +84,7 @@ Event Planner
 		<div class="form-group">
 			<label for="guest_message">Message</label>
 			<textarea id="guest_message" name="guest_message" class="form-control" maxlength="5000">{{ old('guest_message') }}</textarea>
-			<small id="message-help" class="form-text">An optional message to the guests with additional information about the event</small>
+			<small id="message-help" class="form-text text-muted">An optional message to the guests with additional information about the event</small>
 		</div>
 		<button type="submit" class="btn btn-primary">Create</button>		
 	</form>
