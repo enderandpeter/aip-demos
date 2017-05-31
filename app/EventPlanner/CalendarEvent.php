@@ -22,7 +22,7 @@ class CalendarEvent extends Model
      */
     protected $dates = [ 'start_date', 'end_date' ];
     
-    public static $date_format = 'm/d/Y g:i a';
+    public static $date_format = 'n/j/Y g:i a';
     
     /**
      * Get the user that owns the comment.

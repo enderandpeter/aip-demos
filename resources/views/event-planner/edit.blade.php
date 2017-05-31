@@ -89,8 +89,20 @@ Event Planner
 			<textarea id="guest_message" name="guest_message" class="form-control" maxlength="5000">{{ $guest_message or old('guest_message') }}</textarea>
 			<small id="message-help" class="form-text">An optional message to the guests with additional information about the event</small>
 		</div>
-		<button type="submit" class="btn btn-primary">Update</button>		
+		<button type="submit" class="btn btn-primary float-left mb-5">Update</button>				
 	</form>
+	<form id="delete-form" class="float-right" method="post" action="{{ route( 'event-planner.events.destroy', $id ) }}">
+		{{ csrf_field() }}
+		<input type="hidden" name="_method" value="DELETE">
+		<button type="submit" id="delete-button" class="btn btn-danger">Delete</button>
+	</form>	
+</div>
+
+<div id="delete-confirm" title="Delete this event?" hidden>
+  <p>
+  	<span class="ui-icon ui-icon-alert float-left mt-12 mr-12 mb-20"></span>
+  	<span>This calendar event will be permanently deleted and cannot be recovered. Are you sure?</span>
+  </p>
 </div>
 
 @endsection

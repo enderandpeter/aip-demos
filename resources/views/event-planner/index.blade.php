@@ -35,6 +35,15 @@ Event Planner
 		</div>
 	</div>
 	
+	@isset ( $deleted )
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    	<span aria-hidden="true">&times;</span>
+	  	</button>
+		<strong>Done!</strong> {{ $deleted }}
+	</div>
+	@endisset
+	
 	{{--
 	// Courtesy of David Walsh; https://davidwalsh.name/php-calendar
 	  Only show a calendar if a $date variable was sent to this view 

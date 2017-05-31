@@ -42,8 +42,10 @@ class CreateCalendarEventTest extends DuskTestCase
             	->type( 'host', '' )
             	->assertSee( $validationArray[ 'type' ][ 'required' ] )
             	->type( 'start_date', '' )
+            	->click( '.ui-datepicker-close' )
             	->assertSee( $validationArray[ 'host' ][ 'required' ] )
             	->type( 'end_date', '' )
+            	->click( '.ui-datepicker-close' )
             	->assertSee( $validationArray[ 'start_date' ][ 'required' ] )
             	->type( 'guest_list', '' )
             	->assertSee( $validationArray[ 'end_date' ][ 'required' ] )
@@ -57,11 +59,11 @@ class CreateCalendarEventTest extends DuskTestCase
     /**
      * Test to make sure user is warned if date input is out of order.
      * 
-     * @group create-datefields
+     * @group create-startdatefield
      * @group loginas
      * @return void
      */
-    public function testDateFields(){
+    public function testStartDateField(){
     	$this->browse( function ( Browser $browser ) {	    	
 	    	$date = Carbon::now();	    	
 	    	$user = factory( User::class )->create();
@@ -79,13 +81,40 @@ class CreateCalendarEventTest extends DuskTestCase
 	    	
 	    	$browser->loginAs( $user, 'eventplanner' )
 	    		->visit( route( 'event-planner.events.create' ) )
-	    		->type( 'start_date', $start_date->format( $date_format ) )
 	    		->type( 'end_date', $end_date->format( $date_format ) )
-	    		->click( '.container' )
-	    		->assertSee( str_replace( ":date", "start_date", $validationArray[ 'end_date' ][ 'after_or_equal' ] ) )
-	    		->click( '#start_date' )
-	    		->click( '.container' )
+	    		->type( 'start_date', $start_date->format( $date_format ) )
 	    		->assertSee( str_replace( ":date", "end_date", $validationArray[ 'start_date' ][ 'before_or_equal' ] ) );	    		
+    	});
+    }
+    
+    /**
+     * Test to make sure user is warned if date input is out of order.
+     *
+     * @group create-enddatefield
+     * @group loginas
+     * @return void
+     */
+    public function testEndDateField(){
+    	$this->browse( function ( Browser $browser ) {
+    		$date = Carbon::now();
+    		$user = factory( User::class )->create();
+    		
+    		$calendarHeading = $date->toFormattedDateString();
+    		
+    		$start_date = clone $date;
+    		$start_date->hour( 12 )->minute( 0 );
+    		
+    		$end_date = clone $date;
+    		$end_date->hour( 11 )->minute( 0 );
+    		$date_format = CalendarEvent::$date_format;
+    		
+    		$validationArray = $this->getValidationMessagesArray( 'create-event' );
+    		
+    		$browser->loginAs( $user, 'eventplanner' )
+    		->visit( route( 'event-planner.events.create' ) )
+    		->type( 'start_date', $start_date->format( $date_format ) )
+    		->type( 'end_date', $end_date->format( $date_format ) )
+    		->assertSee( str_replace( ":date", "start_date", $validationArray[ 'end_date' ][ 'after_or_equal' ] ) );
     	});
     }
     
@@ -115,8 +144,8 @@ class CreateCalendarEventTest extends DuskTestCase
     		
     		$end_date = clone $date;
     		$end_date->hour( 12 )->minute( 0 );
-    		$date_format = 'm/d/y H:i';
-    		$show_date_format = 'm/d/y H:i';
+    		
+    		$date_format = CalendarEvent::$date_format;
     		
     		$browser->loginAs( $user, 'eventplanner' )
 	    		->visit( route( 'event-planner.events.create' ) )
@@ -124,7 +153,9 @@ class CreateCalendarEventTest extends DuskTestCase
 	    		->type( 'type', $type)
 	    		->type( 'host', $host)
 	    		->type( 'start_date', $start_date->format( $date_format ) )
+	    		->click( '.ui-datepicker-close' )
 	    		->type( 'end_date', $end_date->format( $date_format ) )
+	    		->click( '.ui-datepicker-close' )
 	    		->type( 'guest_list', $guest_list )
 	    		->type( 'location', $location)
 	    		->type( 'guest_message', $guest_message )	    		
@@ -134,8 +165,8 @@ class CreateCalendarEventTest extends DuskTestCase
     			->assertSeeIn( '#name', $name )
     			->assertSeeIn( '#type', $type)
     			->assertSeeIn( '#host', $host)
-    			->assertSeeIn( '#start_date', $start_date->format( CalendarEvent::$show_date_format ) )
-    			->assertSeeIn( '#end_date', $end_date->format( CalendarEvent::$show_date_format ) )
+    			->assertSeeIn( '#start_date', $start_date->format( $date_format) )
+    			->assertSeeIn( '#end_date', $end_date->format( $date_format) )
     			->assertSeeIn( '#guest_list', $guest_list )
     			->assertSeeIn( '#location', $location)
     			->assertSeeIn( '#guest_message', $guest_message );

@@ -7,10 +7,6 @@
 	</script>
 @endpush
 
-@include('css.datetimepicker')
-
-@include('scripts.datetimepicker')
-
 @push('css')
 	<link rel="stylesheet" type="text/css" href="/css/event-planner/register.css" />
 @endpush

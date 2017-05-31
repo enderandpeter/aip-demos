@@ -31,41 +31,41 @@ class CalendarEventController extends EventPlannerController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index( Request $request )
     {
-    	$calendarData = (new CalendarRequest)->getCalendarData($request);
-    	$logged_in = Auth::guard($this->getGuard())->check();
+    	$calendarData = ( new CalendarRequest)->getCalendarData( $request );
+    	$logged_in = Auth::guard( $this->getGuard() )->check();
     	
-    	$currentDate = $calendarData['currentDate'];
+    	$currentDate = $calendarData[ 'currentDate' ];
     	$currentDay = $currentDate->day;
     	
-    	$viewdate = $calendarData['calendarDate'];
+    	$viewdate = $calendarData[ 'calendarDate' ];
     	
     	$month = $viewdate->month;
     	$year = $viewdate->year;
     	
     	/* Initial days and weeks vars ... */
-    	$running_day = date('w',mktime(0, 0, 0, $month, 1, $year));
-    	$days_in_month = date('t',mktime(0,0,0, $month, 1, $year));
+    	$running_day = date( 'w', mktime(0, 0, 0, $month, 1, $year ) );
+    	$days_in_month = date( 't', mktime(0,0,0, $month, 1, $year ) );
     	$days_in_this_week = 1;
     	$day_counter = 0;
     	$dates_array = [];
     	
-    	$headings = [ 'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday' ];
+    	$headings = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ];
     	
     	$begin = new DateTime( $viewdate->copy()->startofYear() );
     	$end = new DateTime( $viewdate->copy()->endofYear() );
     	 
-    	$interval = DateInterval::createFromDateString('1 month');
-    	$period = new DatePeriod($begin, $interval, $end);
+    	$interval = DateInterval::createFromDateString( '1 month' );
+    	$period = new DatePeriod( $begin, $interval, $end );
     	
     	$calendarSelectionOptions = [];
     	
     	foreach($period as $datetime){
     		$selected = '';
-    		$carbonDate = Carbon::instance($datetime);
-    		$monthName = $carbonDate->format('F');
-    		$monthNumber = $carbonDate->format('n');
+    		$carbonDate = Carbon::instance( $datetime );
+    		$monthName = $carbonDate->format( 'F' );
+    		$monthNumber = $carbonDate->format( 'n' );
     		 
     		if($viewdate->month === (int) $monthNumber){
     			$selected = ' selected="selected"';
@@ -78,9 +78,9 @@ class CalendarEventController extends EventPlannerController
     		];
     	}
     	
-    	$viewdata = array_merge($request->input(), $calendarData, [
+    	$viewdata = array_merge( $request->input(), $calendarData, [
     			'logged_in' => $logged_in,
-    			'user' => Auth::guard($this->getGuard())->user(),
+    			'user' => Auth::guard( $this->getGuard() )->user(),
     			'viewdate' => $viewdate,
     			'month' => $month,
     			'year' => $year,
@@ -95,7 +95,11 @@ class CalendarEventController extends EventPlannerController
     			'calendarSelectionOptions' => $calendarSelectionOptions
     	]);
     	
-    	return view('event-planner.index')->with($viewdata);
+    	if( session( 'deleted' ) ){
+    		$viewdata[ 'deleted' ] = 'The event was deleted successfully.';
+    	}
+    	
+    	return view('event-planner.index')->with( $viewdata );
     }    
     
 
@@ -138,11 +142,12 @@ class CalendarEventController extends EventPlannerController
     {
     	$validationData = new ValidationData();
     	$validationRules = $validationData->getData( 'create-event' );
+    	$date_format = CalendarEvent::$date_format;
     	
     	if( !empty( $request->start_date ) ){
     		try{
     			$start_date = new Carbon( $request->start_date );
-    			$start_date_input = $start_date->format( 'm/d/Y g:i a' );
+    			$start_date_input = $start_date->format( $date_format );
     		}
     		catch ( Exception $e ){
     			$start_date = '';
@@ -154,7 +159,7 @@ class CalendarEventController extends EventPlannerController
     	if( !empty( $request->end_date ) ){
     		try{
     			$end_date = new Carbon( $request->end_date ) ;
-    			$end_date_input = $end_date->format( 'm/d/Y g:i a' );
+    			$end_date_input = $end_date->format( $date_format );
     		}
     		catch ( Exception $e ){
     			$end_date = '';
@@ -205,8 +210,8 @@ class CalendarEventController extends EventPlannerController
         	'calendarData' => $calendarData,
         ];
         
-        if( session('success') ){
-        	$data['success'] = session('success');
+        if( session( 'success' ) ){
+        	$data[ 'success' ] = session( 'success' );
         }
         
         return view( 'event-planner.show' )->with( $data );
@@ -260,11 +265,12 @@ class CalendarEventController extends EventPlannerController
     	
     	$validationData = new ValidationData();
     	$validationRules = $validationData->getData( 'create-event' );
+    	$date_format = CalendarEvent::$date_format;
     	
     	if( !empty( $request->start_date ) ){
     		try{
     			$start_date = new Carbon( $request->start_date );
-    			$start_date_input = $start_date->format( 'm/d/Y g:i a' );
+    			$start_date_input = $start_date->format( $date_format );
     		}
     		catch ( Exception $e ){
     			$start_date = '';
@@ -276,7 +282,7 @@ class CalendarEventController extends EventPlannerController
     	if( !empty( $request->end_date ) ){
     		try{
     			$end_date = new Carbon( $request->end_date ) ;
-    			$end_date_input = $end_date->format( 'm/d/Y g:i a' );
+    			$end_date_input = $end_date->format( $date_format );
     		}
     		catch ( Exception $e ){
     			$end_date = '';
@@ -315,6 +321,14 @@ class CalendarEventController extends EventPlannerController
      */
     public function destroy($id)
     {
-        //
+    	$calendarEvent = CalendarEvent::findOrFail( $id );
+    	
+    	$calendarEvent->delete();
+    	
+    	$data = [
+    			'deleted' => 'The event was deleted successfully.'
+    	];
+    	
+    	return redirect( route( 'event-planner' ) )->with( $data );
     }
 }
