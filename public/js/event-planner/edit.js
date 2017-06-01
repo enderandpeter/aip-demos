@@ -44,7 +44,7 @@ jQuery(function($){
 	            duration: 500
 	          },
 	        buttons: {
-	          "Delete": function() {
+	          "Delete Event": function() {
 	        	  $delete_button[0].form.submit();
 	          },
 	          Cancel: function() {
