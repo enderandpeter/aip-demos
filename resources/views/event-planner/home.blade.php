@@ -92,7 +92,7 @@ Event Planner
 		
 		@for($list_day = 1; $list_day <= $days_in_month; $list_day++)
 			<?php 
-			$calendar_day_class = 'calendar-day';
+			$calendar_day_class = 'calendar-day calendar-day-' . $list_day;
 			$calendar_day_id_attr = '';
 			?>
 			@if($list_day === $currentDay && $viewdate->month === $currentDate->month && $viewdate->year === $currentDate->year)
