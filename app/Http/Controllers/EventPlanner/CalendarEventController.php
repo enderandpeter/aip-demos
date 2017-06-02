@@ -86,7 +86,8 @@ class CalendarEventController extends EventPlannerController
 				'day_counter' => $day_counter,
 				'dates_array' => $dates_array,
 				'headings' => $headings,
-				'calendarSelectionOptions' => $calendarSelectionOptions
+				'calendarSelectionOptions' => $calendarSelectionOptions,
+				'calendarEvents' => CalendarEvent::getEventsByYearAndMonth($year, $month)
 		]);
 		
 		if( session( 'deleted' ) ){

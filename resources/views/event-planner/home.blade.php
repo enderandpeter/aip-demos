@@ -7,7 +7,7 @@ Event Planner
 @section('body-content')
 
 @push('css')
-	<link rel="stylesheet" type="text/css" href="/css/event-planner/main.css" />
+	<link rel="stylesheet" type="text/css" href="/css/event-planner/home.css" />
 @endpush
 
 @if (count($errors) > 0)
@@ -101,9 +101,20 @@ Event Planner
 			<td{{ $calendar_day_id_attr }} class="{{ $calendar_day_class }}">
 				{{-- add in the day number --}}
 				<div class="day-number">{{ $list_day }}</div>
+				<div class="add-link float-right">
+					<a href="{{ route( 'event-planner.events.create', [ 'month' => $month, 'year' => $year, 'day' => $list_day, 'submit' => 1 ] ) }}">Add</a>
+				</div>
 		
 				{{-- QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! --}}
-				<p> An entry</p> <p> An entry</p>			
+				@if( @isset( $calendarEvents[ $list_day ] ) )					
+					@foreach( $calendarEvents[ $list_day ] as $calendarEvent )
+						<div class="calendarevent-entry">
+							<a href="{{ route( 'event-planner.events.show', $calendarEvent->id ) }}" class="calendarevent-link">
+							{{ $calendarEvent->name }} {{ $calendarEvent->getStartTime() }}
+						</a>
+						</div>					
+					@endforeach			
+				@endif
 			</td>
 			@if($running_day == 6)
 				</tr>
