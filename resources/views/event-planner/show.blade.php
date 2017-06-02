@@ -44,7 +44,12 @@ Event Planner
 @endisset
 
 <div class="container" id="main-content">
-<h2 id="create-calendar-event-heading">Create a Calendar Event for {{ $calendarData['calendarHeading'] }}</h2>
+<ul class="nav justify-content-center" id="view-nav">
+  <li class="nav-item">
+    <a class="nav-link" id="view-month" href="{{ route( 'event-planner', [ 'year' => $calendarEvent->start_date->year, 'month' => $calendarEvent->start_date->month, 'submit' => 1 ] ) }}">View month</a>
+  </li>
+</ul>
+<h2 id="create-calendar-event-heading">Calendar Event for {{ $calendarData['calendarHeading'] }}</h2>
 	<div id="show-calendar-event-div">
 		<div class="row">
 			<div class="col mb-2">

@@ -44,6 +44,12 @@ Event Planner
 	</div>
 	@endisset
 	
+	<ul class="nav justify-content-center" id="view-nav">
+	  <li class="nav-item">
+	    <a class="nav-link" id="view-calendarevents" href="{{ route( 'event-planner.events.index' ) }}">View all events</a>
+	  </li>
+	</ul>
+	
 	{{--
 	// Courtesy of David Walsh; https://davidwalsh.name/php-calendar
 	  Only show a calendar if a $date variable was sent to this view 
