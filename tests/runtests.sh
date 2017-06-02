@@ -8,5 +8,6 @@ php artisan dusk --group=create-success && \
 php artisan dusk --group=edit-calendarevent && \
 php artisan dusk --group=delete-success && \
 php artisan dusk --group=delete-cancel && \
+php artisan dusk --group=index && \
 php artisan dusk --exclude-group=loginas && \
 vendor/bin/phpunit

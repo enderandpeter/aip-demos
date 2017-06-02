@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+@import 'main.css';
+
+/* Extra small devices (portrait phones, less than 576px) */
+
+#calendarevent-list{
+  max-width: 400px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+	#calendarevent-list{
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { }
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {  }
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  }

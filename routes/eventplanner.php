@@ -12,7 +12,7 @@
 */
 
 Route::get('event-planner', [
-	'uses' => 'CalendarEventController@index',
+	'uses' => 'CalendarEventController@home',
 	'as' => 'event-planner'
 ]);
 

@@ -26,6 +26,76 @@ class CalendarEventController extends EventPlannerController
 		return 'eventplanner';
 	}
 	
+	public function home( Request $request ){
+		$calendarData = ( new CalendarRequest)->getCalendarData( $request );
+		$logged_in = Auth::guard( $this->getGuard() )->check();
+		
+		$currentDate = $calendarData[ 'currentDate' ];
+		$currentDay = $currentDate->day;
+		
+		$viewdate = $calendarData[ 'calendarDate' ];
+		
+		$month = $viewdate->month;
+		$year = $viewdate->year;
+		
+		/* Initial days and weeks vars ... */
+		$running_day = date( 'w', mktime( 0, 0, 0, $month, 1, $year ) );
+		$days_in_month = date( 't', mktime( 0,0,0, $month, 1, $year ) );
+		$days_in_this_week = 1;
+		$day_counter = 0;
+		$dates_array = [];
+		
+		$headings = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ];
+		
+		$begin = new DateTime( $viewdate->copy()->startofYear() );
+		$end = new DateTime( $viewdate->copy()->endofYear() );
+		
+		$interval = DateInterval::createFromDateString( '1 month' );
+		$period = new DatePeriod( $begin, $interval, $end );
+		
+		$calendarSelectionOptions = [];
+		
+		foreach($period as $datetime){
+			$selected = '';
+			$carbonDate = Carbon::instance( $datetime );
+			$monthName = $carbonDate->format( 'F' );
+			$monthNumber = $carbonDate->format( 'n' );
+			
+			if($viewdate->month === (int) $monthNumber){
+				$selected = ' selected="selected"';
+			}
+			
+			$calendarSelectionOptions[] = [
+					'selected' => $selected,
+					'monthNumber' => $monthNumber,
+					'monthName' => $monthName
+			];
+		}
+		
+		$viewdata = array_merge( $request->input(), $calendarData, [
+				'logged_in' => $logged_in,
+				'user' => Auth::guard( $this->getGuard() )->user(),
+				'viewdate' => $viewdate,
+				'month' => $month,
+				'year' => $year,
+				'currentDate' => $currentDate,
+				'currentDay' => $currentDay,
+				'running_day' => $running_day,
+				'days_in_month' => $days_in_month,
+				'days_in_this_week' => $days_in_this_week,
+				'day_counter' => $day_counter,
+				'dates_array' => $dates_array,
+				'headings' => $headings,
+				'calendarSelectionOptions' => $calendarSelectionOptions
+		]);
+		
+		if( session( 'deleted' ) ){
+			$viewdata[ 'deleted' ] = 'The event was deleted successfully.';
+		}
+		
+		return view( 'event-planner.home' )->with( $viewdata );
+	}
+	
     /**
      * Display a listing of the resource.
      *
@@ -33,73 +103,16 @@ class CalendarEventController extends EventPlannerController
      */
     public function index( Request $request )
     {
-    	$calendarData = ( new CalendarRequest)->getCalendarData( $request );
-    	$logged_in = Auth::guard( $this->getGuard() )->check();
+    	if( !Auth::guard( $this->getGuard() )->user() ){
+    		return redirect()->route( 'event-planner' );
+    	} 
     	
-    	$currentDate = $calendarData[ 'currentDate' ];
-    	$currentDay = $currentDate->day;
+    	$viewdata = [
+    			'user' => 	Auth::guard( $this->getGuard() )->user(),
+    			'calendarevents' => CalendarEvent::all()
+    	];
     	
-    	$viewdate = $calendarData[ 'calendarDate' ];
-    	
-    	$month = $viewdate->month;
-    	$year = $viewdate->year;
-    	
-    	/* Initial days and weeks vars ... */
-    	$running_day = date( 'w', mktime(0, 0, 0, $month, 1, $year ) );
-    	$days_in_month = date( 't', mktime(0,0,0, $month, 1, $year ) );
-    	$days_in_this_week = 1;
-    	$day_counter = 0;
-    	$dates_array = [];
-    	
-    	$headings = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ];
-    	
-    	$begin = new DateTime( $viewdate->copy()->startofYear() );
-    	$end = new DateTime( $viewdate->copy()->endofYear() );
-    	 
-    	$interval = DateInterval::createFromDateString( '1 month' );
-    	$period = new DatePeriod( $begin, $interval, $end );
-    	
-    	$calendarSelectionOptions = [];
-    	
-    	foreach($period as $datetime){
-    		$selected = '';
-    		$carbonDate = Carbon::instance( $datetime );
-    		$monthName = $carbonDate->format( 'F' );
-    		$monthNumber = $carbonDate->format( 'n' );
-    		 
-    		if($viewdate->month === (int) $monthNumber){
-    			$selected = ' selected="selected"';
-    		}
-    		
-    		$calendarSelectionOptions[] = [
-    			'selected' => $selected,
-    			'monthNumber' => $monthNumber,
-    			'monthName' => $monthName
-    		];
-    	}
-    	
-    	$viewdata = array_merge( $request->input(), $calendarData, [
-    			'logged_in' => $logged_in,
-    			'user' => Auth::guard( $this->getGuard() )->user(),
-    			'viewdate' => $viewdate,
-    			'month' => $month,
-    			'year' => $year,
-    			'currentDate' => $currentDate,
-    			'currentDay' => $currentDay,
-    			'running_day' => $running_day,
-    			'days_in_month' => $days_in_month,
-    			'days_in_this_week' => $days_in_this_week,
-    			'day_counter' => $day_counter,
-    			'dates_array' => $dates_array,
-    			'headings' => $headings,
-    			'calendarSelectionOptions' => $calendarSelectionOptions
-    	]);
-    	
-    	if( session( 'deleted' ) ){
-    		$viewdata[ 'deleted' ] = 'The event was deleted successfully.';
-    	}
-    	
-    	return view('event-planner.index')->with( $viewdata );
+    	return view( 'event-planner.index' )->with( $viewdata );
     }    
     
 
