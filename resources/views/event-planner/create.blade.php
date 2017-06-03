@@ -67,7 +67,7 @@ Event Planner
 		</div>
 		<div class="form-group">
 			<label for="start_date">Start Date / Time </label>
-			<input type="text" name="start_date" required id="start_date" class="form-control date" value="{{ old('start_date') }}" />
+			<input type="text" name="start_date" required id="start_date" data-startdate="{{ $datepicker_start }}" class="form-control date" value="{{ old('start_date') }}" />
 		</div>
 		<div class="form-group">
 			<label for="end_date">End Date / Time </label>

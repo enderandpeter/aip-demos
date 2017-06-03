@@ -24,6 +24,8 @@ jQuery(function($){
 			end: {} // end picker options					
 		}
 	);
+	
+	$start_date.datepicker('setDate', $start_date.data( 'startdate' ));
 
 function validateForm(form, button){	
 	var validationMessages = JSON.parse(window.sessionStorage.getItem('validationMessages'));

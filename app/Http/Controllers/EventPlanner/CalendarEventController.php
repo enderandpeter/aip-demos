@@ -135,11 +135,14 @@ class CalendarEventController extends EventPlannerController
         
         $validationMessages = json_encode( $this->getValidationMessagesArray( 'create-event' ) );
         
+        $datepicker_start = clone $calendarData['calendarDate'];        
+        
         $viewdata = [
         	'user' => 	Auth::guard( $this->getGuard() )->user(),
         	'calendarData' => $calendarData,
         	'startDate' => $calendarDate->format( 'Y/m/d' ),
-        	'validationMessages' => $validationMessages
+        	'validationMessages' => $validationMessages,
+        	'datepicker_start' => $datepicker_start->format(CalendarEvent::$datepicker_format)
         ];
         
         return view( 'event-planner.create' )->with( $viewdata );
@@ -253,7 +256,7 @@ class CalendarEventController extends EventPlannerController
     			'calendarEvent' => $calendarEvent,
     			'calendarData' => $calendarData,
     			'validationMessages' => $validationMessages,
-    			'date_format' => CalendarEvent::$date_format    			
+    			'date_format' => CalendarEvent::$date_format
     	];    	
     	
     	$calendarEventArray = $calendarEvent->toArray();
