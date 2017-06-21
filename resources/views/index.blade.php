@@ -5,8 +5,8 @@
 	<link rel="stylesheet" type="text/css" href="css/index.css" />
 @endpush
 
-@include('scripts.jquery')
 @include('scripts.bootstrap')
+@include('scripts.jquery')
 
 @include('nav.demos')
 

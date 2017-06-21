@@ -43,7 +43,8 @@ jQuery(function($){
 		
 		if(!this.checkValidity()){
 			isValid = false;
-			$(this).closest('.form-group').addClass('has-error');	
+			$(this).closest('.form-group').addClass('has-danger');
+			$(this).addClass('form-control-danger');
 			
 			if(this.validity.valueMissing){
 				ruleName = 'required';
@@ -68,7 +69,8 @@ jQuery(function($){
 		if($(this).val().length > $(this).attr('maxlength')){
 			isValid = false;
 			
-			$(this).closest('.form-group').addClass('has-error');
+			$(this).closest('.form-group').addClass('has-danger');
+			$(this).addClass('form-control-danger');
 			ruleName = 'max';
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
@@ -78,14 +80,16 @@ jQuery(function($){
 		if($(this).val().length < $(this).attr('minlength')){
 			isValid = false;
 			
-			$(this).closest('.form-group').addClass('has-error');
+			$(this).closest('.form-group').addClass('has-danger');
+			$(this).addClass('form-control-danger');
 			ruleName = 'min';
 			
 			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];						
 		} 
 		
 		if(isValid){
-			$(this).closest('.form-group').removeClass('has-error');
+			$(this).closest('.form-group').removeClass('has-danger');
+			$(this).removeClass('form-control-danger');
 			$help_block.remove();			
 		} else {			
 			for(var inputMessageRule in inputMessages){
@@ -93,6 +97,7 @@ jQuery(function($){
 				var ruleMessageId = $thisInput.attr('name') + '-' + inputMessageRule;
 				if($('strong#' + ruleMessageId).length === 0){
 					var $strong = $(document.createElement('strong')).attr('id', $thisInput.attr('name') + '-' + inputMessageRule);
+					$strong.addClass('form-control-feedback');
 					$strong.text(inputMessage);
 					$help_block.append($strong);
 				}
@@ -153,17 +158,20 @@ jQuery(function($){
 		}
 		
 		if(isValid){
-			$('input[name^=password]').closest('.form-group').removeClass('has-error');
+			$('input[name^=password]').closest('.form-group').removeClass('has-danger');
+			$('input[name^=password]').removeClass('form-control-danger');
 			$('input[name^=password]').next('span.help-block').remove();
 			$register_button.removeAttr('disabled');
 		} else {
 			$register_button.attr('disabled', 'disabled');
-			$(this).closest('.form-group').addClass('has-error');
+			$(this).closest('.form-group').addClass('has-danger');
+			$(this).addClass('form-control-danger');
 			for(var inputMessageRule in inputMessages){
 				var inputMessage = inputMessages[inputMessageRule];
 				var ruleMessageId = $thisInput.attr('name') + '-' + inputMessageRule;
 				if($('strong#' + ruleMessageId).length === 0){
 					var $strong = $(document.createElement('strong')).attr('id', $thisInput.attr('name') + '-' + inputMessageRule);
+					$strong.addClass('form-control-feedback');
 					$strong.text(inputMessage);
 					$help_block.append($strong);
 				}
