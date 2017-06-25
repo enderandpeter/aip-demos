@@ -14,7 +14,7 @@ class ValidationData extends \App\ValidationData{
 		$this->validationData = [
 			'register' => [
 				'name' => 'required|max:255',				
-				'password' => 'required|min:6|max:255|confirmed',
+				'password' => 'required|min:6|max:255|regex:/(?=.*\W)(?=.*\d)(?=.*[A-Z]).+/|confirmed',
 				'email' => 'required|email|max:255|unique:eventplanner_users'						
 			],
 			'create-event' => [

@@ -26,7 +26,12 @@ jQuery(function($){
 	checkFormValidity();
 	
 	$register_form.find('input').blur(function(event){
-		var $thisInput = $(this); 
+		var $thisInput = $(this);
+		
+		if($thisInput.index('input[name^=password]') !== -1){
+			return;
+		}
+		
 		var ruleName = '';
 		var inputMessages = {};
 		var isValid = true;
@@ -50,42 +55,26 @@ jQuery(function($){
 				ruleName = 'required';
 			}
 			
-			if(this.validity.tooLong){
-				ruleName = 'max';
-			}
-			
-			if(this.validity.tooShort){
-				ruleName = 'min';				
-			}
-			
 			if(this.validity.typeMismatch && $(this).attr('name') === 'email'){
 				ruleName = 'email';				
 			}
 			
-			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
+			if(this.validity.patternMismatch){
+				ruleName = 'regex';
+			}
 			
-			
-		} 
-		if($(this).val().length > $(this).attr('maxlength')){
-			isValid = false;
-			
-			$(this).closest('.form-group').addClass('has-danger');
-			$(this).addClass('form-control-danger');
-			ruleName = 'max';
-			
-			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
-			
-		} 
+			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];			
+		}
 		
-		if($(this).val().length < $(this).attr('minlength')){
-			isValid = false;
-			
-			$(this).closest('.form-group').addClass('has-danger');
-			$(this).addClass('form-control-danger');
-			ruleName = 'min';
-			
-			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];						
-		} 
+		if(this.validity.tooLong || $(this).val().length > $(this).attr('maxlength')){
+			ruleName = 'max';
+			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
+		}
+		
+		if(this.validity.tooShort || $(this).val().length < $(this).attr('minlength')){
+			ruleName = 'min';				
+			inputMessages[ruleName] = validationMessages[$(this).attr('name')][ruleName];
+		}
 		
 		if(isValid){
 			$(this).closest('.form-group').removeClass('has-danger');
@@ -131,9 +120,15 @@ jQuery(function($){
 				
 				inputMessages[ruleName] = validationMessages[$thisInput.attr('name')][ruleName];
 			}
+			
+			if(this.validity.patternMismatch){
+				ruleName = 'regex';
+				
+				inputMessages[ruleName] = validationMessages[$thisInput.attr('name')][ruleName];
+			}
 		}
 		
-		if(this.validity.tooLong){
+		if(this.validity.tooLong || $(this).val().length > $(this).attr('maxlength')){
 			isValid = false;
 			
 			ruleName = 'max';
@@ -141,7 +136,7 @@ jQuery(function($){
 			inputMessages[ruleName] = validationMessages[$thisInput.attr('name')][ruleName];
 		} 
 		
-		if(this.validity.tooShort){
+		if(this.validity.tooShort || $(this).val().length < $(this).attr('minlength')){
 			isValid = false;
 			
 			ruleName = 'min';
@@ -155,6 +150,8 @@ jQuery(function($){
 			ruleName = 'confirmed';	
 			
 			inputMessages[ruleName] = validationMessages[$thisInput.attr('name')][ruleName];
+		}else{
+			$('.help-block strong[id$="-confirmed"').empty();
 		}
 		
 		if(isValid){
@@ -166,6 +163,7 @@ jQuery(function($){
 			$register_button.attr('disabled', 'disabled');
 			$(this).closest('.form-group').addClass('has-danger');
 			$(this).addClass('form-control-danger');
+			
 			for(var inputMessageRule in inputMessages){
 				var inputMessage = inputMessages[inputMessageRule];
 				var ruleMessageId = $thisInput.attr('name') + '-' + inputMessageRule;

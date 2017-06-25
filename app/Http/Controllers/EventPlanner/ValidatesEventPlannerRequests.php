@@ -35,11 +35,17 @@ trait ValidatesEventPlannerRequests{
 				switch( $rulename ){
 					case 'unique':
 						continue;
+					case 'regex':
+						$messageName = "validation.eventplanner_password";
+						break;
 					case 'min':
 						$messageTemplate = $messageTemplate + ['min' => explode( ':', $rule )[ 1 ] ];
+						$messageName .= ".string";
+						break;
 					case 'max':
 						$messageTemplate = $messageTemplate + [ 'max' => explode( ':', $rule )[ 1 ] ];
 						$messageName .= ".string";
+						break;
 				}
 				$messages[ $name ][ $rulename ] = trans( $messageName, $messageTemplate );
 			}

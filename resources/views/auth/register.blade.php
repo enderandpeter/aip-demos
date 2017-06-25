@@ -36,7 +36,7 @@ Event Planner
                     <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ route('event-planner.register.post') }}">
                         {!! csrf_field() !!}
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                             <label class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">
@@ -50,7 +50,7 @@ Event Planner
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                             <label class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
@@ -64,11 +64,11 @@ Event Planner
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
                             <label class="col-md-4 control-label">Password</label>
 
                             <div class="col-md-6">
-                                <input type="password" class="form-control" minlength="6" maxlength="255" name="password" id="password" required title="Min. 6 chars">
+                                <input type="password" pattern="(?=.*\W)(?=.*\d)(?=.*[A-Z]).+" class="form-control" minlength="6" maxlength="255" name="password" id="password" required title="Min. 6 chars">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -78,11 +78,11 @@ Event Planner
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-danger' : '' }}">
                             <label class="col-md-4 control-label">Confirm Password</label>
 
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" minlength="6" maxlength="255" title="Please enter your password again" required>
+                                <input type="password" pattern="(?=.*\W)(?=.*\d)(?=.*[A-Z]).+" class="form-control" name="password_confirmation" id="password_confirmation" minlength="6" maxlength="255" title="Please enter your password again" required>
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">

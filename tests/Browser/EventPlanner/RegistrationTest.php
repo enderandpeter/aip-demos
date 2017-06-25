@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\EventPlanner\User as User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Faker\Factory as FakerFactory;
 
 use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
 
@@ -49,7 +50,7 @@ class RegistrationTest extends DuskTestCase
 	}
 	
 	/**
-	 * Test the maximum length restraints for the registration form
+	 * Test the field length restraints for the registration form
 	 *
 	 * @TODO Find a way to confirm maxlength message
 	 * @group register-fieldlengths
@@ -90,11 +91,11 @@ class RegistrationTest extends DuskTestCase
 	}
 	
 	/**
-	 * Test the rules for validating the password
-	 * @group register-passwordvalidation
+	 * Test the rules for confirming the password
+	 * @group register-passwordconfirmation
 	 * @return void
 	 */
-	public function testPasswordValidation(){
+	public function testPasswordConfirmation(){
 		$this->browse(function (Browser $browser) {		
 			$validationArray = $this->getValidationMessagesArray( 'register' );
 			
@@ -112,6 +113,27 @@ class RegistrationTest extends DuskTestCase
 	}
 	
 	/**
+	 * Test the rules for checking the password characters
+	 * @group register-passwordchars
+	 * @return void
+	 */
+	public function testPasswordCharacters(){
+		$this->browse(function (Browser $browser) {
+			$validationArray = $this->getValidationMessagesArray( 'register' );
+			
+			$password = 'password';
+			
+			$browser->visit( route( 'event-planner.register.show' ) )
+			->type( 'password', $password )
+			->type( 'password_confirmation', $password )
+			->assertSee( $validationArray[ 'password' ][ 'regex' ] )
+			->press( 'Register' )
+			->assertSee( $validationArray[ 'password' ][ 'regex' ] );
+			$this->assertNull( User::first() );
+		});
+	}
+	
+	/**
 	 * Test a user's successful registration	 
 	 * @return void
 	 */
@@ -123,7 +145,7 @@ class RegistrationTest extends DuskTestCase
 			/*
 			 * Create a user for registration
 			 */
-			$clearpass = str_random( 10 );
+			$clearpass = FakerFactory::create()->password(6, 255);
 			$user = factory( User::class )->make([
 					'password' => bcrypt( $clearpass )
 			]);
