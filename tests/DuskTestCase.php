@@ -41,7 +41,7 @@ abstract class DuskTestCase extends BaseTestCase
     }
     
     public static function tearDownAfterClass(){
-    	if( PHP_OS === 'Linux' ){
+    	if( PHP_OS === 'Linux' && file_exists('/usr/bin/xvfb-chromium') ){
     		$pids_chromium = exec( 'pidof chromium' );
     		$pids_Xvfb = exec( 'pidof Xvfb' );
     		

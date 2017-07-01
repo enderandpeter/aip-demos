@@ -1,15 +1,23 @@
 sudo: required
-dist: trusty
 language: php
+dist: trusty
+
+notifications:
+  email:
+    on_failure: change
+
 php:
-    - 7.1
+  - 7.1
+
+install:
+  - travis_retry composer install --no-interaction
 
 before_script:
-    - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb start
-    - ./vendor/laravel/dusk/bin/chromedriver-linux &
-    - cp .env.testing .env
-    - php artisan serve > /dev/null 2>&1 &
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - ./vendor/laravel/dusk/bin/chromedriver-linux &
+  - cp .env.testing .env
+  - php artisan serve &
 
 script:
-    - ./tests/runtests.sh
+  - ./tests/runtests.sh
