@@ -1,8 +1,11 @@
 sudo: required
 dist: trusty
 language: php
-
+php: 
+    - 7.1
+    
 before_script:
+    - composer install
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
     - ./vendor/laravel/dusk/bin/chromedriver-linux &
