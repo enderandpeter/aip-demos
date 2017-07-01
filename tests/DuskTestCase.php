@@ -39,7 +39,7 @@ abstract class DuskTestCase extends BaseTestCase
     	$this->backupDatabase();
     	parent::setUpTraits();
     }
-    
+    /*
     public static function tearDownAfterClass(){
     	if( PHP_OS === 'Linux' ){
     		$pids_chromium = exec( 'pidof chromium' );
@@ -53,5 +53,5 @@ abstract class DuskTestCase extends BaseTestCase
     			exec( "kill -9 $pids_Xvfb" );
     		}
     	}
-    }
+    }*/
 }
