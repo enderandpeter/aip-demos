@@ -146,7 +146,7 @@ class YelpClient{
 			return;
 		}
 
-		$business_responses = '';
+		$business_responses = [];
         
         foreach($response->businesses as $index => $business){
             $business_responses[] = json_decode($this->get_business($business->id));
