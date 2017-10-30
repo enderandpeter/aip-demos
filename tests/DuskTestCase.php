@@ -3,14 +3,14 @@
 namespace Tests;
 
 use Laravel\Dusk\TestCase as BaseTestCase;
+use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
-use App\Testing\InitialiseDatabaseTrait;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-	use CreatesApplication, InitialiseDatabaseTrait;
-
+    use CreatesApplication;
+    
     /**
      * Prepare for Dusk test execution.
      *
@@ -21,7 +21,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         static::startChromeDriver();
     }
-
+    
     /**
      * Create the RemoteWebDriver instance.
      *
@@ -29,29 +29,16 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function driver()
     {
+        $options = (new ChromeOptions)->addArguments([
+            '--disable-gpu',
+            '--headless',
+            '--no-sandbox'
+        ]);
+        
         return RemoteWebDriver::create(
-            'http://localhost:9515', DesiredCapabilities::chrome()
-        );
-    }
-    
-    public function setUpTraits()
-    {
-    	$this->backupDatabase();
-    	parent::setUpTraits();
-    }
-    
-    public static function tearDownAfterClass(){
-    	if( PHP_OS === 'Linux' && file_exists('/usr/bin/xvfb-chromium') ){
-    		$pids_chromium = exec( 'pidof chromium' );
-    		$pids_Xvfb = exec( 'pidof Xvfb' );
-    		
-    		if( !empty( $pids_chromium ) ){
-    			exec( "kill -9 $pids_chromium" );
-    		}
-    		
-    		if( !empty( $pids_Xvfb ) ){
-    			exec( "kill -9 $pids_Xvfb" );
-    		}
-    	}
+            'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
+                ChromeOptions::CAPABILITY, $options
+                ),
+            150000, 150000);
     }
 }
