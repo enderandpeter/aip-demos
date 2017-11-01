@@ -17,7 +17,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 before_script:
-  - google-chrome-stable --disable-gpu --no-sandbox --remote-debugging-port=9222 http://localhost &
+  - google-chrome-stable --disable-gpu --headless --remote-debugging-port=9222 http://localhost &
   - php artisan serve &
 
 script:
