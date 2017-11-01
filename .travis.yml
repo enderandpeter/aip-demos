@@ -17,6 +17,8 @@ install:
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
   - google-chrome-stable --disable-gpu --headless --remote-debugging-port=9222 http://localhost &
   - php artisan serve &
 
