@@ -17,6 +17,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 before_script:
+  - export DISPLAY=:99.0
   - ./vendor/laravel/dusk/bin/chromedriver-linux &
   - php artisan serve &
 
