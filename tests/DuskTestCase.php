@@ -14,7 +14,7 @@ abstract class DuskTestCase extends BaseTestCase
     
     public static function setUpBeforeClass()
     {
-        if(self::isTextEnvironment()){
+        if(self::getOSEnvironment() == 'Docker'){
             exec('Xvfb -ac :0 -screen 0 1280x1024x16 &', $output, $returnValue);
             $returnValue = intval($returnValue);
             
@@ -26,7 +26,7 @@ abstract class DuskTestCase extends BaseTestCase
     
     public static function tearDownAfterClass()
     {
-        if(self::isTextEnvironment()){
+        if(self::getOSEnvironment() == 'Docker'){
             $pids_Xvfb = exec('pidof Xvfb');
             if(!empty($pids_Xvfb)){
                 exec("kill -9 $pids_Xvfb");
@@ -35,22 +35,30 @@ abstract class DuskTestCase extends BaseTestCase
     }
     
     /**
-     * @return boolean
+     * @return string
      */
-    private static function isTextEnvironment()
+    private static function getOSEnvironment()
     {
+        $os = '';
         if(PHP_OS === 'Linux'){
             $kernelName = exec('uname -r');
             $osInfo = exec('lsb_release -r');
         
-            if(str_contains($kernelName, 'moby') /* Docker */ ||
-                str_contains($osInfo, 'trusty') /* TravisCI */){
-                
-                return true;
+            if(str_contains($kernelName, 'moby') /* Docker */){                
+                return 'Docker';
+            }
+            
+            if(str_contains($osInfo, 'trusty') /* TravisCI */){
+                return 'TravisCI';
             }
         }
         
-        return false;
+        return PHP_OS;
+    }
+    
+    private static function isTextEnvironment()
+    {
+        return self::getOSEnvironment() == 'Docker' || self::getOSEnvironment() == 'TravisCI';
     }
     
     /**
