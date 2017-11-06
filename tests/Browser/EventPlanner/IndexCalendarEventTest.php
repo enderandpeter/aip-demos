@@ -33,7 +33,7 @@ class IndexCalendarEventTest extends DuskTestCase
             
             foreach( $caldendarEvents as $calendarEvent ){
             	$browser->assertSee( $calendarEvent->name )
-            	->assertSee( preg_replace( '/\R/', ' ', $calendarEvent->location ) )
+            	->assertSee( htmlentities(preg_replace( '/\R/', ' ', $calendarEvent->location )) )
             	->assertSee( $calendarEvent->type )
             	->assertSee( $calendarEvent->showStartDate() );
             	
