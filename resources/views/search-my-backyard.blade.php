@@ -132,7 +132,7 @@ Search My Backyard!
 				</ul>
 				</div>
 				<div class="progress_container" data-bind="if: downloading">
-					<div class="progress_indicator glyphicon glyphicon-refresh">
+					<i class="material-icons">cached</i>
 					</div>
 				</div>
 				<div id="location_content" data-bind="ifnot: downloading">
