@@ -1,19 +1,19 @@
-window.addEventListener('load', function(){
-	$('#image_modal').on('show.bs.modal', function (event) {
-		  $(this).find('.modal-body').append();
-	});
-	
+$(function(){
+	/**
+	 * Data pertaining to an image modal
+	 * 
+	 * @param string image A URL to an image
+	 */
 	function ImageModal(image){
 		this.image = ko.observable(image);
-		
-		this.setImage = function(image){
-			this.image(image);
-		}
 	}
 	
+	/*
+	 * There is a single image modal used to show images on the site.
+	 */
 	var imageModal = new ImageModal();
 	
-	ko.applyBindings(imageModal, document.querySelector('#image_modal'));
+	ko.applyBindings(imageModal, $('#image_modal')[0]);
 		
     /**
      * A control object for the map that either displays information or provides functionality
@@ -239,7 +239,7 @@ window.addEventListener('load', function(){
         };
         
         var errorViewModel = new ErrorViewModel();
-        ko.applyBindings(errorViewModel, document.querySelector('#messages'));
+        ko.applyBindings(errorViewModel, $('#messages')[0]);
         
         var locationDataViewModel = new LocationDataViewModel();
         ko.applyBindings(locationDataViewModel, infowindow);
@@ -467,7 +467,7 @@ window.addEventListener('load', function(){
     			   * Update the InfoWindow for this marker
     			   */
     			  marker.updateInfoWindow = function(){
-    				  self.infoWindow.setContent(document.querySelector('#infowindow'));
+    				  self.infoWindow.setContent($('#infowindow')[0]);
     			  }
     			  
     			  marker.openStreetView = function(element, event){
@@ -483,6 +483,10 @@ window.addEventListener('load', function(){
     				  });
     			  }
     			  
+    			  marker.openInfoWindow = function(){
+    				  self.infoWindow.open(map, marker);
+    			  }
+    			  
     			  /*
     			   * Go to the marker and show the InfoWindow
     			   */
@@ -492,14 +496,7 @@ window.addEventListener('load', function(){
       				  }
     				  map.panTo(marker.getPosition());
     				  marker.updateInfoWindow();
-    				  self.infoWindow.open(map, marker);
-    				  
-    				  /*
-    				   * Scroll to the marker list item
-    				   */    				  
-    				  $('#marker_menu').animate({
-    				        scrollTop: $('#marker_list_item_' + self.markers().indexOf(marker)).offset().top - $('#marker_menu').offset().top + $('#marker_menu').scrollTop()
-    				    }, 500);
+    				  marker.openInfoWindow();    				  
     				  
     				  /*
     				   * Enable the download state
@@ -558,6 +555,7 @@ window.addEventListener('load', function(){
     					  console.error(error);
     				  }).always(function(){
     					  locationDataViewModel.downloading(false);
+    					  marker.openInfoWindow();
     				  });
     				  
     				  /*
@@ -637,7 +635,7 @@ window.addEventListener('load', function(){
     									title: article.title,
     									imageArray: [],
     									showImage: function(image){
-    										imageModal.setImage(image);
+    										imageModal.image(image);
     									}
     							  };
     							  var localImages = {};
@@ -710,6 +708,8 @@ window.addEventListener('load', function(){
     				  }).fail(function(jqxhr, status, error){
     					  errorViewModel.setMessage('Could not retrieve Wikipedia article data', 'error');
     					  console.error(error);
+    				  }).always(function(){
+    					  marker.openInfoWindow();
     				  });
     			  };
     			  
@@ -888,4 +888,3 @@ window.addEventListener('load', function(){
     
     initMap();
 });
-
