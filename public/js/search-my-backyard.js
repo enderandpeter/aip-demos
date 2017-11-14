@@ -1,4 +1,20 @@
 window.addEventListener('load', function(){
+	$('#image_modal').on('show.bs.modal', function (event) {
+		  $(this).find('.modal-body').append();
+	});
+	
+	function ImageModal(image){
+		this.image = ko.observable(image);
+		
+		this.setImage = function(image){
+			this.image(image);
+		}
+	}
+	
+	var imageModal = new ImageModal();
+	
+	ko.applyBindings(imageModal, document.querySelector('#image_modal'));
+		
     /**
      * A control object for the map that either displays information or provides functionality
      * 
@@ -619,7 +635,10 @@ window.addEventListener('load', function(){
     							   */
     							  var localPage = {
     									title: article.title,
-    									imageArray: []
+    									imageArray: [],
+    									showImage: function(image){
+    										imageModal.setImage(image);
+    									}
     							  };
     							  var localImages = {};
     							  

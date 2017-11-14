@@ -29,6 +29,10 @@ address {
     display: none;
 }
 
+.gm-style-iw > div {
+    overflow: hidden !important;
+}
+
 #map {
     height: 100%;
     top: -1.5em;
@@ -56,10 +60,6 @@ address {
 
 #header h1 {
     margin: 2%;
-}
-
-#siteinfo {
-    font-size: 1.2em;
 }
 
 #messages {
@@ -156,11 +156,15 @@ address {
 }
 
 #infowindow {
-    width: 45em;
+    min-width: 28em;
 }
 
 .progress_container {
     text-align: center;
+}
+
+.progress_container.active {
+    height: 4em;
 }
 
 .progress_indicator {
@@ -172,8 +176,21 @@ address {
     font-size: 3em;
 }
 
+.service_container.active{
+    overflow: auto;
+    height: 400px;
+}
+
+#siteinfo {
+    font-size: 1.2em;
+}
+
 #siteinfo_button {
     line-height: 0.5;
+}
+
+#streetview_container{
+    height: auto;
 }
 
 @keyframes loading {
