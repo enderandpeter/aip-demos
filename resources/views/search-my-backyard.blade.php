@@ -17,11 +17,18 @@ Search My Backyard!
 
 @section('body-content')
     <div class="modal fade" id="image_modal" tabindex="-1" role="dialog" aria-labelledby="image_modal_label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-            </div>
-            <div class="modal-body">
-                <img data-bind="attr: { src: image }" />
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a data-bind="attr: { href: image }" target="_blank">
+                        <img class="w-75 m-auto d-block" data-bind="attr: { src: image }" />
+                    </a>
+                </div>
             </div>
         </div>
     </div>
