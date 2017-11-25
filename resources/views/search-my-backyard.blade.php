@@ -128,37 +128,37 @@ Search My Backyard!
 			</ul>
 			</form>
 		</div>
-		<div id="infowindow" data-bind="if: marker">
+		<div id="infowindow" data-bind="if: activeMarker">
 			<header id="infowindow_header">
-				<h2 id="infowindow_title" data-bind="text: marker().getLabel()" class="autofilled"></h2>
+				<h2 id="infowindow_title" data-bind="text: activeMarker().getLabel()" class="autofilled"></h2>
 				<div id="infowindow_position" class="mb-3">
-					<div data-bind="ifnot: marker().locationDescription">
-						<div class="lat">Lat: <span id="infowindow_lat" class="autofilled" data-bind="text: marker().getPosition().lat().toPrecision(5)"></span></div>
-						<div class="lng">Long: <span id="infowindow_lng" class="autofilled" data-bind="text: marker().getPosition().lng().toPrecision(5)"></span></div>
+					<div data-bind="ifnot: activeMarker().locationDescription">
+						<div class="lat">Lat: <span id="infowindow_lat" class="autofilled" data-bind="text: activeMarker().getPosition().lat().toPrecision(5)"></span></div>
+						<div class="lng">Long: <span id="infowindow_lng" class="autofilled" data-bind="text: activeMarker().getPosition().lng().toPrecision(5)"></span></div>
 					</div>
-					<div data-bind="if: marker().locationDescription">
-						<div data-bind="text: marker().locationDescription, attr: { title: 'Close to Lat: ' + marker().getPosition().lat().toPrecision(5) + ', Long: ' + marker().getPosition().lng().toPrecision(5) }"></div>
+					<div data-bind="if: activeMarker().locationDescription">
+						<div data-bind="text: activeMarker().locationDescription, attr: { title: 'Close to Lat: ' + activeMarker().getPosition().lat().toPrecision(5) + ', Long: ' + activeMarker().getPosition().lng().toPrecision(5) }"></div>
 					</div>
 				</div>
 			</header>
 			<div id="infowindow_content" class="autofilled">
-				<div data-bind="ifnot: downloading">
-				<ul id="infowindow_main_list" class="nav nav-tabs" data-bind="foreach: services()">
+				<div data-bind="ifnot: activeMarker().locationDataViewModel().downloading">
+				<ul id="infowindow_main_list" class="nav nav-tabs" data-bind="foreach: activeMarker().locationDataViewModel().services()">
 					<li class="nav-item">
                         <a class="nav-link" href="#" data-bind="text: serviceName, click: showTab, css: { active: showView }"></a>
                     </li>
 				</ul>
 				</div>
-				<div class="progress_container" data-bind="if: downloading, css: { active: downloading }">
+				<div class="progress_container" data-bind="if: activeMarker().locationDataViewModel().downloading, css: { active: activeMarker().locationDataViewModel().downloading }">
 					<i class="progress_indicator material-icons">cached</i>
 					</div>
 				</div>
-				<div id="location_content" class="mt-3" data-bind="ifnot: downloading">
+				<div id="location_content" class="mt-3" data-bind="ifnot: activeMarker().locationDataViewModel().downloading">
 					<div id="location_data">
-						<div id="yelp_container" class="service_container" data-bind="if: getService('yelp').showView, css: { active: getService('yelp').showView() }">
-							<div id="yelp_content" data-bind="if: getService('yelp').data().length !== 0">
-								<h3 data-bind="text: getService('yelp').serviceName"></h3>
-								<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: getService('yelp').data">
+						<div id="yelp_container" class="service_container" data-bind="if: activeMarker().locationDataViewModel().getService('yelp').showView, css: { active: activeMarker().locationDataViewModel().getService('yelp').showView() }">
+							<div id="yelp_content" data-bind="if: activeMarker().locationDataViewModel().getService('yelp').data().length !== 0">
+								<h3 data-bind="text: activeMarker().locationDataViewModel().getService('yelp').serviceName"></h3>
+								<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: activeMarker().locationDataViewModel().getService('yelp').data">
 									<li class="business_list_item media mt-3">
 									<div class="business_info media-left">
 										<div class="business_img">
@@ -199,15 +199,15 @@ Search My Backyard!
 								</ul>
 							</div>
 						</div>
-						<div id="streetview_container" class="service_container" data-bind="if: getService('streetview').showView, css: { active: getService('streetview').showView() }">
-							<h3 data-bind="text: getService('streetview').serviceName" class="mt-3"></h3>
-							<div id="streetview_content" data-bind="if: getService('streetview').data().length === 0">
-								<div data-bind="if: getService('streetview').data().length === 0">
+						<div id="streetview_container" class="service_container" data-bind="if: activeMarker().locationDataViewModel().getService('streetview').showView, css: { active: activeMarker().locationDataViewModel().getService('streetview').showView() }">
+							<h3 data-bind="text: activeMarker().locationDataViewModel().getService('streetview').serviceName" class="mt-3"></h3>
+							<div id="streetview_content" data-bind="if: activeMarker().locationDataViewModel().getService('streetview').data().length === 0">
+								<div data-bind="if: activeMarker().locationDataViewModel().getService('streetview').data().length === 0">
 									<h4>No Street View images found.</h4>
 								</div>
 							</div>
-							<div data-bind="ifnot: getService('streetview').data().length === 0">
-								<ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: getService('streetview').data">
+							<div data-bind="ifnot: activeMarker().locationDataViewModel().getService('streetview').data().length === 0">
+								<ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: activeMarker().locationDataViewModel().getService('streetview').data">
 									<li class="streetview_image_list_item list-inline-item">
 										<a data-bind="attr: { href: image }" target="_blank">
 											<img class="img-responsive" data-bind="attr: { src: thumbnail }">
@@ -216,10 +216,10 @@ Search My Backyard!
 								</ul>
 							</div>
 						</div>
-						<div id="wikipedia_container" class="service_container" data-bind="if: getService('wikipedia').showView, css: { active: getService('wikipedia').showView() }">
-							<div id="wikipedia_content" data-bind="if: getService('wikipedia').data().length !== 0">
-								<h3 data-bind="text: getService('wikipedia').serviceName" class="mt-3"></h3>
-								<ul class="wikipedia_article_list list-unstyled" data-bind="foreach: getService('wikipedia').data">
+						<div id="wikipedia_container" class="service_container" data-bind="if: activeMarker().locationDataViewModel().getService('wikipedia').showView, css: { active: activeMarker().locationDataViewModel().getService('wikipedia').showView() }">
+							<div id="wikipedia_content" data-bind="if: activeMarker().locationDataViewModel().getService('wikipedia').data().length !== 0">
+								<h3 data-bind="text: activeMarker().locationDataViewModel().getService('wikipedia').serviceName" class="mt-3"></h3>
+								<ul class="wikipedia_article_list list-unstyled" data-bind="foreach: activeMarker().locationDataViewModel().getService('wikipedia').data">
 									<li class="wikipedia_article_list_item">
 										<div class="wikipedia_article_container" data-bind="if: $data.imageArray">
 											<h4>

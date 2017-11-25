@@ -158,30 +158,25 @@ $(function(){
         	var self = this;
         	
         	/*
-        	 * The marker for this location data
-        	 */
-        	this.marker = ko.observable(null);
-        	
-        	/*
         	 * this.services = ko.observable([
         		ko.observable({
         			service: 'yelp',
         			serviceName: 'Yelp',
-        			data: ko.observableArray([]),
+        			data: ko.observableArray(),
         			showView: true,
         			showTab: function(){...}
         		}),
         		 ko.observable({
         			service: 'streetview',
         			serviceName: 'Google Street View',
-        			data: ko.observableArray([]),
+        			data: ko.observableArray(),
         			showView: false,
         			showTab: function(){...}
         		}),
         		 ko.observable({
         			service: 'wikipedia', 
         			serviceName: 'Wikipedia',
-        			data: ko.observableArray([]),
+        			data: ko.observableArray(),
         			showView: false,
         			showTab: function(){...}
         		})
@@ -198,7 +193,7 @@ $(function(){
     			serviceName: 'Wikipedia'
         	}];
         	
-        	this.services = ko.observableArray([]);
+        	this.services = ko.observableArray();
         	var services = this.services;
         	
         	$.each(serviceSetup, function(index, element){
@@ -211,7 +206,7 @@ $(function(){
             		this.showView(true);
             	}
         		
-        		element.data = ko.observableArray([]);
+        		element.data = ko.observableArray();
         		element.showTab = showTab;
         		
         		if(!index){
@@ -240,9 +235,6 @@ $(function(){
         
         var errorViewModel = new ErrorViewModel();
         ko.applyBindings(errorViewModel, $('#messages')[0]);
-        
-        var locationDataViewModel = new LocationDataViewModel();
-        ko.applyBindings(locationDataViewModel, infowindow);
         
         if (!navigator.geolocation) {
         	errorViewModel.setMessage('This browser does not support Geolocation', 'error');
@@ -302,12 +294,17 @@ $(function(){
         	/**
         	 * The displayed array of markers
         	 */
-        	this.markers = ko.observableArray([]);
+        	this.markers = ko.observableArray();
+        	
+        	/**
+        	 * The marker currently being shown in the InfoWindow
+        	 */
+        	this.activeMarker = ko.observable(null);
         	
         	/**
         	 * The full list of markers. This is a temporary holding place that is used when searching the locations.
         	 */
-        	this.allMarkers = ko.observableArray([]);
+        	this.allMarkers = ko.observableArray();
 
         	/**
         	 * Whether or not a search is taking place
@@ -457,7 +454,6 @@ $(function(){
     					marker.setLabel(newLabel);
     					marker.setTitle(newLabel);
     					marker.editing(false);
-    					locationDataViewModel.marker(marker);
     				} else {
     					return true;
     				}
@@ -487,6 +483,8 @@ $(function(){
     				  self.infoWindow.open(map, marker);
     			  }
     			  
+    			  marker.locationDataViewModel = ko.observable(new LocationDataViewModel());
+    			  
     			  /*
     			   * Go to the marker and show the InfoWindow
     			   */
@@ -494,70 +492,66 @@ $(function(){
     				  if(event && event.stopPropagation){
       					event.stopPropagation();
       				  }
+    				  markerListViewModel.activeMarker(marker);
     				  map.panTo(marker.getPosition());
     				  marker.updateInfoWindow();
-    				  marker.openInfoWindow();    				  
+    				  marker.openInfoWindow();   				  
     				  
     				  /*
     				   * Enable the download state
     				   */
-    				  locationDataViewModel.downloading(true);
+    				  marker.locationDataViewModel().downloading(true);
     				  
     				  /*
-    				   * Assign the marker for this location data
+    				   * Only get Street View images if they have not already been loaded and panorama data is detected
     				   */
-    				  
-    				  locationDataViewModel.marker(marker);
-    				  
-    				  /*
-    				   * Clear the street view array when loading a new InfoWindow
-    				   */
-    				  locationDataViewModel.getService('streetview').data([]);
-    				  
-    				  /*
-    				   * Only get Street View images if panorama data is detected
-    				   */
-    				  if(panoramaData && panoramaData.location.pano){
+    				  if(marker.locationDataViewModel().getService('streetview').data().length === 0 && 
+    						  panoramaData && 
+    						  panoramaData.location.pano){
     					  var requestURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAlGK97uekQTDMR4h7Wr5lLtENUgpOD7eo&pano=' + panoramaData.location.pano;
         				      				  
         				  for(var i = 0; i < 360; i += 90){
-        					  locationDataViewModel.getService('streetview').data.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
-        					  locationDataViewModel.getService('streetview').data()[locationDataViewModel.getService('streetview').data().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
+        					  marker.locationDataViewModel().getService('streetview').data.push(ko.observable({image: requestURL + '&heading=' + i + '&size=600x300'}));    					  
+        					  marker.locationDataViewModel().getService('streetview').data()[marker.locationDataViewModel().getService('streetview').data().length - 1]().thumbnail = requestURL + '&heading=' + i + '&size=100x100';
         				  }  
     				  }   				  
     				  
     				  /*
     				   * Create and send the request for Yelp review data
     				   */
-    				  var jqxhr = $.ajax('/search-my-backyard',
-    						 {
-		    				    headers: {
-		    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		    				    },	
-		    					method: 'POST',
-    					  		data: {
-    					  			location: marker.getPosition().lat() + ',' + marker.getPosition().lng()
-    					  		},
-    					  		dataType: 'json'
-    						 }
-    				  ).done(function(response){
-    					  if(!response.data){
-    						  errorViewModel.setMessage('Location data not found', 'error');
-    						  return;
-    					  }
-    					  
-    					  if(response.data.yelp){
-    						 var yelpData = response.data.yelp;
-    						 locationDataViewModel.getService('yelp').data(yelpData);
-    					  }
-    				  }).fail(function(jqxhr, status, error){
-    					  errorViewModel.setMessage('Could not retrieve location data', 'error');
-    					  console.error(error);
-    				  }).always(function(){
-    					  locationDataViewModel.downloading(false);
+    				  if(marker.locationDataViewModel().getService('yelp').data().length === 0){
+	    				  var jqxhr = $.ajax('/search-my-backyard',
+	    						 {
+			    				    headers: {
+			    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    				    },	
+			    					method: 'POST',
+	    					  		data: {
+	    					  			location: marker.getPosition().lat() + ',' + marker.getPosition().lng()
+	    					  		},
+	    					  		dataType: 'json'
+	    						 }
+	    				  ).done(function(response){
+	    					  if(!response.data){
+	    						  errorViewModel.setMessage('Location data not found', 'error');
+	    						  return;
+	    					  }
+	    					  
+	    					  if(response.data.yelp){
+	    						 var yelpData = response.data.yelp;
+	    						 marker.locationDataViewModel().getService('yelp').data(yelpData);
+	    					  }
+	    				  }).fail(function(jqxhr, status, error){
+	    					  errorViewModel.setMessage('Could not retrieve location data', 'error');
+	    					  console.error(error);
+	    				  }).always(function(){
+	    					  marker.locationDataViewModel().downloading(false);
+	    					  marker.openInfoWindow();
+	    				  });
+    				  } else {
+    					  marker.locationDataViewModel().downloading(false);
     					  marker.openInfoWindow();
-    				  });
-    				  
+    				  }
     				  /*
     				   * Create and send the request for images from Wikipedia articles near the Geolocation 
     				   */
@@ -569,148 +563,150 @@ $(function(){
     				   * https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&generator=geosearch&colimit=50&
     				   * prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=39.68711024716294|-104.80545043945312
     				   */
-    				  var wpApiUrl = 'https://en.wikipedia.org/w/api.php?' + 
-    				  				 'action=query&format=json&generator=geosearch&colimit=50&' + 
-    				  				 'prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=' + 
-    				  				 marker.getPosition().lat() + '|' + marker.getPosition().lng();
-    				  
-    				  wpApiUrl = window.encodeURI(wpApiUrl);
-    				  
-    				  var wpJqxhr = $.ajax(wpApiUrl,
-    					 {
-    					  	/*
-    					  	 * Required for Laravel's VerifyCsrfToken middleware
-    					  	 */
-	    				    headers: {
-	    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	    				    },	
-	    					method: 'POST',
-	    					/*
-	    					 * Use jsonp to circumvent cross-domain restrictions
-	    					 */
-					  		dataType: 'jsonp',
-					  		jsonp: 'callback'
-						 }
-    				  ).done(function(response){
-    					  var pages = {};
-    					  var pageIds = [];
-    					  if(response.query.pages){
-    						  pages = response.query.pages;
-    						  
-    						  /*
-    						   * The list of titles to join with a vertical bar to send as parameters on the next Wikipedia API call
-    						   */
-    						  var titles = [];    						  
-    						  /*
-    						   * Contains objects listing the articles and their images
-    						   */
-    						  var localPages = [];    						  
-    						  /*
-    						   * The maximum number of articles to query.
-    						   */
-    						  var maxArticles = 10;
-    						  /*
-    						   * The current article count
-    						   */
-    						  var articleCount = 0;
-    						  
-    						  /*
-    						   * For every result, store the title and an object of image name keys and image URLs. The URLs will be populated
-    						   * on the next API call. There will also be an imageArray that will contain just the file URLs so that Knockout's
-    						   * foreach can loop through them.
-    						   */
-    						  for(var pageIndex in pages){
-    							  /*
-    							   * The API only allows a max of 50 article titles to be passed as parameters, but we may use less.
-    							   */
-    							  if(articleCount > maxArticles){
-    								  break;
-    							  }
-    							  var article = pages[pageIndex];
-    							  
-    							  /*
-    							   * Each article and images for the article will be stored in a localPage object and placed in the localPages array.
-    							   */
-    							  var localPage = {
-    									title: article.title,
-    									imageArray: [],
-    									showImage: function(image){
-    										imageModal.image(image);
-    									}
-    							  };
-    							  var localImages = {};
-    							  
-    							  /*
-    							   * Grab the first five images from each article
-    							   */
-    							  if(Array.isArray(article.images) && article.images.length > 0){
-    								  for(var i = 0; i < 5; i++){
-    									  if(!article.images[i]){
-    										  break;
-    									  }
-        								  localImages[article.images[i].title] = '';
-        								  titles.push(article.images[i].title);
-        							  }
-    								  
-    								  localPage.images = localImages;
-    								  localPages.push(localPage);
-    							  }
-    							  
-    							  articleCount++;
-    						  }
-    						  
-    						  /*
-    						   * Create the URL for retrieving the image URLs for the images found in the articles in the geographic area
-    						   */
-    						  var wpImageUrl = window.encodeURI('https://en.wikipedia.org/w/api.php' + 
-    								  '?action=query&format=json&prop=imageinfo&iiprop=url&iilimit=max&titles=' + titles.join('|'));
-							  
-							  var wpimageinfoJqxhr = $.ajax(wpImageUrl,
-		    					 {
-								   /*
-		    					  	* Required for Laravel's VerifyCsrfToken middleware
-		    					    */
-			    				    headers: {
-			    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    				    },	
-			    					method: 'POST',
-			    					/*
-			    					 * Use jsonp to circumvent cross-domain restrictions
-			    					 */
-							  		dataType: 'jsonp',
-							  		jsonp: 'callback'
-								 }
-		    				  ).done(function(imageinfo_resp){
-		    					  if(imageinfo_resp.query.pages){
-		    						  /*
-		    						   * For every page of imageinfo, search through localPages to find the element in the images 
-		    						   * collection with that image name for a key and store the URL there
-		    						   */
-		    						  for(var pageIndex in imageinfo_resp.query.pages){
-		    							  var page = imageinfo_resp.query.pages[pageIndex];
-		    							  
-		    							  for(var localPageIndex in localPages){
-		    								  var aLocalPage = localPages[localPageIndex];
-		    								  
-		    								  if(aLocalPage.images[page.title] !== undefined){
-		    									  aLocalPage.images[page.title] = page.imageinfo[0].url;
-		    									  aLocalPage.imageArray.push(page.imageinfo[0].url);
-		    								  }
-		    							  }
-			    					  }
-		    						  locationDataViewModel.getService('wikipedia').data(localPages);
-		    					  }		    					  
-		    				  }).fail(function(jqxhr, status, error){
-		    					  errorViewModel.setMessage('Could not retrieve Wikipedia image data', 'error');
-		    					  console.error(error);
-		    				  });
-    					  }
-    				  }).fail(function(jqxhr, status, error){
-    					  errorViewModel.setMessage('Could not retrieve Wikipedia article data', 'error');
-    					  console.error(error);
-    				  }).always(function(){
-    					  marker.openInfoWindow();
-    				  });
+    				  if(marker.locationDataViewModel().getService('wikipedia').data().length === 0){
+	    				  var wpApiUrl = 'https://en.wikipedia.org/w/api.php?' + 
+	    				  				 'action=query&format=json&generator=geosearch&colimit=50&' + 
+	    				  				 'prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=' + 
+	    				  				 marker.getPosition().lat() + '|' + marker.getPosition().lng();
+	    				  
+	    				  wpApiUrl = window.encodeURI(wpApiUrl);
+	    				  
+	    				  var wpJqxhr = $.ajax(wpApiUrl,
+	    					 {
+	    					  	/*
+	    					  	 * Required for Laravel's VerifyCsrfToken middleware
+	    					  	 */
+		    				    headers: {
+		    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		    				    },	
+		    					method: 'POST',
+		    					/*
+		    					 * Use jsonp to circumvent cross-domain restrictions
+		    					 */
+						  		dataType: 'jsonp',
+						  		jsonp: 'callback'
+							 }
+	    				  ).done(function(response){
+	    					  var pages = {};
+	    					  var pageIds = [];
+	    					  if(response.query.pages){
+	    						  pages = response.query.pages;
+	    						  
+	    						  /*
+	    						   * The list of titles to join with a vertical bar to send as parameters on the next Wikipedia API call
+	    						   */
+	    						  var titles = [];    						  
+	    						  /*
+	    						   * Contains objects listing the articles and their images
+	    						   */
+	    						  var localPages = [];    						  
+	    						  /*
+	    						   * The maximum number of articles to query.
+	    						   */
+	    						  var maxArticles = 10;
+	    						  /*
+	    						   * The current article count
+	    						   */
+	    						  var articleCount = 0;
+	    						  
+	    						  /*
+	    						   * For every result, store the title and an object of image name keys and image URLs. The URLs will be populated
+	    						   * on the next API call. There will also be an imageArray that will contain just the file URLs so that Knockout's
+	    						   * foreach can loop through them.
+	    						   */
+	    						  for(var pageIndex in pages){
+	    							  /*
+	    							   * The API only allows a max of 50 article titles to be passed as parameters, but we may use less.
+	    							   */
+	    							  if(articleCount > maxArticles){
+	    								  break;
+	    							  }
+	    							  var article = pages[pageIndex];
+	    							  
+	    							  /*
+	    							   * Each article and images for the article will be stored in a localPage object and placed in the localPages array.
+	    							   */
+	    							  var localPage = {
+	    									title: article.title,
+	    									imageArray: [],
+	    									showImage: function(image){
+	    										imageModal.image(image);
+	    									}
+	    							  };
+	    							  var localImages = {};
+	    							  
+	    							  /*
+	    							   * Grab the first five images from each article
+	    							   */
+	    							  if(Array.isArray(article.images) && article.images.length > 0){
+	    								  for(var i = 0; i < 5; i++){
+	    									  if(!article.images[i]){
+	    										  break;
+	    									  }
+	        								  localImages[article.images[i].title] = '';
+	        								  titles.push(article.images[i].title);
+	        							  }
+	    								  
+	    								  localPage.images = localImages;
+	    								  localPages.push(localPage);
+	    							  }
+	    							  
+	    							  articleCount++;
+	    						  }
+	    						  
+	    						  /*
+	    						   * Create the URL for retrieving the image URLs for the images found in the articles in the geographic area
+	    						   */
+	    						  var wpImageUrl = window.encodeURI('https://en.wikipedia.org/w/api.php' + 
+	    								  '?action=query&format=json&prop=imageinfo&iiprop=url&iilimit=max&titles=' + titles.join('|'));
+								  
+								  var wpimageinfoJqxhr = $.ajax(wpImageUrl,
+			    					 {
+									   /*
+			    					  	* Required for Laravel's VerifyCsrfToken middleware
+			    					    */
+				    				    headers: {
+				    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    				    },	
+				    					method: 'POST',
+				    					/*
+				    					 * Use jsonp to circumvent cross-domain restrictions
+				    					 */
+								  		dataType: 'jsonp',
+								  		jsonp: 'callback'
+									 }
+			    				  ).done(function(imageinfo_resp){
+			    					  if(imageinfo_resp.query.pages){
+			    						  /*
+			    						   * For every page of imageinfo, search through localPages to find the element in the images 
+			    						   * collection with that image name for a key and store the URL there
+			    						   */
+			    						  for(var pageIndex in imageinfo_resp.query.pages){
+			    							  var page = imageinfo_resp.query.pages[pageIndex];
+			    							  
+			    							  for(var localPageIndex in localPages){
+			    								  var aLocalPage = localPages[localPageIndex];
+			    								  
+			    								  if(aLocalPage.images[page.title] !== undefined){
+			    									  aLocalPage.images[page.title] = page.imageinfo[0].url;
+			    									  aLocalPage.imageArray.push(page.imageinfo[0].url);
+			    								  }
+			    							  }
+				    					  }
+			    						  marker.locationDataViewModel().getService('wikipedia').data(localPages);
+			    					  }		    					  
+			    				  }).fail(function(jqxhr, status, error){
+			    					  errorViewModel.setMessage('Could not retrieve Wikipedia image data', 'error');
+			    					  console.error(error);
+			    				  });
+	    					  }
+	    				  }).fail(function(jqxhr, status, error){
+	    					  errorViewModel.setMessage('Could not retrieve Wikipedia article data', 'error');
+	    					  console.error(error);
+	    				  }).always(function(){
+	    					  marker.openInfoWindow();
+	    				  });
+    				  }
     			  };
     			  
     			  marker.listItemMouseEnter = function(){
@@ -739,7 +735,7 @@ $(function(){
     			  
     			  this.infoWindow.addListener('closeclick', function(){    				  
     				  uicontrols.appendChild(infowindow);
-    				  locationDataViewModel.getService('yelp').data.removeAll();
+    				  marker.locationDataViewModel().getService('yelp').data.removeAll();
     			  });
         	};
             
@@ -841,7 +837,8 @@ $(function(){
         /*
          * Apply the view-model contexts
          */
-        ko.applyBindings(markerListViewModel, marker_menu);        
+        ko.applyBindings(markerListViewModel, marker_menu);
+        ko.applyBindings(markerListViewModel, infowindow);
         
         /*
          * Create the list of elements and handlers from which to make a UI control
