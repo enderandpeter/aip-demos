@@ -565,8 +565,10 @@ $(function(){
     				   */
     				  if(marker.locationDataViewModel().getService('wikipedia').data().length === 0){
 	    				  var wpApiUrl = 'https://en.wikipedia.org/w/api.php?' + 
-	    				  				 'action=query&format=json&generator=geosearch&colimit=50&' + 
-	    				  				 'prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=' + 
+	    				  				 'action=query&format=json&' + 
+	    				  				 'generator=geosearch&colimit=50&' + 
+	    				  				 'prop=coordinates|images&imlimit=max&' +
+	    				  				 'ggsradius=10000&ggslimit=50&ggscoord=' + 
 	    				  				 marker.getPosition().lat() + '|' + marker.getPosition().lng();
 	    				  
 	    				  wpApiUrl = window.encodeURI(wpApiUrl);
@@ -658,7 +660,9 @@ $(function(){
 	    						   * Create the URL for retrieving the image URLs for the images found in the articles in the geographic area
 	    						   */
 	    						  var wpImageUrl = window.encodeURI('https://en.wikipedia.org/w/api.php' + 
-	    								  '?action=query&format=json&prop=imageinfo&iiprop=url&iilimit=max&titles=' + titles.join('|'));
+	    								  '?action=query&format=json&prop=pageimages&' + 
+	    								  'piprop=thumbnail|name|original&pithumbsize=200&'+ 
+	    								  'titles=' + titles.join('|'));
 								  
 								  var wpimageinfoJqxhr = $.ajax(wpImageUrl,
 			    					 {
@@ -688,8 +692,12 @@ $(function(){
 			    								  var aLocalPage = localPages[localPageIndex];
 			    								  
 			    								  if(aLocalPage.images[page.title] !== undefined){
-			    									  aLocalPage.images[page.title] = page.imageinfo[0].url;
-			    									  aLocalPage.imageArray.push(page.imageinfo[0].url);
+			    									  imageData = {
+			    											  thumbnail: page.thumbnail.source,
+			    											  original: page.original.source
+			    									  };
+			    									  aLocalPage.images[page.title] = imageData; 
+			    									  aLocalPage.imageArray.push(imageData);
 			    								  }
 			    							  }
 				    					  }
