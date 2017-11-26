@@ -6,6 +6,7 @@ $(function(){
 	 */
 	function ImageModal(image){
 		this.image = ko.observable(image);
+		this.downloading = ko.observable(false);
 	}
 	
 	/*
@@ -565,7 +566,7 @@ $(function(){
     				   */
     				  if(marker.locationDataViewModel().getService('wikipedia').data().length === 0){
 	    				  var wpApiUrl = 'https://en.wikipedia.org/w/api.php?' + 
-	    				  				 'action=query&format=json&' + 
+	    				  				 'action=query&format=json&origin=*&' + 
 	    				  				 'generator=geosearch&colimit=50&' + 
 	    				  				 'prop=coordinates|images&imlimit=max&' +
 	    				  				 'ggsradius=10000&ggslimit=50&ggscoord=' + 
@@ -576,17 +577,12 @@ $(function(){
 	    				  var wpJqxhr = $.ajax(wpApiUrl,
 	    					 {
 	    					  	/*
-	    					  	 * Required for Laravel's VerifyCsrfToken middleware
+	    					  	 * Removed X-CSRF-TOKEN header because it interfered with Wikipedia setting the
+	    					  	 * access-control-allow-origin header in order to allow cross-origin access to
+	    					  	 * their API.
 	    					  	 */
-		    				    headers: {
-		    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		    				    },	
-		    					method: 'POST',
-		    					/*
-		    					 * Use jsonp to circumvent cross-domain restrictions
-		    					 */
-						  		dataType: 'jsonp',
-						  		jsonp: 'callback'
+		    					method: 'GET',		    					
+						  		dataType: 'json'
 							 }
 	    				  ).done(function(response){
 	    					  var pages = {};
@@ -631,8 +627,16 @@ $(function(){
 	    							  var localPage = {
 	    									title: article.title,
 	    									imageArray: [],
-	    									showImage: function(image){
+	    									showImage: function(image){	    										
 	    										imageModal.image(image);
+	    										$imageElement = $('#image_modal_image');
+	    										imageModal.downloading(true);
+	    										$imageElement.hide(500).removeClass('d-block');
+	    										$(this).show(500).addClass('d-block');
+	    										$imageElement.on('load', function(event){
+	    											imageModal.downloading(false);
+	    											$(this).show(500).addClass('d-block');	    											
+	    										});
 	    									}
 	    							  };
 	    							  var localImages = {};
@@ -660,24 +664,24 @@ $(function(){
 	    						   * Create the URL for retrieving the image URLs for the images found in the articles in the geographic area
 	    						   */
 	    						  var wpImageUrl = window.encodeURI('https://en.wikipedia.org/w/api.php' + 
-	    								  '?action=query&format=json&prop=pageimages&' + 
-	    								  'piprop=thumbnail|name|original&pithumbsize=200&'+ 
+	    								  '?action=query&format=json&origin=*&' + 
+	    								  'prop=pageimages&' + 
+	    								  'piprop=thumbnail|name|original&pithumbsize=200&' + 
 	    								  'titles=' + titles.join('|'));
 								  
 								  var wpimageinfoJqxhr = $.ajax(wpImageUrl,
 			    					 {
 									   /*
 			    					  	* Required for Laravel's VerifyCsrfToken middleware
-			    					    */
+			    					    
 				    				    headers: {
 				    				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				    				    },	
-				    					method: 'POST',
+				    				    },	*/
+				    					method: 'GET',
 				    					/*
 				    					 * Use jsonp to circumvent cross-domain restrictions
 				    					 */
-								  		dataType: 'jsonp',
-								  		jsonp: 'callback'
+								  		dataType: 'json'
 									 }
 			    				  ).done(function(imageinfo_resp){
 			    					  if(imageinfo_resp.query.pages){

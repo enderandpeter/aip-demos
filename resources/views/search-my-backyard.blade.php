@@ -25,8 +25,11 @@ Search My Backyard!
                     </button>
                 </div>
                 <div data-bind="if: image" class="modal-body">
+                    <div class="progress_container" data-bind="if: downloading, css: { active: downloading }">
+					   <i class="progress_indicator material-icons">cached</i>
+				    </div>
                     <a data-bind="attr: { href: image().original }" target="_blank">
-                        <img class="w-75 m-auto d-block" data-bind="attr: { src: image().original }" />
+                        <img id="image_modal_image" class="w-75 m-auto d-block" data-bind="attr: { src: image().original }" />
                     </a>
                 </div>
             </div>
@@ -151,7 +154,7 @@ Search My Backyard!
 				</div>
 				<div class="progress_container" data-bind="if: activeMarker().locationDataViewModel().downloading, css: { active: activeMarker().locationDataViewModel().downloading }">
 					<i class="progress_indicator material-icons">cached</i>
-					</div>
+				</div>
 				</div>
 				<div id="location_content" class="mt-3" data-bind="ifnot: activeMarker().locationDataViewModel().downloading">
 					<div id="location_data">
