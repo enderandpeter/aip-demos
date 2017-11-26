@@ -6,7 +6,15 @@ $(function(){
 	 */
 	function ImageModal(image){
 		this.image = ko.observable(image);
+		this.nextImage = ko.observable({});
+		this.previousImage = ko.observable({});
 		this.downloading = ko.observable(false);
+		this.showNextImage = function(){
+			this.image().localPage.showImage(this.nextImage(), true);
+		}
+		this.showPreviousImage = function(){
+			this.image().localPage.showImage(this.previousImage(), true);
+		}
 	}
 	
 	/*
@@ -627,12 +635,62 @@ $(function(){
 	    							  var localPage = {
 	    									title: article.title,
 	    									imageArray: [],
-	    									showImage: function(image){	    										
-	    										imageModal.image(image);
+	    									images: {},
+	    									showImage: function(image, disableReshow){
+	    										var $imageElement;
+	    										if(disableReshow === true){
+	    											$imageElement = $('#image_modal_image');
+	    											$imageElement.hide(500, function(){
+	    												imageModal.downloading(true);
+	    												imageModal.image(image);
+	    											}).removeClass('d-block');
+	    										} else {
+	    											imageModal.image(image);
+	    										}
+	    										
+	    										
+	    										var previousImage, nextImage;
+	    										if(localPages[image.localPageIndex] !== undefined){
+	    											var thisLocalPage = localPages[image.localPageIndex];
+	    											var thisLocalPageIndex = +image.localPageIndex;
+	    											var imageArrayIndex = +image.imageArrayIndex;
+	    											if(imageArrayIndex === 0){ // User is viewing the first image of the local page
+	    												if(thisLocalPageIndex === 0){ // User is viewing the first local page
+	    													// The previous image is the last one in the last local page
+	    													previousImage = localPages[localPages.length - 1].imageArray[localPages[localPages.length -1].imageArray.length - 1];
+	    												} else {
+	    													// The previous image is the last one in the previous local page
+		    												previousImage = localPages[thisLocalPageIndex - 1].imageArray[localPages[thisLocalPageIndex - 1].imageArray.length - 1];
+	    												}	    												
+	    											} else {
+	    												// The previous image is the previous one in the the current local page
+	    												previousImage = thisLocalPage.imageArray[imageArrayIndex - 1];
+	    											}
+    												
+    												if(imageArrayIndex === thisLocalPage.imageArray.length - 1){ // User is viewing last image in local page
+    													if(thisLocalPageIndex === localPages.length - 1){ // User is viewing last image in last local page
+    														// The next image is the first one in the first local page
+    														nextImage = localPages[0].imageArray[0];
+    													} else {
+    														// The next image is the first on in the next local page
+        													nextImage = localPages[thisLocalPageIndex + 1].imageArray[0];
+    													}
+    												} else {
+    													// The next image is the next one in the current local page
+        												nextImage = thisLocalPage.imageArray[imageArrayIndex + 1];
+    												}
+    												
+    												imageModal.nextImage(nextImage);
+    												imageModal.previousImage(previousImage);
+	    										}
+	    										
 	    										$imageElement = $('#image_modal_image');
-	    										imageModal.downloading(true);
-	    										$imageElement.hide(500).removeClass('d-block');
-	    										$(this).show(500).addClass('d-block');
+	    										
+	    										if(disableReshow !== true){
+	    											imageModal.downloading(true);
+	    											$imageElement.hide(500).removeClass('d-block');
+	    											$(this).show(500).addClass('d-block');
+	    										}
 	    										$imageElement.on('load', function(event){
 	    											imageModal.downloading(false);
 	    											$(this).show(500).addClass('d-block');	    											
@@ -686,22 +744,28 @@ $(function(){
 			    				  ).done(function(imageinfo_resp){
 			    					  if(imageinfo_resp.query.pages){
 			    						  /*
-			    						   * For every page of imageinfo, search through localPages to find the element in the images 
-			    						   * collection with that image name for a key and store the URL there
+			    						   * For every page of pageimages data, search through localPages to find the element in the images 
+			    						   * collection with that image name for a key and store the URLs there.
+			    						   * 
+			    						   * Each "page" consists of data for a single image
 			    						   */
-			    						  for(var pageIndex in imageinfo_resp.query.pages){
-			    							  var page = imageinfo_resp.query.pages[pageIndex];
+			    						  for(var imageIndex in imageinfo_resp.query.pages){
+			    							  var image = imageinfo_resp.query.pages[imageIndex];
 			    							  
 			    							  for(var localPageIndex in localPages){
 			    								  var aLocalPage = localPages[localPageIndex];
 			    								  
-			    								  if(aLocalPage.images[page.title] !== undefined){
+			    								  if(aLocalPage.images[image.title] !== undefined){
 			    									  imageData = {
-			    											  thumbnail: page.thumbnail.source,
-			    											  original: page.original.source
+			    											  thumbnail: image.thumbnail.source,
+			    											  original: image.original.source,
+			    											  title: image.title,
+			    											  localPage: aLocalPage,
+			    											  localPageIndex: localPageIndex
 			    									  };
-			    									  aLocalPage.images[page.title] = imageData; 
+			    									  aLocalPage.images[image.title] = imageData; 
 			    									  aLocalPage.imageArray.push(imageData);
+			    									  imageData.imageArrayIndex = aLocalPage.imageArray.length - 1; 
 			    								  }
 			    							  }
 				    					  }

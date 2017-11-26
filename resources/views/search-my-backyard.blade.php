@@ -32,6 +32,10 @@ Search My Backyard!
                         <img id="image_modal_image" class="w-75 m-auto d-block" data-bind="attr: { src: image().original }" />
                     </a>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bind="click: showPreviousImage">Previous</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: showNextImage">Next</button>
+                </div>
             </div>
         </div>
     </div>
@@ -229,7 +233,7 @@ Search My Backyard!
 												<a data-bind="text: title, attr: { href: 'https://en.wikipedia.org/wiki/' + title.replace(/ /g, '_') }" target="_blank"></a>
 											</h4>
 											<ul class="wikipedia_image_list list-unstyled list-inline" data-bind="foreach: imageArray">
-												<li class="wikipedia_image_list_item">
+												<li class="wikipedia_image_list_item list-inline-item">
 													<a data-bind="attr: { href: $data.original }, click: $parent.showImage" data-toggle="modal" data-target="#image_modal">
 														<img class="img-responsive" data-bind="attr: { src: $data.thumbnail }">
 													</a>
