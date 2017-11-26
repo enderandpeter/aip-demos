@@ -636,20 +636,49 @@ $(function(){
 	    									title: article.title,
 	    									imageArray: [],
 	    									images: {},
+	    									/**
+	    									 * @param bool disableReshow When disableReshow is on, the downloading graphic is shown
+	    									 * after the previous image is hidden. The next image is loaded after the previous one is finished
+	    									 * being hidden. When disableReshow is off, the image is hidden and then explicity reshown because
+	    									 * the code in the image's onload handler may not fire.
+	    									 */
 	    									showImage: function(image, disableReshow){
-	    										var $imageElement;
+	    										var $imageMedia;
 	    										if(disableReshow === true){
-	    											$imageElement = $('#image_modal_image');
-	    											$imageElement.hide(500, function(){
-	    												imageModal.downloading(true);
-	    												imageModal.image(image);
-	    											}).removeClass('d-block');
+		    										$imageMedia = $('.image_modal_media');
+		    										$imageElement = $('#image_modal_image');
+		    										$imageVideo = $('#image_modal_video');
+		    										
+		    										if($imageElement.is(':visible')){
+		    											$imageElement.hide(500, function(){
+		    												imageModal.downloading(true);
+		    												imageModal.image(image);
+		    											}).removeClass('d-block');
+		    										}		    										
+		    										
+		    										if($imageVideo.is(':visible')){
+		    											$imageVideo.hide(500, function(){
+			    											imageModal.downloading(true);
+		    												imageModal.image(image);
+			    										}).removeClass('d-block');
+		    										}
+		    										
+	    											if(image.isOgv()) {
+	    												$imageVideo.attr('src', image.original);
+	    												$imageVideo.show(500, function(){
+	    													imageModal.downloading(false);
+	    												}).addClass('d-block');	    												
+	    											}
+	    											
 	    										} else {
 	    											imageModal.image(image);
 	    										}
 	    										
-	    										
 	    										var previousImage, nextImage;
+	    										/*
+	    										 * The loaded image has data that can locate it in the localPages array in order to find the previous
+	    										 * and next images
+	    										 */
 	    										if(localPages[image.localPageIndex] !== undefined){
 	    											var thisLocalPage = localPages[image.localPageIndex];
 	    											var thisLocalPageIndex = +image.localPageIndex;
@@ -684,16 +713,27 @@ $(function(){
     												imageModal.previousImage(previousImage);
 	    										}
 	    										
+	    										$imageMedia = $('.image_modal_media');
 	    										$imageElement = $('#image_modal_image');
+	    										$imageVideo = $('#image_modal_video');
 	    										
-	    										if(disableReshow !== true){
-	    											imageModal.downloading(true);
-	    											$imageElement.hide(500).removeClass('d-block');
-	    											$(this).show(500).addClass('d-block');
+	    										if(disableReshow !== true){	    											
+	    											$imageMedia.hide(500, function(){
+	    												imageModal.downloading(true);
+	    											}).removeClass('d-block');
+	    											
+	    											if(image.isOgv()){
+	    												$imageVideo.attr('src', image.original);
+	    												$imageVideo.show(500, function(){
+	    													imageModal.downloading(false);
+	    												}).addClass('d-block');
+	    											}
 	    										}
-	    										$imageElement.on('load', function(event){
-	    											imageModal.downloading(false);
-	    											$(this).show(500).addClass('d-block');	    											
+	    										
+	    										$imageElement.on('load', function(event){	    											
+	    											$(this).show(500, function(){
+	    												imageModal.downloading(false);
+	    											}).addClass('d-block');	    											
 	    										});
 	    									}
 	    							  };
@@ -760,8 +800,19 @@ $(function(){
 			    											  thumbnail: image.thumbnail.source,
 			    											  original: image.original.source,
 			    											  title: image.title,
+			    											  article: aLocalPage.title,
 			    											  localPage: aLocalPage,
-			    											  localPageIndex: localPageIndex
+			    											  localPageIndex: localPageIndex,
+			    											  // Whether or not the data is for an traditional image
+			    											  isImage: function(){
+			    												  return !this.isOgv();
+			    											  },
+			    											  isSvg: function(){
+			    												  return this.original.match(/\.svg$/);
+			    											  },
+			    											  isOgv: function(){
+			    												  return this.original.match(/\.ogv$/);
+			    											  }
 			    									  };
 			    									  aLocalPage.images[image.title] = imageData; 
 			    									  aLocalPage.imageArray.push(imageData);

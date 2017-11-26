@@ -18,19 +18,28 @@ Search My Backyard!
 @section('body-content')
     <div class="modal fade" id="image_modal" tabindex="-1" role="dialog" aria-labelledby="image_modal_label" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div data-bind="if: image" class="modal-content">
                 <div class="modal-header">
+                <h3 class="modal-title">
+                    <div id="article_title">
+                        <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().article.replace(/ /g, '_') }, text: image().article"></a>
+                    </div>
+                    <div id="image_title">
+                        <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().title.replace(/ /g, '_') }, text: image().title"></a>
+                    </div>
+                </h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div data-bind="if: image" class="modal-body">
+                <div class="modal-body">
                     <div class="progress_container" data-bind="if: downloading, css: { active: downloading }">
 					   <i class="progress_indicator material-icons">cached</i>
 				    </div>
                     <a data-bind="attr: { href: image().original }" target="_blank">
-                        <img id="image_modal_image" class="w-75 m-auto d-block" data-bind="attr: { src: image().original }" />
+                        <img id="image_modal_image" class="image_modal_media w-75 m-auto d-block" data-bind="if: image().isImage(), attr: { src: image().original }" />
                     </a>
+                    <video id="image_modal_video" class="image_modal_media w-75 m-auto d-block" data-bind="if: image().isOgv()" controls></video>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bind="click: showPreviousImage">Previous</button>
