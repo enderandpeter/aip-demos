@@ -223,11 +223,15 @@ Search My Backyard!
 								</div>
 							</div>
 							<div data-bind="ifnot: activeMarker().locationDataViewModel().getService('streetview').data().length === 0">
-								<ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: activeMarker().locationDataViewModel().getService('streetview').data">
-									<li class="streetview_image_list_item list-inline-item">
-										<a data-bind="attr: { href: image }" target="_blank">
-											<img class="img-responsive" data-bind="attr: { src: thumbnail }">
-										</a>
+								<ul id="streetview_article_list" class="list-unstyled" data-bind="foreach: activeMarker().locationDataViewModel().getService('streetview').data()">
+									<li class="streetview_article_list_item">
+                                        <ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: $data.imageArray">
+                                            <li class="streetview_image_list_item list-inline-item">
+                                                <a data-bind="attr: { href: original }, click: $parent.showImage" data-toggle="modal" data-target="#image_modal" target="_blank">
+                                                    <img class="img-responsive" data-bind="attr: { src: thumbnail }">
+                                                </a>
+                                            </li>
+                                        </ul>
 									</li>
 								</ul>
 							</div>
@@ -243,8 +247,8 @@ Search My Backyard!
 											</h4>
 											<ul class="wikipedia_image_list list-unstyled list-inline" data-bind="foreach: imageArray">
 												<li class="wikipedia_image_list_item list-inline-item">
-													<a data-bind="attr: { href: $data.original }, click: $parent.showImage" data-toggle="modal" data-target="#image_modal">
-														<img class="img-responsive" data-bind="attr: { src: $data.thumbnail }">
+													<a data-bind="attr: { href: original }, click: $parent.showImage" data-toggle="modal" data-target="#image_modal">
+														<img class="img-responsive" data-bind="attr: { src: thumbnail }">
 													</a>
 												</li>
 											</ul>
