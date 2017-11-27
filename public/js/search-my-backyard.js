@@ -323,9 +323,7 @@ $(function(){
         	/**
         	 * The InfoWindow used to display info about a location
         	 */
-        	this.infoWindow = new google.maps.InfoWindow({
-        		map: map
-        	});
+        	this.infoWindow = new google.maps.InfoWindow();
         	
         	this.startSearch = function(){
         		self.searching(true);        		        		
