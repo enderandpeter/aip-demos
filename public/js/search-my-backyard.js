@@ -9,6 +9,8 @@ $(function () {
         this.nextImage = ko.observable({});
         this.previousImage = ko.observable({});
         this.downloading = ko.observable(false);
+        /** @prop The service that is currently active. */
+        this.activeService = ko.observable('');
         this.showNextImage = function () {
             this.image().localPage.showImage(this.nextImage(), true);
         }
@@ -399,6 +401,7 @@ $(function () {
                     }
 
                     this.showView(true);
+                    imageModal.activeService(this.service);
                 }
 
                 element.data = ko.observableArray();
@@ -514,6 +517,10 @@ $(function () {
              * The InfoWindow used to display info about a location
              */
             this.infoWindow = new google.maps.InfoWindow();
+            
+            this.infoWindow.addListener('closeclick', function(){
+                map.setOptions({gestureHandling : 'auto'});
+            });
 
             this.startSearch = function () {
                 self.searching(true);
@@ -687,6 +694,7 @@ $(function () {
 
                 marker.openInfoWindow = function () {
                     self.infoWindow.open(map, marker);
+                    map.setOptions({gestureHandling : 'cooperative'});
                 }
 
                 marker.locationDataViewModel = ko.observable(new LocationDataViewModel());
@@ -960,23 +968,17 @@ $(function () {
                                                                     }
                                                                 })
                                                         .fail(
-                                                                function (
-                                                                        jqxhr,
-                                                                        status,
-                                                                        error) {
-                                                                    errorViewModel
-                                                                            .setMessage(
+                                                                function (jqxhr, status, error) {
+                                                                    errorViewModel.setMessage(
                                                                                     'Could not retrieve Wikipedia image data',
                                                                                     'error');
-                                                                    console
-                                                                            .error(error);
+                                                                    console.error(error);
                                                                 });
                                             }
                                         })
                                 .fail(
                                         function (jqxhr, status, error) {
-                                            errorViewModel
-                                                    .setMessage(
+                                            errorViewModel.setMessage(
                                                             'Could not retrieve Wikipedia article data',
                                                             'error');
                                             console.error(error);
@@ -1011,9 +1013,7 @@ $(function () {
                 self.markers.push(marker);
 
                 this.infoWindow.addListener('closeclick', function () {
-                    uicontrols.appendChild(infowindow);
-                    marker.locationDataViewModel().getService('yelp').data
-                            .removeAll();
+                    uicontrols.appendChild(infowindow);                    
                 });
             };
 

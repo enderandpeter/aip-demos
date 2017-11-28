@@ -22,10 +22,20 @@ Search My Backyard!
                 <div class="modal-header">
                 <h3 class="modal-title">
                     <div id="article_title">
-                        <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().article.replace(/ /g, '_') }, text: image().article"></a>
+                        <div class="wikipedia_article_title" data-bind="if: activeService() === 'wikipedia'">
+                             <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().article.replace(/ /g, '_') }, text: image().article"></a>
+                        </div>
+                        <div class="streetview_article_title" data-bind="if: activeService() === 'streetview'">
+                             <span data-bind="text: image().article"></span>
+                        </div>
                     </div>
                     <div id="image_title">
-                        <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().title.replace(/ /g, '_') }, text: image().title"></a>
+                        <div class="wikipedia_image_title" data-bind="if: activeService() === 'wikipedia'">
+                            <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().title.replace(/ /g, '_') }, text: image().title"></a>
+                        </div>
+                        <div class="streetview_image_title" data-bind="if: activeService() === 'streetview'">
+                            <span target="_blank" data-bind="text: image().title"></span>
+                        </div>
                     </div>
                 </h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
