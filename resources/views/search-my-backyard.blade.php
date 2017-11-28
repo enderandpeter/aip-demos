@@ -16,6 +16,48 @@ Search My Backyard!
 @endsection
 
 @section('body-content')
+    <div class="modal fade" id="image_modal" tabindex="-1" role="dialog" aria-labelledby="image_modal_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div data-bind="if: image" class="modal-content">
+                <div class="modal-header">
+                <h3 class="modal-title">
+                    <div id="article_title">
+                        <div class="wikipedia_article_title" data-bind="if: activeService() === 'wikipedia'">
+                             <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().article.replace(/ /g, '_') }, text: image().article"></a>
+                        </div>
+                        <div class="streetview_article_title" data-bind="if: activeService() === 'streetview'">
+                             <span data-bind="text: image().article"></span>
+                        </div>
+                    </div>
+                    <div id="image_title">
+                        <div class="wikipedia_image_title" data-bind="if: activeService() === 'wikipedia'">
+                            <a target="_blank" data-bind="attr: { href: 'https://en.wikipedia.org/wiki/' + image().title.replace(/ /g, '_') }, text: image().title"></a>
+                        </div>
+                        <div class="streetview_image_title" data-bind="if: activeService() === 'streetview'">
+                            <span target="_blank" data-bind="text: image().title"></span>
+                        </div>
+                    </div>
+                </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="progress_container" data-bind="if: downloading, css: { active: downloading }">
+					   <i class="progress_indicator material-icons">cached</i>
+				    </div>
+                    <a data-bind="attr: { href: image().original }" target="_blank">
+                        <img id="image_modal_image" class="image_modal_media w-75 m-auto d-block" data-bind="if: image().isImage(), attr: { src: image().original }" />
+                    </a>
+                    <video id="image_modal_video" class="image_modal_media w-75 m-auto d-block" data-bind="if: image().isOgv()" controls></video>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bind="click: showPreviousImage">Previous</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: showNextImage">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	<div id="map"></div>
 	<div id="uicontrols">
 		<div id="header" class="uicontrol">
@@ -41,7 +83,7 @@ Search My Backyard!
 			<h2>Saved Locations</h2>
 			<div id="marker_menu_buttons">
 				<ul id="marker_menu_buttons_list" class="list-inline">
-					<li>
+					<li class="list-inline-item">
 						<div data-bind="if: markers().length !== 0" class="btn-group" role="group" aria-label="Manage all locations">
 							<button type="submit" title="Clear/select markers" class="btn btn-light" data-bind="click: toggleMarkerSelection">
 								<i class="material-icons">check_box_outline_blank</i>
@@ -112,39 +154,41 @@ Search My Backyard!
 			</ul>
 			</form>
 		</div>
-		<div id="infowindow" data-bind="if: marker">
+		<div id="infowindow" data-bind="if: activeMarker">
 			<header id="infowindow_header">
-				<h2 id="infowindow_title" data-bind="text: marker().getLabel()" class="autofilled"></h2>
-				<div id="infowindow_position">
-					<div data-bind="ifnot: marker().locationDescription">
-						<div class="lat">Lat: <span id="infowindow_lat" class="autofilled" data-bind="text: marker().getPosition().lat().toPrecision(5)"></span></div>
-						<div class="lng">Long: <span id="infowindow_lng" class="autofilled" data-bind="text: marker().getPosition().lng().toPrecision(5)"></span></div>
+				<h2 id="infowindow_title" data-bind="text: activeMarker().getLabel()" class="autofilled"></h2>
+				<div id="infowindow_position" class="mb-3">
+					<div data-bind="ifnot: activeMarker().locationDescription">
+						<div class="lat">Lat: <span id="infowindow_lat" class="autofilled" data-bind="text: activeMarker().getPosition().lat().toPrecision(5)"></span></div>
+						<div class="lng">Long: <span id="infowindow_lng" class="autofilled" data-bind="text: activeMarker().getPosition().lng().toPrecision(5)"></span></div>
 					</div>
-					<div data-bind="if: marker().locationDescription">
-						<div data-bind="text: marker().locationDescription, attr: { title: 'Close to Lat: ' + marker().getPosition().lat().toPrecision(5) + ', Long: ' + marker().getPosition().lng().toPrecision(5) }"></div>
+					<div data-bind="if: activeMarker().locationDescription">
+						<div data-bind="text: activeMarker().locationDescription, attr: { title: 'Close to Lat: ' + activeMarker().getPosition().lat().toPrecision(5) + ', Long: ' + activeMarker().getPosition().lng().toPrecision(5) }"></div>
 					</div>
 				</div>
 			</header>
 			<div id="infowindow_content" class="autofilled">
-				<div data-bind="ifnot: downloading">
-				<ul id="infowindow_main_list" class="nav nav-tabs" data-bind="foreach: services()">
-					<li role="presentation" data-bind="css: { active: showView }"><a href="#" data-bind="text: serviceName, click: showTab"></a></li>
+				<div data-bind="ifnot: activeMarker().locationDataViewModel().downloading">
+				<ul id="infowindow_main_list" class="nav nav-tabs" data-bind="foreach: activeMarker().locationDataViewModel().services()">
+					<li class="nav-item">
+                        <a class="nav-link" href="#" data-bind="text: serviceName, click: showTab, css: { active: showView }"></a>
+                    </li>
 				</ul>
 				</div>
-				<div class="progress_container" data-bind="if: downloading">
-					<div class="progress_indicator glyphicon glyphicon-refresh">
-					</div>
+				<div class="progress_container" data-bind="if: activeMarker().locationDataViewModel().downloading, css: { active: activeMarker().locationDataViewModel().downloading }">
+					<i class="progress_indicator material-icons">cached</i>
 				</div>
-				<div id="location_content" data-bind="ifnot: downloading">
+				</div>
+				<div id="location_content" class="mt-3" data-bind="ifnot: activeMarker().locationDataViewModel().downloading">
 					<div id="location_data">
-						<div id="yelp_container" data-bind="if: getService('yelp').showView">
-							<div id="yelp_content" data-bind="if: getService('yelp').data().length !== 0">
-								<h3 data-bind="text: getService('yelp').serviceName"></h3>
-								<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: getService('yelp').data">
-									<li class="business_list_item media">
+						<div id="yelp_container" class="service_container" data-bind="if: activeMarker().locationDataViewModel().getService('yelp').showView, css: { active: activeMarker().locationDataViewModel().getService('yelp').showView() }">
+							<div id="yelp_content" data-bind="if: activeMarker().locationDataViewModel().getService('yelp').data().length !== 0">
+								<h3 data-bind="text: activeMarker().locationDataViewModel().getService('yelp').serviceName"></h3>
+								<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: activeMarker().locationDataViewModel().getService('yelp').data">
+									<li class="business_list_item media mt-3">
 									<div class="business_info media-left">
-										<div class="business_img">
-											<img class="media-object" data-bind="attr: { src: $data.image_url.replace(/http:/, '') }">
+										<div class="business_img" data-bind="if: $data.image_url">
+											<img class="media-object mr-3" data-bind="attr: { src: $data.image_url.replace(/http:/, '') }">
 										</div>
 									</div>
 									<div class="media-body">
@@ -164,10 +208,10 @@ Search My Backyard!
 											<ul data-bind="foreach: reviews" class="list-unstyled media-list">
 												<li class="review_list_item media">
 													<div class="user media-left">
-														<img class="media-object" data-bind="attr: { src: user.image_url.replace(/http:/, ''), title: user.name }" />
+														<img class="media-object mr-3" data-bind="attr: { src: user.image_url.replace(/http:/, ''), title: user.name }" />
 													</div>
 													<div class="media-body">
-														<div class="review_excerpt" data-bind="text: excerpt"></div>
+														<div class="review_excerpt mr-3" data-bind="text: excerpt"></div>
 															<div class="review_rating">
 																<img data-bind="attr: { src: rating_image_small_url }" />
 																<span data-bind="text: rating"></span>
@@ -181,36 +225,40 @@ Search My Backyard!
 								</ul>
 							</div>
 						</div>
-						<div id="streetview_container" data-bind="if: getService('streetview').showView">
-							<h3 data-bind="text: getService('streetview').serviceName"></h3>
-							<div id="streetview_content" data-bind="if: getService('streetview').data().length === 0">
-								<div data-bind="if: getService('streetview').data().length === 0">
+						<div id="streetview_container" class="service_container" data-bind="if: activeMarker().locationDataViewModel().getService('streetview').showView, css: { active: activeMarker().locationDataViewModel().getService('streetview').showView() }">
+							<h3 data-bind="text: activeMarker().locationDataViewModel().getService('streetview').serviceName" class="mt-3"></h3>
+							<div id="streetview_content" data-bind="if: activeMarker().locationDataViewModel().getService('streetview').data().length === 0">
+								<div data-bind="if: activeMarker().locationDataViewModel().getService('streetview').data().length === 0">
 									<h4>No Street View images found.</h4>
 								</div>
 							</div>
-							<div data-bind="ifnot: getService('streetview').data().length === 0">
-								<ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: getService('streetview').data">
-									<li class="streetview_image_list_item">
-										<a data-bind="attr: { href: image }" target="_blank">
-											<img class="img-responsive" data-bind="attr: { src: thumbnail }">
-										</a>
+							<div data-bind="ifnot: activeMarker().locationDataViewModel().getService('streetview').data().length === 0">
+								<ul id="streetview_article_list" class="list-unstyled" data-bind="foreach: activeMarker().locationDataViewModel().getService('streetview').data()">
+									<li class="streetview_article_list_item">
+                                        <ul id="streetview_image_list" class="list-unstyled list-inline" data-bind="foreach: $data.imageArray">
+                                            <li class="streetview_image_list_item list-inline-item">
+                                                <a data-bind="attr: { href: original }, click: $parent.showImage" data-toggle="modal" data-target="#image_modal" target="_blank">
+                                                    <img class="img-responsive" data-bind="attr: { src: thumbnail }">
+                                                </a>
+                                            </li>
+                                        </ul>
 									</li>
 								</ul>
 							</div>
 						</div>
-						<div id="wikipedia_container" data-bind="if: getService('wikipedia').showView">
-							<div id="wikipedia_content" data-bind="if: getService('wikipedia').data().length !== 0">
-								<h3 data-bind="text: getService('wikipedia').serviceName"></h3>
-								<ul class="wikipedia_article_list list-unstyled" data-bind="foreach: getService('wikipedia').data">
+						<div id="wikipedia_container" class="service_container" data-bind="if: activeMarker().locationDataViewModel().getService('wikipedia').showView, css: { active: activeMarker().locationDataViewModel().getService('wikipedia').showView() }">
+							<div id="wikipedia_content" data-bind="if: activeMarker().locationDataViewModel().getService('wikipedia').data().length !== 0">
+								<h3 data-bind="text: activeMarker().locationDataViewModel().getService('wikipedia').serviceName" class="mt-3"></h3>
+								<ul class="wikipedia_article_list list-unstyled" data-bind="foreach: activeMarker().locationDataViewModel().getService('wikipedia').data">
 									<li class="wikipedia_article_list_item">
 										<div class="wikipedia_article_container" data-bind="if: $data.imageArray">
 											<h4>
 												<a data-bind="text: title, attr: { href: 'https://en.wikipedia.org/wiki/' + title.replace(/ /g, '_') }" target="_blank"></a>
 											</h4>
 											<ul class="wikipedia_image_list list-unstyled list-inline" data-bind="foreach: imageArray">
-												<li class="wikipedia_image_list_item">
-													<a data-bind="attr: { href: $data }" target="_blank">
-														<img class="img-responsive" data-bind="attr: { src: $data }">
+												<li class="wikipedia_image_list_item list-inline-item">
+													<a data-bind="attr: { href: original }, click: $parent.showImage" data-toggle="modal" data-target="#image_modal">
+														<img class="img-responsive" data-bind="attr: { src: thumbnail }">
 													</a>
 												</li>
 											</ul>
