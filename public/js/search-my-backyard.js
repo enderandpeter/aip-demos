@@ -521,6 +521,18 @@ $(function () {
             this.infoWindow.addListener('closeclick', function(){
                 map.setOptions({gestureHandling : 'auto'});
             });
+            
+            this.hideMarkers = function(){
+                $.each(this.allMarkers(), function(index, marker){
+                    marker.toggleVisibility(false);
+                });
+            }
+            
+            this.showMarkers = function(){
+                $.each(this.allMarkers(), function(index, marker){
+                    marker.toggleVisibility(true);
+                });
+            }
 
             this.startSearch = function () {
                 self.searching(true);
@@ -536,15 +548,16 @@ $(function () {
                 if (self.allMarkers().length === 0) {
                     self.allMarkers(self.markers.removeAll());
                 }
-                self.hideMarkers();
 
+                self.hideMarkers();
+                
                 var searchBoxInput = $searchBox.val();
                 self.markers(self.allMarkers().filter(
-                        function (element) {
-                            var match = element.getLabel().match(
+                        function (marker) {
+                            var match = marker.getLabel().match(
                                     new RegExp(searchBoxInput, 'i'));
                             if (match) {
-                                element.toggleVisibility(true);
+                                marker.toggleVisibility(true);
                             }
                             return match;
                         }));
@@ -554,10 +567,10 @@ $(function () {
             /**
              * End searching and return the full list of locations
              */
-            this.endSearch = function () {
+            this.endSearch = function (item, event) {
                 self.searching(false);
-                self.markers(self.allMarkers.removeAll());
                 self.showMarkers();
+                self.markers(self.allMarkers.removeAll());                
             };
 
             /**
@@ -639,15 +652,14 @@ $(function () {
                     }
                 });
 
-                marker.edit = function () {
+                marker.edit = function (item, event) {
                     if (event && event.stopPropagation) {
                         event.stopPropagation();
                     }
                     this.editing(true);
                     var markerIndex = self.markers.indexOf(marker);
                     var $markerListItem = $('#marker_list_item_' + markerIndex);
-                    var input = $markerListItem
-                            .find('.marker_list_label_input');
+                    var input = $markerListItem.find('.marker_list_label_input');
                     input[0].focus();
                 };
 
