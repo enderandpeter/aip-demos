@@ -34,8 +34,7 @@ address {
 }
 
 #map {
-    height: 100%;
-    top: -1.5em;
+    height: 94%;    
 }
 
 #map h1 {
@@ -205,6 +204,10 @@ address {
 
 .reviews {
     margin-top: 5%;
+}
+
+#search-my-backyard-body #site-nav .breadcrumb{
+    margin-bottom: 0;
 }
 
 .wikipedia_image_list_item {
