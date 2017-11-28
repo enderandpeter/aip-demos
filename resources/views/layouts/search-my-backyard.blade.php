@@ -8,11 +8,12 @@
 	@endif
 @endpush
 
-@include('css.main')
-@include('css.bootstrap')
+@include('css.search-my-backyard')
+@include('css.google-material-icons')
+@include('css.bootstrap4')
 
 @include('scripts.google-maps')
-@include('scripts.bootstrap')
+@include('scripts.bootstrap4')
 @include('scripts.ko')
 @include('scripts.jquery')
 
