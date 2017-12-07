@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 use Laravel\Dusk\DuskServiceProvider;
 
@@ -18,18 +18,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('geolocation', function($attribute, $value, $parameters, $validator) {
-        	$positions = explode(',', $value);
-        	$pass = true;
-        	
-        	foreach($positions as $positionIndex => $position){
-        		if(!is_numeric($position)){
-        			$pass = false;
-        		}
-        	}
-        	
-        	return $pass;
+            $positions = explode(',', $value);
+            $pass = true;
+
+            foreach($positions as $positionIndex => $position){
+                if(!is_numeric($position)){
+                    $pass = false;
+                }
+            }
+
+            return $pass;
         });
-        
+
         Schema::defaultStringLength(191);
     }
 
