@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/enderandpeter/aip-demos.svg?branch=master)](https://travis-ci.org/enderandpeter/aip-demos)
+
 # An Internet Presence - Demos
 
 This is the Laravel site for [An Internet Presence](http://aninternetpresence.net/) which demonstrates web applications created by the site author. It is essentially a gallery of
