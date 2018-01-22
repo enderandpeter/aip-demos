@@ -24,3 +24,7 @@ Route::post('search-my-backyard', ['uses' => 'LocationDataController@postLocatio
 Route::get('frogger', function () {
 	return view('frogger');
 });
+
+Route::get('jack-the-giant', function () {
+    return view('jack-the-giant');
+});

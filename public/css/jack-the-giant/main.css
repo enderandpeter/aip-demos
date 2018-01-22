@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+.download-icon {
+  width: 20px;
+  float: left;
+}
+
+#build-list{
+    width: 300px;
+}
+
