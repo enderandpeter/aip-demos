@@ -12,7 +12,7 @@ Jack the Giant
 
 @section('body-content')
 	<div id="main-container" class="container-fluid text-center">
-		<img src="{{ asset('storage/jack-the-giant/jack-the-giant-intro.png') }}" alt="Jack the Giant" class="img-fluid" />
+		<img src="resources/jack-the-giant/jack-the-giant-intro.png" alt="Jack the Giant" class="img-fluid" />
 		<h2>My second collaborative game</h2>
 		<p>My first was a game called Torch for <a href="http://www.grandschemegames.com/" target="_blank">Grand Scheme Games</a>.
     		This one, however, was created for a <a href="https://www.udemy.com/make-mobile-games-like-a-pro-using-unity-game-engine/" target="_blank">tutorial on Udemy</a> which I highly recommend.</p>
@@ -20,13 +20,13 @@ Jack the Giant
     		<ul id="build-list" class="list-group mx-auto mb-4">
           <li class="list-group-item">
           	<a class="download-link" href="https://github.com/enderandpeter/Jack-The-Giant/releases/download/v1/JackTheGiant-win.zip">
-          		<img src="{{ asset('storage/jack-the-giant/windows.svg') }}" class="download-icon"/>
+          		<img src="resources/jack-the-giant/windows.svg" class="download-icon"/>
           		<span class="download-link">Download for Windows</span>
           	</a>
           </li>
           <li class="list-group-item">
           	<a class="download-link" href="https://github.com/enderandpeter/Jack-The-Giant/releases/download/v1/JackTheGiant-mac.zip">
-          		<img src="{{ asset('storage/jack-the-giant/apple.svg') }}" class="download-icon"/>
+          		<img src="resources/jack-the-giant/apple.svg" class="download-icon"/>
           		<span class="download-link">Download for macOS</span>
           	</a>
           </li>
