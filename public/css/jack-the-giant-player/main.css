@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+@import "../jack-the-giant/main.css";
+
+#spinner{
+    width: 50px;
+    top: 50px;
+    right: 120px;
+    background-color: transparent;
+}

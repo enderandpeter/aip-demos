@@ -28,3 +28,7 @@ Route::get('frogger', function () {
 Route::get('jack-the-giant', function () {
     return view('jack-the-giant');
 });
+
+Route::get('jack-the-giant-player', function () {
+    return view('jack-the-giant-player');
+});
