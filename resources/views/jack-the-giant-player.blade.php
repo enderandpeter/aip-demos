@@ -14,7 +14,7 @@ Jack the Giant
 	<div id="main-container" class="container-fluid text-center">
 		<div class="webgl-content d-inline-block position-relative">
       		<div id="gameContainer"></div>
-      		<img id="spinner" src="/resources/jack-the-giant/spinner.svg" class="position-absolute">
+      		<img id="spinner" src="/resources/software/spinner.svg" class="position-absolute">
       	</div>
 	</div>
 @endsection

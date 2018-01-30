@@ -29,6 +29,10 @@ Route::get('jack-the-giant', function () {
     return view('jack-the-giant');
 });
 
+Route::get('flappy-bird', function () {
+    return view('flappy-bird');
+});
+
 Route::get('jack-the-giant-player', function () {
     return view('jack-the-giant-player');
 });

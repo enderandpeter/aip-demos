@@ -4,6 +4,7 @@
 	@stack('css')
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	@stack('meta')
 	<title>AIP | Demos @hasSection('title') | @yield('title') @else @endif</title>
 	@stack('custom-head')
 </head>
