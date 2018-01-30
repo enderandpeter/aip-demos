@@ -4,6 +4,7 @@
 
 @push('meta')
 <meta property="og:title" content="Yet Another Flappy Bird Clone" />
+<meta property="og:url" content="https://demos.aninternetpresence.net/flappy-bird" />
 <meta property="og:description" content="This one does a much better job accomodating to a variety of screen resolutions. A mouse or touch screen is required." />
 <meta property="og:image" content="https://demos.aninternetpresence.net/resources/flappy-bird/flappy-bird-intro.png" />
 @endpush
