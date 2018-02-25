@@ -11,19 +11,19 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
-    
+
     public static function setUpBeforeClass()
     {
         if(self::getOSEnvironment() == 'Docker'){
             exec('Xvfb -ac :0 -screen 0 1280x1024x16 &', $output, $returnValue);
             $returnValue = intval($returnValue);
-            
+
             if($returnValue !== 0){
                 throw new Exception('Could not start Xvfb');
             }
-        }  
+        }
     }
-    
+
     public static function tearDownAfterClass()
     {
         if(self::getOSEnvironment() == 'Docker'){
@@ -33,7 +33,7 @@ abstract class DuskTestCase extends BaseTestCase
             }
         }
     }
-    
+
     /**
      * @return string
      */
@@ -43,24 +43,24 @@ abstract class DuskTestCase extends BaseTestCase
         if(PHP_OS === 'Linux'){
             $kernelName = exec('uname -r');
             $osInfo = exec('lsb_release -r');
-        
-            if(str_contains($kernelName, 'moby') /* Docker */){                
+
+            if(str_contains($kernelName, ['moby', 'linuxkit']) /* Docker */){
                 return 'Docker';
             }
-            
+
             if(str_contains($osInfo, 'trusty') /* TravisCI */){
                 return 'TravisCI';
             }
         }
-        
+
         return PHP_OS;
     }
-    
+
     private static function isTextEnvironment()
     {
         return self::getOSEnvironment() == 'Docker' || self::getOSEnvironment() == 'TravisCI';
     }
-    
+
     /**
      * Prepare for Dusk test execution.
      *
@@ -71,7 +71,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         static::startChromeDriver();
     }
-    
+
     /**
      * Create the RemoteWebDriver instance.
      *
@@ -81,13 +81,13 @@ abstract class DuskTestCase extends BaseTestCase
     {
         $defaultSettings = [];
         $arguments = [];
-        
+
         if(self::isTextEnvironment()){
-            $arguments = array_merge($defaultSettings, ['--disable-gpu', '--no-sandbox']);
+            $arguments = array_merge($defaultSettings, ['--disable-gpu', '--headless']);
         }
-        
+
         $options = (new ChromeOptions)->addArguments($arguments);
-        
+
         return RemoteWebDriver::create(
             'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
                 ChromeOptions::CAPABILITY, $options
