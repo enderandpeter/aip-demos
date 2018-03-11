@@ -14,7 +14,7 @@ abstract class DuskTestCase extends BaseTestCase
 
     public static function setUpBeforeClass()
     {
-        if(self::getOSEnvironment() == 'Docker'){
+        if(self::getOSEnvironment() == 'Homestead'){
             exec('Xvfb -ac :0 -screen 0 1280x1024x16 &', $output, $returnValue);
             $returnValue = intval($returnValue);
 
@@ -26,7 +26,7 @@ abstract class DuskTestCase extends BaseTestCase
 
     public static function tearDownAfterClass()
     {
-        if(self::getOSEnvironment() == 'Docker'){
+        if(self::getOSEnvironment() == 'Homestead'){
             $pids_Xvfb = exec('pidof Xvfb');
             if(!empty($pids_Xvfb)){
                 exec("kill -9 $pids_Xvfb");
@@ -48,8 +48,12 @@ abstract class DuskTestCase extends BaseTestCase
                 return 'Docker';
             }
 
-            if(str_contains($osInfo, 'trusty') /* TravisCI */){
+            if(str_contains($osInfo, 'trusty')  /* TravisCI */){
                 return 'TravisCI';
+            }
+
+            if(str_contains($osInfo, '16.04')  /* Homestead */){
+                return 'Homestead';
             }
         }
 
@@ -58,7 +62,9 @@ abstract class DuskTestCase extends BaseTestCase
 
     private static function isTextEnvironment()
     {
-        return self::getOSEnvironment() == 'Docker' || self::getOSEnvironment() == 'TravisCI';
+        return self::getOSEnvironment() == 'Docker' ||
+            self::getOSEnvironment() == 'TravisCI' ||
+            self::getOSEnvironment() == 'Homestead';
     }
 
     /**
@@ -82,8 +88,12 @@ abstract class DuskTestCase extends BaseTestCase
         $defaultSettings = [];
         $arguments = [];
 
-        if(self::isTextEnvironment()){
+        if(self::getOSEnvironment() == 'TravisCI'){
             $arguments = array_merge($defaultSettings, ['--disable-gpu', '--headless']);
+        }
+
+        if(self::getOSEnvironment() == 'Homestead'){
+            $arguments = array_merge($defaultSettings, ['--disable-gpu', '--no-sandbox']);
         }
 
         $options = (new ChromeOptions)->addArguments($arguments);
