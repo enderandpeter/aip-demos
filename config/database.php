@@ -68,7 +68,7 @@ return [
     		
     	'testing' => [
     		'driver' => 'sqlite',
-    		'database' => database_path('testing.sqlite'),
+    		'database' => is_dir('/tmp') ? '/tmp/testing.sqlite' : database_path('testing.sqlite'),
     		'prefix' => '',
     	],
 
