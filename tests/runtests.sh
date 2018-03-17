@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 php artisan dusk --group=currentdate && \
 php artisan dusk --group=gotodate && \
 php artisan dusk --group=gotocurrent && \

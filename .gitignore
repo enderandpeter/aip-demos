@@ -7,4 +7,5 @@
 Homestead.yaml
 Homestead.json
 .env
+.env.backup
 .vagrant
