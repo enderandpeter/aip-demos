@@ -186,9 +186,9 @@ Search My Backyard!
 								<h3 data-bind="text: activeMarker().locationDataViewModel().getService('yelp').serviceName"></h3>
 								<ul id="yelp_businesses" class="list-unstyled media-list" data-bind="foreach: activeMarker().locationDataViewModel().getService('yelp').data">
 									<li class="business_list_item media mt-3">
-									<div class="business_info media-left">
+									<div class="business_info align-self-start w-25">
 										<div class="business_img" data-bind="if: $data.image_url">
-											<img class="media-object mr-3" data-bind="attr: { src: $data.image_url.replace(/http:/, '') }">
+											<img class="media-object mr-3 w-100" data-bind="attr: { src: $data.image_url.replace(/http:/, '') }">
 										</div>
 									</div>
 									<div class="media-body">
@@ -196,25 +196,29 @@ Search My Backyard!
 											<h3>
 												<a data-bind="attr: { href: url }, text: name" target="_blank"></a>
 											</h3>
-											<address data-bind="text: location.display_address"></address>
+											<address data-bind="foreach: location.display_address">
+												<div data-bind="text: $data"></div>
+											</address>
 											<tel data-bind="text: $data.display_phone"></tel>
 										</header>
 										<div class="rating">
-											<img class="rating_img" data-bind="attr: { src: rating_img_url_small.replace(/http:/, '') }" />
+											{{-- <img class="rating_img" data-bind="attr: { src: rating_img_url_small.replace(/http:/, '') }" /> --}}
 											<span data-bind="text: rating"></span>
 										</div>
 
 										<div class="reviews">
 											<ul data-bind="foreach: reviews" class="list-unstyled media-list">
 												<li class="review_list_item media">
-													<div class="user media-left">
-														<img class="media-object mr-3" data-bind="attr: { src: user.image_url.replace(/http:/, ''), title: user.name }" />
+													<div class="user align-self-start w-25">
+														<div data-bind="if: user.image_url">
+															<img class="media-object mr-3 w-50 h-100" style="width: 50px; height: 50px" data-bind="attr: { src: user.image_url.replace(/http:/, ''), title: user.name }" />
+														</div>
 													</div>
 													<div class="media-body">
-														<div class="review_excerpt mr-3" data-bind="text: excerpt"></div>
+														<div class="review_excerpt mr-3" data-bind="text: text"></div>
 															<div class="review_rating">
-																<img data-bind="attr: { src: rating_image_small_url }" />
-																<span data-bind="text: rating"></span>
+																{{-- <img data-bind="attr: { src: rating_image_small_url }" /> --}}
+																<a data-bind="text: rating, attr: { href: url }"></a>
 															</div>
 														</div>
 													</li>
