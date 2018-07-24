@@ -58,25 +58,39 @@ Search My Backyard!
             </div>
         </div>
     </div>
+	<div id="siteinfo-modal" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Welcome to <em>Search My Backyard!</em>, a JavaScript-based web app for searching locations around the world and finding out more about them.
+						Please allow the web app to discover your location. Then click anywhere on the map to create a marker. Your location will be saved in the <strong>Saved Locations</strong> list.</p>
+					<p>Click the marker or marker icon in the list item to center on the location and show information from Google Maps, Yelp, and Wikipedia about the location. Click the Street icon
+						to go to a Google Street view panorama, if available. You can show/hide or remove individual markers in the list as well as click the list entries to select them and
+						use the buttons at the top of the <strong>Saved Locations</strong> section for bulk actions. Click <em>Clear/select markers</em> to select all markers or clear the selection.</p>
+					<p><strong>Note:</strong> Please close this infobox to enable the fullscreen button.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Got it!</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="map"></div>
 	<div id="uicontrols">
 		<div id="header" class="uicontrol">
 			<header>
 				<h1>Search My Backyard!</h1>
-				<button id="siteinfo_button" class="btn btn-info btn-sm" title="More Info" aria-label="More Info">
+				<button id="siteinfo_button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#siteinfo-modal" title="More Info" aria-label="More Info">
 					<i class="material-icons">error_outline</i>
 				</button>
 			</header>
-			<div class="hide" id="siteinfo">
-				<p>Welcome to <em>Search My Backyard!</em>, a JavaScript-based web app for searching locations around the world and finding out more about them.
-				Please allow the web app to discover your location. Then click anywhere on the map to create a marker. Your location will be saved in the <strong>Locations</strong> list.</p>
-				<p>Click the marker or marker icon in the list item to center on the location and show information from Google Maps, Yelp, and Wikipedia about the location. Click the Street icon
-				to go to a Google Street view panorama, if available. You can show/hide or remove individual markers in the list as well as click the list entries to select them and
-				use the buttons at the top of the <em>Saved Locations</em> section for bulk actions. Click <em>Clear/select markers</em> to select all markers or clear the selection.</p>
-				 <p><strong>Note:</strong> Please close this infobox to enable the fullscreen button.</p>
-			</div>
-			<div id="messages" data-bind="css: { show: type, error: type() === 'error', success: type() === 'success', warning: type() === 'warning' }, text: message">
-			</div>
+			{{-- <div id="messages" data-bind="css: { show: type, error: type() === 'error', success: type() === 'success', warning: type() === 'warning' }, text: message"> </div>--}}
+
 		</div>
 		<div id="marker_menu">
 			<form id="marker_menu_form">
@@ -188,10 +202,12 @@ Search My Backyard!
 									<li class="business_list_item media mt-3">
 									<div class="business_info align-self-start w-25">
 										<div class="business_img" data-bind="if: $data.image_url">
-											<img class="media-object mr-3 w-100" data-bind="attr: { src: $data.image_url.replace(/http:/, '') }">
+											<a data-bind="attr: { href: url }" target="_blank">
+												<img class="media-object mr-3 w-100" data-bind="attr: { src: $data.image_url.replace(/http:/, ''), alt: name }">
+											</a>
 										</div>
 									</div>
-									<div class="media-body">
+									<div class="media-body ml-3">
 										<header class="media-heading">
 											<h3>
 												<a data-bind="attr: { href: url }, text: name" target="_blank"></a>
@@ -202,23 +218,27 @@ Search My Backyard!
 											<tel data-bind="text: $data.display_phone"></tel>
 										</header>
 										<div class="rating">
-											{{-- <img class="rating_img" data-bind="attr: { src: rating_img_url_small.replace(/http:/, '') }" /> --}}
-											<span data-bind="text: rating"></span>
+											<a data-bind="attr: { href: url }" target="_blank">
+												<img class="rating_img" data-bind="attr: { src: '/resources/search-my-backyard/yelp/ratings/business/' + rating + '.png', alt: 'Rating: ' + rating, title: rating }" />
+											</a>
 										</div>
 
 										<div class="reviews">
 											<ul data-bind="foreach: reviews" class="list-unstyled media-list">
-												<li class="review_list_item media">
+												<li class="review_list_item media mb-3">
 													<div class="user align-self-start w-25">
 														<div data-bind="if: user.image_url">
-															<img class="media-object mr-3 w-50 h-100" style="width: 50px; height: 50px" data-bind="attr: { src: user.image_url.replace(/http:/, ''), title: user.name }" />
+															<a data-bind="attr: { href: url }" target="_blank">
+																<img class="media-object mr-3 w-50 h-100" style="width: 50px; height: 50px" data-bind="attr: { src: user.image_url.replace(/http:/, ''), title: user.name, alt: user.name }" />
+															</a>
 														</div>
 													</div>
 													<div class="media-body">
 														<div class="review_excerpt mr-3" data-bind="text: text"></div>
 															<div class="review_rating">
-																{{-- <img data-bind="attr: { src: rating_image_small_url }" /> --}}
-																<a data-bind="text: rating, attr: { href: url }"></a>
+																<a data-bind="attr: { href: url }" target="_blank">
+																	<img data-bind="attr: { src: '/resources/search-my-backyard/yelp/ratings/user/' + rating + '.png', alt: 'Rating: ' + rating, title: rating }" />
+																</a>
 															</div>
 														</div>
 													</li>

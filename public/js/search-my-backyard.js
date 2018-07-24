@@ -433,7 +433,7 @@ $(function () {
         ;
 
         var errorViewModel = new ErrorViewModel();
-        ko.applyBindings(errorViewModel, $('#messages')[0]);
+        //ko.applyBindings(errorViewModel, $('#messages')[0]);
 
         if (!navigator.geolocation) {
             errorViewModel.setMessage(
@@ -1141,15 +1141,7 @@ $(function () {
          * Create the Header UI Control
          */
         var headerElements = {
-            elements : [ header ],
-            handlers : [ function () {
-                return google.maps.event.addDomListener(siteinfo_button,
-                        'click', function (event) {
-                            var siteinfo = document.querySelector('#siteinfo');
-                            siteinfo.classList.toggle('hide');
-                            google.maps.event.trigger(map, 'resize');
-                        });
-            } ]
+            elements : [ header ]
         };
 
         /*
@@ -1163,7 +1155,7 @@ $(function () {
          * Initialize the custom UI controls
          */
         var headerControl = new UIControl(headerElements,
-                google.maps.ControlPosition.TOP_CENTER);
+                google.maps.ControlPosition.RIGHT_TOP);
         var markerListControl = new UIControl(markerListElements,
                 google.maps.ControlPosition.RIGHT_TOP);
 
