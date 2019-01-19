@@ -7,7 +7,7 @@ notifications:
     on_failure: change
 
 php:
-  - 7.2
+  - 7.3
 
 addons:
    chrome: stable

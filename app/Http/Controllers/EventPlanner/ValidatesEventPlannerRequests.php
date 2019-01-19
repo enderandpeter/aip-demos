@@ -34,7 +34,7 @@ trait ValidatesEventPlannerRequests{
 				$messageName = "validation.$rulename";
 				switch( $rulename ){
 					case 'unique':
-						continue;
+						continue 2;
 					case 'regex':
 						$messageName = "validation.eventplanner_password";
 						break;
