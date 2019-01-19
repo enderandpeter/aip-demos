@@ -31,7 +31,6 @@ body {
 #itemGrid .description {
     font-size: 1.2em;
     font-weight: bold;
-    margin-top: 2em;
 }
 .itemImage {
     max-width: 30%;

@@ -20,20 +20,8 @@ Event Planner
     </div>
 @endif
 
-@if ($logged_in)	
-	<div id="banner">
-		<div id="user_controls">
-			<div id="user_info">
-				<span id="user_greeting">Hello, {{ $user->name }}!</span>
-				<span id="auth_controls">
-					<form id="logout-form" action="{{ route('event-planner.logout') }}" method="POST">
-						<button id="logout-button">Logout</button>
-					    {{ csrf_field() }}
-                    </form>
-				</span>
-			</div>
-		</div>
-	</div>
+@if ($logged_in)
+	@include('event-planner.banner')
 	
 	@isset ( $deleted )
 	<div class="alert alert-danger alert-dismissible fade show" role="alert">

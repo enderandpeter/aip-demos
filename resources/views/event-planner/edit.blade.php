@@ -25,19 +25,7 @@ Event Planner
 
 @section('body-content')
 
-<div id="banner">
-	<div id="user_controls">
-		<div id="user_info">
-			<span id="user_greeting">Hello, {{ $user->name }}!</span>
-			<span id="auth_controls">
-				<form id="logout-form" action="{{ route('event-planner.logout') }}" method="POST">
-					<button id="logout-button">Logout</button>
-				    {{ csrf_field() }}
-                   </form>
-			</span>
-		</div>
-	</div>
-</div>
+@include('event-planner.banner')
 
 @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -56,37 +44,37 @@ Event Planner
 		<input type="hidden" name="_method" value="PUT">
 		<div class="form-group mb-2">
 			<label for="title">Name of Event </label>
-			<input type="text" autofocus name="name" id="name" required maxlength="191" class="form-control" value="{{ $name or old('name') }}" />
+			<input type="text" autofocus name="name" id="name" required maxlength="191" class="form-control" value="{{ $name ?? old('name') }}" />
 		</div>
 		<div class="form-group">
 			<label for="type">Type of Event </label>
-			<input type="text" name="type" id="type" required maxlength="191" class="form-control" value="{{ $type or old('type') }}" />
+			<input type="text" name="type" id="type" required maxlength="191" class="form-control" value="{{ $type ?? old('type') }}" />
 			<small id="event-type-help" class="form-text">E.g., Birthday Party, Conference Talk, Wedding, etc.</small>
 		</div>
 		<div class="form-group">
 			<label for="host">Host of the Event </label>
-			<input type="text" name="host" required maxlength="191" class="form-control" value="{{ $host or old('host') }}" />
+			<input type="text" name="host" required maxlength="191" class="form-control" value="{{ $host ?? old('host') }}" />
 			<small id="event-type-help" class="form-text">E.g., An individual’s name or an organization, etc.</small>
 		</div>
 		<div class="form-group">
 			<label for="start_date">Start Date / Time </label>
-			<input type="text" name="start_date" required id="start_date" value="{{ $start_date or old('start_date') }}" class="form-control date" />
+			<input type="text" name="start_date" required id="start_date" value="{{ $start_date ?? old('start_date') }}" class="form-control date" />
 		</div>
 		<div class="form-group">
 			<label for="end_date">End Date / Time </label>
-			<input type="text" name="end_date" required id="end_date" class="form-control date" value="{{ $end_date or old('end_date') }}" />
+			<input type="text" name="end_date" required id="end_date" class="form-control date" value="{{ $end_date ?? old('end_date') }}" />
 		</div>
 		<div class="form-group">
 			<label for="guest_list">Guest List </label>
-			<textarea id="guest_list" name="guest_list" required maxlength="1000" class="form-control">{{ $guest_list or old('guest_list') }}</textarea>
+			<textarea id="guest_list" name="guest_list" required maxlength="1000" class="form-control">{{ $guest_list ?? old('guest_list') }}</textarea>
 		</div>
 		<div class="form-group">
 			<label for="location">Location</label>
-			<input type="text" id="location" name="location" maxlength="191" required class="form-control" value="{{ $location or old('location') }}" />
+			<input type="text" id="location" name="location" maxlength="191" required class="form-control" value="{{ $location ?? old('location') }}" />
 		</div>
 		<div class="form-group">
 			<label for="guest_message">Message</label>
-			<textarea id="guest_message" name="guest_message" class="form-control" maxlength="5000">{{ $guest_message or old('guest_message') }}</textarea>
+			<textarea id="guest_message" name="guest_message" class="form-control" maxlength="5000">{{ $guest_message ?? old('guest_message') }}</textarea>
 			<small id="message-help" class="form-text">An optional message to the guests with additional information about the event</small>
 		</div>
 		<button type="submit" class="btn btn-primary float-left mb-5">Update</button>				

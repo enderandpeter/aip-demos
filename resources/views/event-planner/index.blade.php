@@ -21,19 +21,7 @@ Event Planner
 @endif
 
 @if ( $user )	
-	<div id="banner">
-		<div id="user_controls">
-			<div id="user_info">
-				<span id="user_greeting">Hello, {{ $user->name }}!</span>
-				<span id="auth_controls">
-					<form id="logout-form" action="{{ route('event-planner.logout') }}" method="POST">
-						<button id="logout-button">Logout</button>
-					    {{ csrf_field() }}
-                    </form>
-				</span>
-			</div>
-		</div>
-	</div>
+	@include('event-planner.banner')
 	
 	<div class="list-group mt-5 mb-5" id="calendarevent-list">
 		@foreach( $calendarevents as $calendarevent )

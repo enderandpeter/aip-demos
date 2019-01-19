@@ -20,19 +20,7 @@ Event Planner
     </div>
 @endif
 
-<div id="banner">
-	<div id="user_controls">
-		<div id="user_info">
-			<span id="user_greeting">Hello, {{ $user->name }}!</span>
-			<span id="auth_controls">
-				<form id="logout-form" action="{{ route( 'event-planner.logout' ) }}" method="POST">
-					<button id="logout-button">Logout</button>
-				    {{ csrf_field() }}
-                   </form>
-			</span>
-		</div>
-	</div>
-</div>
+@include('event-planner.banner')
 
 @isset ( $success )
 	<div class="alert alert-success alert-dismissible fade show" role="alert">

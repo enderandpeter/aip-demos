@@ -16,8 +16,8 @@ Effective JavaScript: Frogger
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
+				<h2 class="modal-title">About this game</h2>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h2 class="modal-title">About this game</h2>
 		      </div>
 		      <div class="modal-body">
 		        <p>This is the <a href="https://classroom.udacity.com/courses/ud015/lessons/3072058665/concepts/30962186380923" target="_blank">final project</a> for the <a href="https://www.udacity.com/course/object-oriented-javascript--ud015" target="_blank">Object-Oriented JavaScript Udacity course</a>. You can find other demonstrations on the <a href="/">Demo site.</a></p>
@@ -26,32 +26,32 @@ Effective JavaScript: Frogger
 			    	Choose your character with the Left and Right arrow keys. Press the Up or Down arrow key to select the character. The game is reminiscent of Frogger in that the directional arrows will
 			    	move you around the map. 
 			    </p>
-			    	<div id="itemGrid" class="container-fluid">
-			    		<div class="row">
+			    	<div id="itemGrid" class="container-fluid mb-3">
+			    		<div class="row align-items-center">
 			    			<div class="col-md-6 image-column">
 			    				<img class="itemImage" src="/resources/frogger/images/Gem Blue.png">
 			    			</div>			    					    		
 			    			<div class="col-md-6 description">100 points</div>
 			    		</div>
-			    		<div class="row">
+			    		<div class="row align-items-center">
 			    			<div class="col-md-6 image-column">
 			    				<img class="itemImage" src="/resources/frogger/images/Gem Green.png">
 			    			</div>			    		
 			    			<div class="col-md-6 description">200 points</div>
 			    		</div>
-			    		<div class="row">
+			    		<div class="row align-items-center">
 			    			<div class="col-md-6 image-column">
 			    				<img class="itemImage" src="/resources/frogger/images/Gem Orange.png">
 			    			</div>
 			    			<div class="col-md-6 description">300 points</div>
 			    		</div>			
-			    		<div class="row">
+			    		<div class="row align-items-center">
 			    			<div class="col-md-6 image-column">
 			    				<img class="itemImage" src="/resources/frogger/images/Heart.png">
 			    			</div>
 			    			<div class="col-md-6 description">300 points, Extra Life</div>
 			    		</div>
-			    		<div class="row">
+			    		<div class="row align-items-center">
 			    			<div class="col-md-6 image-column">
 			    				<img class="itemImage" src="/resources/frogger/images/Rock.png">
 			    			</div>
@@ -75,7 +75,7 @@ Effective JavaScript: Frogger
 			    </p>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Got it!</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">Got it!</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -93,7 +93,7 @@ Effective JavaScript: Frogger
 	    <label for="soundControl">Sound</label>
 	  	<input type="checkbox" id="soundControl" value="Sound" data-bind="checked: gameSettings.soundOn(), click: gameSettings.toggleSound">
 	  </div>
-	  <button type="button" id="aboutModalButton" class="btn btn-default btn-lg">
+	  <button type="button" id="aboutModalButton" class="btn btn-primary">
   		<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> About this game
 	  </button>   
     </div>

@@ -9,9 +9,9 @@
 @endpush
 
 @include('css.main')
-@include('css.bootstrap')
+@include('css.bootstrap4')
 
-@include('scripts.bootstrap')
+@include('scripts.bootstrap4')
 @include('scripts.ko')
 @include('scripts.jquery')
 @push ('scripts')	
