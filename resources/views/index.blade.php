@@ -27,12 +27,7 @@
         		<dd><a href="search-my-backyard">Search my Backyard!</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/javascript-design-patterns--ud989">JavaScript Design Patterns</a> final project</dd>
         		<dd><a href="frogger">Effective JavaScript: Frogger</a> &mdash; <a target="_blank" href="https://www.udacity.com/course/object-oriented-javascript--ud015">Object-Oriented JavaScript</a> final project</dd>
         		<dd><a href="event-planner">Event Planner</a> — <a href="https://www.udacity.com/course/building-high-conversion-web-forms--ud890" target="_blank">Building High Conversion Web Forms</a> final project</dd>
-		</div>
-		</div>
-		<div class="row">
-			<dt class="col-3 col-sm-2"><a target="_blank" href="http://booj.com/">Booj</a></dt>
-		<div class="col-8">
-			<dd><a target="_blank" href="{{ env( 'BRL_URL', 'http://brl.aninternetpresence.net') }}">Booj Reading List</a> &mdash; <a target="_blank" href="https://github.com/enderandpeter/boojbooks">Application Code Test</a></dd>
+            	<dd><a href="{{ env('WYR_URL') }}" target="_blank">Would You Rather!</a> — A small example site for the <em>Would You Rather...</em> game for the <a href="https://www.udacity.com/course/react-nanodegree--nd019" target="_blank">React Nanodegree</a> second project</dd>
 		</div>
 		</div>
 		<div class="row">
