@@ -7,6 +7,7 @@ use Exception;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Illuminate\Support\Str;
 
 abstract class DuskTestCase extends BaseTestCase
 {
@@ -44,15 +45,15 @@ abstract class DuskTestCase extends BaseTestCase
             $kernelName = exec('uname -r');
             $osInfo = exec('lsb_release -r');
 
-            if(str_contains($kernelName, ['moby', 'linuxkit']) /* Docker */){
+            if(Str::contains($kernelName, ['moby', 'linuxkit']) /* Docker */){
                 return 'Docker';
             }
 
-            if(str_contains($osInfo, 'trusty')  /* TravisCI */){
+            if(Str::contains($osInfo, 'trusty')  /* TravisCI */){
                 return 'TravisCI';
             }
 
-            if(str_contains($osInfo, '16.04')  /* Homestead */){
+            if(Str::contains($osInfo, '16.04')  /* Homestead */){
                 return 'Homestead';
             }
         }

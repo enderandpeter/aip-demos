@@ -39,6 +39,7 @@ return [
         'eventplanner_api' => [
             'driver' => 'token',
             'provider' => 'eventplanner_users',
+            'hash' => false,
         ],
     	'eventplanner' => [
     		'driver' => 'session',

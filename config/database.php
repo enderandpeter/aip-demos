@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Str;
 
 return [
 
@@ -48,12 +49,14 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
+            'url' => env('DATABASE_URL'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
         ],
 
         'mysql' => [
             'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT_NUM', '3308'),
             'database' => env('DB_DATABASE', 'forge'),
@@ -64,6 +67,9 @@ return [
             'prefix' => '',
             'strict' => false,
             'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
     		
     	'testing' => [
@@ -74,6 +80,7 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'forge'),
@@ -82,6 +89,19 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
+        ],
+
+        'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
         ],
 
     ],
@@ -114,15 +134,28 @@ return [
 
         'cluster' => false,
 
-    	'client' => 'predis',
+        'client' => env('REDIS_CLIENT', 'predis'),
+
+        'options' => [
+            'cluster' => env('REDIS_CLUSTER', 'predis'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        ],
     		
         'default' => [
+            'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', 'localhost'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => 0,
         ],
 
+        'cache' => [
+            'url' => env('REDIS_URL'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 1),
+        ],
     ],
 
 ];

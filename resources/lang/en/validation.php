@@ -38,6 +38,7 @@ return [
     'digits_between'       => 'The :attribute must be between :min and :max digits.',
     'distinct'             => 'The :attribute field has a duplicate value.',
     'email'                => 'The :attribute must be a valid email address.',
+    'ends_with' => 'The :attribute must end with one of the following: :values',
     'exists'               => 'The selected :attribute is invalid.',
     'filled'               => 'The :attribute field is required.',
     'image'                => 'The :attribute must be an image.',
