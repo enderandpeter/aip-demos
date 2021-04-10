@@ -10,7 +10,7 @@ exhibitions. Projects that were inspired by online code schools will be noted.
 An interactive map powered by the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial). After a user
 agrees to share their location, it will center to that location. Click the map to create markers which show up in the list. Click a marker or the
 marker icon for the list item to center to the location and show an info window with [Yelp reviews](http://www.yelp.com/developers/documentation), [Street View images](https://developers.google.com/maps/documentation/streetview/intro), and [Wikipedia article images](https://www.mediawiki.org/wiki/API:Main_page) for that area. Click the street icon to open a Street View at the marker. You can also show/hide markers and
-remove the individually or in bulk.
+remove them individually or in bulk.
 
 Code can be found at `resources/views/search-my-backyard.blade.php`
 
@@ -29,7 +29,7 @@ Typically, you can run the [Laravel Dusk](https://laravel.com/docs/5.4/dusk) tes
     
 <a href="https://demos.aninternetpresence.net/frogger" target="_blank"><h2>Effective JavaScript: Frogger</h2></a>
 
-An HTML5 Canvas / JavaScript game created from provided and a few created assets. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the level, use the directional keys to move around and collect gems to score points. Hearts replinish health and points. Keep making it across the other side until you run out of life or points.
+An HTML5 Canvas / JavaScript game created from a template and assets that were provided by Udacity. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the level, use the directional keys to move around and collect gems to score points. Hearts replinish health and points. Keep making it across the other side until you run out of life or points.
 
 This is the [final project](https://classroom.udacity.com/courses/ud015/lessons/3072058665/concepts/31018886370923) for [Object-Oriented JavaScript](https://www.udacity.com/course/object-oriented-javascript--ud015).
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\EventPlanner;
 
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase
 {

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,3 +38,6 @@ Route::get('flappy-bird', function () {
 Route::get('jack-the-giant-player', function () {
     return view('jack-the-giant-player');
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

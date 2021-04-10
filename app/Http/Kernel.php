@@ -17,7 +17,10 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
     	\Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
     	\App\Http\Middleware\TrimStrings::class,
-    	\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class
+    	\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\TrustProxies::class,
+        // \App\Http\Middleware\TrustHosts::class,
+        \Fruitcake\Cors\HandleCors::class
     ];
 
     /**
@@ -50,7 +53,7 @@ class Kernel extends HttpKernel
     	],
         'eventplanner_api' => [
             'throttle:60,1',
-        	'bindings'
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
@@ -68,6 +71,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     	'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class
     ];

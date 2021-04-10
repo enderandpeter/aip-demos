@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class CreateEventplannerPasswordResetsTable extends Migration
 {
@@ -13,6 +14,7 @@ class CreateEventplannerPasswordResetsTable extends Migration
     public function up()
     {
         Schema::create('eventplanner_password_resets', function (Blueprint $table) {
+            $table->id();
             $table->string('email')->index();
             $table->string('token')->index();
             $table->timestamp('created_at');
