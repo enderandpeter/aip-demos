@@ -16,13 +16,13 @@ class ForgotPasswordController extends SiteForgetPasswordController
     {
         $this->middleware('guest');
     }
-    
+
     /**
      * Get the broker to be used during password reset.
      *
-     * @return PasswordBroker
+     * @return \Illuminate\Contracts\Auth\PasswordBroker
      */
-    protected function broker()
+    public function broker()
     {
     	return Password::broker('eventplanner_users');
     }

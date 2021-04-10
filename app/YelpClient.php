@@ -6,7 +6,7 @@ use GuzzleHttp\Exception\RequestException;
 
 /**
  * Retrieves data from the Yelp Search and Business APIs.
- * 
+ *
  * @author Spencer
  *
  */
@@ -17,7 +17,7 @@ class YelpClient{
 
 	public $status = '';
 	public $data = [];
-	
+
 	public function __construct($location = []){
 		if(empty($location)){
 			$this->status = 'error';
@@ -41,13 +41,13 @@ class YelpClient{
         );
 	}
 
-	/**
-	 * Makes a request to the Yelp API and returns the response
-	 *
-	 * @param    $path    The path of the APi after the domain
-	 * @return   The JSON response from the request
-	 */
-	public function request($path) {
+    /**
+     * Makes a request to the Yelp API and returns the response
+     *
+     * @param    $path string The path of the APi after the domain
+     * @return  string
+     */
+	public function request(string $path) {
 		try{
             $response = $this->yelp_api_client->get($path);
 

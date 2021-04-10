@@ -8,14 +8,14 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Carbon\Carbon;
 
-use App\EventPlanner\User as User;
+use App\EventPlanner\EventPlannerUser as User;
 use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
 use App\EventPlanner\CalendarEvent;
 
 class CreateCalendarEventTest extends DuskTestCase
 {
 	use DatabaseMigrations, ValidatesEventPlannerRequests;
-	
+
     /**
      * Check that the form for creating an event displays and operates correctly.
      *
@@ -24,15 +24,15 @@ class CreateCalendarEventTest extends DuskTestCase
      * @return void
      */
     public function testRequiredFields()
-    {    	
+    {
         $this->browse( function ( Browser $browser ) {
-        	$user = factory( User::class )->create();
+        	$user = factory(EventPlannerUser::class )->create();
         	$date = Carbon::now();
-        	
+
         	$calendarHeading = $date->toFormattedDateString();
-        	
+
         	$validationArray = $this->getValidationMessagesArray( 'create-event' );
-        	
+
             $browser->loginAs( $user, 'eventplanner' )
             	->visit( route( 'event-planner.events.create' ) )
             	->assertSee( $calendarHeading )
@@ -55,38 +55,38 @@ class CreateCalendarEventTest extends DuskTestCase
             	->assertSee( $validationArray[ 'location' ][ 'required' ] );
         });
     }
-    
+
     /**
      * Test to make sure user is warned if date input is out of order.
-     * 
+     *
      * @group create-startdatefield
      * @group loginas
      * @return void
      */
     public function testStartDateField(){
-    	$this->browse( function ( Browser $browser ) {	    	
-	    	$date = Carbon::now();	    	
-	    	$user = factory( User::class )->create();
-	    	
+    	$this->browse( function ( Browser $browser ) {
+	    	$date = Carbon::now();
+	    	$user = factory(EventPlannerUser::class )->create();
+
 	    	$calendarHeading = $date->toFormattedDateString();
-	    	
-	    	$start_date = clone $date;	    	
+
+	    	$start_date = clone $date;
 	    	$start_date->hour( 12 )->minute( 0 );
-	    	
+
 	    	$end_date = clone $date;
 	    	$end_date->hour( 11 )->minute( 0 );
 	    	$date_format = CalendarEvent::$date_format;
-	    	
+
 	    	$validationArray = $this->getValidationMessagesArray( 'create-event' );
-	    	
+
 	    	$browser->loginAs( $user, 'eventplanner' )
 	    		->visit( route( 'event-planner.events.create' ) )
 	    		->type( 'end_date', $end_date->format( $date_format ) )
 	    		->type( 'start_date', $start_date->format( $date_format ) )
-	    		->assertSee( str_replace( ":date", "end_date", $validationArray[ 'start_date' ][ 'before_or_equal' ] ) );	    		
+	    		->assertSee( str_replace( ":date", "end_date", $validationArray[ 'start_date' ][ 'before_or_equal' ] ) );
     	});
     }
-    
+
     /**
      * Test to make sure user is warned if date input is out of order.
      *
@@ -97,19 +97,19 @@ class CreateCalendarEventTest extends DuskTestCase
     public function testEndDateField(){
     	$this->browse( function ( Browser $browser ) {
     		$date = Carbon::now();
-    		$user = factory( User::class )->create();
-    		
+    		$user = factory(EventPlannerUser::class )->create();
+
     		$calendarHeading = $date->toFormattedDateString();
-    		
+
     		$start_date = clone $date;
     		$start_date->hour( 12 )->minute( 0 );
-    		
+
     		$end_date = clone $date;
     		$end_date->hour( 11 )->minute( 0 );
     		$date_format = CalendarEvent::$date_format;
-    		
+
     		$validationArray = $this->getValidationMessagesArray( 'create-event' );
-    		
+
     		$browser->loginAs( $user, 'eventplanner' )
     		->visit( route( 'event-planner.events.create' ) )
     		->type( 'start_date', $start_date->format( $date_format ) )
@@ -117,10 +117,10 @@ class CreateCalendarEventTest extends DuskTestCase
     		->assertSee( str_replace( ":date", "start_date", $validationArray[ 'end_date' ][ 'after_or_equal' ] ) );
     	});
     }
-    
+
     /**
      * Test the successful creation of a calendar event
-     * 
+     *
      * @group create-success
      * @group loginas
      * @return void
@@ -128,25 +128,25 @@ class CreateCalendarEventTest extends DuskTestCase
     public function testSuccessfulCreation(){
     	$this->browse( function ( Browser $browser ) {
     		$date = Carbon::now();
-    		$user = factory( User::class )->create();
-    		
+    		$user = factory(EventPlannerUser::class )->create();
+
     		$calendarHeading = $date->toFormattedDateString();
-    		
+
     		$name = str_random( 20 );
     		$type = str_random( 30 );
     		$host = str_random( 40 );
     		$guest_list = str_random( 500 );
     		$location = str_random( 20 );
     		$guest_message = str_random( 300 );
-    		
+
     		$start_date = clone $date;
     		$start_date->hour( 11 )->minute( 0 );
-    		
+
     		$end_date = clone $date;
     		$end_date->hour( 12 )->minute( 0 );
-    		
+
     		$date_format = CalendarEvent::$date_format;
-    		
+
     		$browser->loginAs( $user, 'eventplanner' )
 	    		->visit( route( 'event-planner.events.create' ) )
 	    		->type( 'name', $name )
@@ -158,7 +158,7 @@ class CreateCalendarEventTest extends DuskTestCase
 	    		->click( '.ui-datepicker-close' )
 	    		->type( 'guest_list', $guest_list )
 	    		->type( 'location', $location)
-	    		->type( 'guest_message', $guest_message )	    		
+	    		->type( 'guest_message', $guest_message )
 	    		->press( 'Create' )
 	    		->assertRouteIs( 'event-planner.events.show', CalendarEvent::first()->id )
 	    		->assertSee( 'Well done!' )

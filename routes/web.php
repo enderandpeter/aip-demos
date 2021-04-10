@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LocationDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ Route::get('search-my-backyard', function () {
 	return view('search-my-backyard');
 });
 
-Route::post('search-my-backyard', ['uses' => 'LocationDataController@postLocation', 'as' => 'postLocation']);
+Route::post('search-my-backyard', ['uses' => [LocationDataController::class, 'postLocation'], 'as' => 'postLocation']);
 
 Route::get('frogger', function () {
 	return view('frogger');
@@ -40,4 +41,6 @@ Route::get('jack-the-giant-player', function () {
 });
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

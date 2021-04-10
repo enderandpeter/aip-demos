@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\EventPlanner\Auth;
 
-use App\EventPlanner\User;
+use App\EventPlanner\EventPlannerUser;
 use App\Http\Controllers\Auth\RegisterController as SiteRegisterController;
 use App\EventPlanner\ValidationData;
 use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class RegisterController extends SiteRegisterController
 {
 	use ValidatesEventPlannerRequests;
-	
+
     /**
      * The authentication guard that should be used.
      *
@@ -21,7 +21,7 @@ class RegisterController extends SiteRegisterController
     {
     	return Auth::guard('eventplanner');
     }
-    
+
     /**
      * Where to redirect users after login / registration.
      *
@@ -52,13 +52,13 @@ class RegisterController extends SiteRegisterController
     	 * shown by the frontend validation.
     	 */
     	$messages = $this->getValidationMessagesArray('register');
-    	 
+
     	$viewData = [
     			'validationMessages' => json_encode( $messages )
     	];
     	return view('auth.register', $viewData);
     }
-    
+
     /**
 	 * Get a validator for an incoming registration request.
 	 *
@@ -73,16 +73,16 @@ class RegisterController extends SiteRegisterController
 		$validationData = new ValidationData();
 		return Validator::make($data, $validationData->getData('register'), $messages);
 	}
-	
+
 	/**
 	 * Create a new user instance after a valid registration.
 	 *
 	 * @param  array  $data
-	 * @return User
+	 * @return EventPlannerUser
 	 */
 	protected function create(array $data)
 	{
-		return User::create([
+		return EventPlannerUser::create([
 				'name' => $data['name'],
 				'email' => $data['email'],
 				'password' => bcrypt($data['password']),

@@ -1,12 +1,10 @@
 <?php
 
-namespace App\EventPlanner;
+namespace App\Models;
 
-use App\User as SiteUser;
-
-class User extends SiteUser{	
+class EventPlannerUser extends User{
 	protected $table = 'eventplanner_users';
-	
+
 	/**
 	 * Get all calendar events for this user
 	 *

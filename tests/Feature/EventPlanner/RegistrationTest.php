@@ -6,18 +6,18 @@ use Tests\TestCase;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-use App\EventPlanner\User as User;
+use App\EventPlanner\EventPlannerUser as User;
 
 /**
  * Confirm basic endpoints and behavior for Event Planner user registration
- * 
+ *
  * @author Spencer
  *
  */
 class RegistrationTest extends TestCase
 {
 	use DatabaseMigrations;
-	
+
 	/**
 	 * A basic test example.
 	 *
@@ -38,9 +38,9 @@ class RegistrationTest extends TestCase
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
 		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
-		$this->assertNull( User::first() );
+		$this->assertNull(EventPlannerUser::first() );
 	}
-	
+
 	/**
 	 * Test the maximum length restraints for the registration form
 	 *
@@ -62,9 +62,9 @@ class RegistrationTest extends TestCase
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );		
-		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
-		
+		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
+		$this->assertTrue(EventPlannerUser::where('name', $name )->get()->isEmpty() );
+
 		$clearpass = str_random( 3 );
 		/*
 		 * Confirm the error session keys when explicitly posting the registration form
@@ -79,18 +79,18 @@ class RegistrationTest extends TestCase
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
 		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
-		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
+		$this->assertTrue(EventPlannerUser::where('name', $name )->get()->isEmpty() );
 	}
-	
+
 	/**
 	 * Test the rules for validating the password
-	 * 
+	 *
 	 * @return void
 	 */
 	public function testPasswordValidation(){
 		$password = str_random( 7 );
 		$password_confirmation = str_random( 8 );
-		
+
 		/*
 		 * Confirm the error session keys when explicitly posting the registration form
 		 */
@@ -104,7 +104,7 @@ class RegistrationTest extends TestCase
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( [ 'password' ] );			
-		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
+		->assertSessionHasErrors( [ 'password' ] );
+		$this->assertTrue(EventPlannerUser::where('name', $name )->get()->isEmpty() );
 	}
 }

@@ -71,7 +71,7 @@ return [
        // ],
     	'eventplanner_users' => [
     		'driver' => 'eloquent',
-    		'model' => App\EventPlanner\User::class,
+    		'model' => App\Models\EventPlannerUser::class,
     	]
 
         // 'users' => [

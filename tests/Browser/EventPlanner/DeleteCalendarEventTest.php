@@ -8,13 +8,13 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Carbon\Carbon;
 
-use App\EventPlanner\User as User;
+use App\EventPlanner\EventPlannerUser as User;
 use App\EventPlanner\CalendarEvent;
 
 class DeleteCalendarEventTest extends DuskTestCase
 {
 	use DatabaseMigrations;
-   
+
 	/**
 	 * Confirm that a calendar event can be deleted
 	 *
@@ -26,10 +26,10 @@ class DeleteCalendarEventTest extends DuskTestCase
 	{
 		$this->browse( function ( Browser $browser ) {
 			$caldendarEvent = factory( CalendarEvent::class )->create();
-			$user = User::find( $caldendarEvent->user_id );
-			
+			$user = EventPlannerUser::find($caldendarEvent->user_id );
+
 			$calendarHeading = $caldendarEvent->start_date->toFormattedDateString();
-			
+
 			$browser->loginAs( $user, 'eventplanner' )
 			->visit( route( 'event-planner.events.edit', $caldendarEvent->id ) )
 			->assertSee( $calendarHeading )
@@ -37,11 +37,11 @@ class DeleteCalendarEventTest extends DuskTestCase
 			->press( 'Delete Event' )
 			->assertRouteIs( 'event-planner' )
 			->assertSee( 'Done!' );
-			
+
 			$this->assertNull( CalendarEvent::find( $caldendarEvent->id ), 'The deleted calendar event still exists.' );
-		});	
+		});
 	}
-	
+
 	/**
 	 * Confirm that the user can cancel the deletion of a calendar event
 	 *
@@ -53,17 +53,17 @@ class DeleteCalendarEventTest extends DuskTestCase
 	{
 		$this->browse( function ( Browser $browser ) {
 			$caldendarEvent = factory( CalendarEvent::class )->create();
-			$user = User::find( $caldendarEvent->user_id );
-			
+			$user = EventPlannerUser::find($caldendarEvent->user_id );
+
 			$calendarHeading = $caldendarEvent->start_date->toFormattedDateString();
-			
+
 			$browser->loginAs( $user, 'eventplanner' )
 			->visit( route( 'event-planner.events.edit', $caldendarEvent->id ) )
 			->assertSee( $calendarHeading )
 			->press( 'Delete' )
 			->press( 'Cancel' )
 			->assertRouteIs( 'event-planner.events.edit', $caldendarEvent->id );
-			
+
 			$this->assertNotNull( CalendarEvent::find( $caldendarEvent->id ), 'The calendar event was deleted.' );
 		});
 	}
