@@ -9,22 +9,24 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
 
-use App\EventPlanner\EventPlannerUser as User;
+use App\Models\EventPlanner\User;
+use Throwable;
 
 class CalendarNavigationTest extends DuskTestCase
 {
 	use DatabaseMigrations;
 
-	/**
+    /**
      * Test to confirm that current date appears on default event page
      *
      * @group currentdate
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testCurrentDate()
     {
-    	$user = factory(EventPlannerUser::class )->create();
+    	$user = User::factory()->create();
 
     	$this->browse(function ( Browser $browser ) use ( $user ) {
     		$date = Carbon::now();
@@ -54,9 +56,10 @@ class CalendarNavigationTest extends DuskTestCase
      * @group gotodate
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testGoToDate(){
-    	$user = factory(EventPlannerUser::class )->create();
+    	$user = User::factory()->create();
 
     	$this->browse( function ( Browser $browser ) use ( $user ) {
     		$faker = Faker::create();
@@ -79,10 +82,11 @@ class CalendarNavigationTest extends DuskTestCase
      * @group gotocurrent
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testGoToCurrentDate(){
 
-    	$user = factory(EventPlannerUser::class )->create();
+    	$user = User::factory()->create();
 
     	$this->browse( function ( Browser $browser ) use ( $user ) {
     		$date = Carbon::now();

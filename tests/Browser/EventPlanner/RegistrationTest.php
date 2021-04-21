@@ -4,22 +4,24 @@ namespace Tests\Browser\EventPlanner;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-use App\EventPlanner\EventPlannerUser as User;
+use App\Models\EventPlanner\User;
+use Illuminate\Support\Str;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Faker\Factory as FakerFactory;
 
 use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
+use Throwable;
 
 class RegistrationTest extends DuskTestCase
 {
 	use DatabaseMigrations, ValidatesEventPlannerRequests;
 
-	/**
-	 * Make sure empty fields return the expected errors
-	 * @group register-required
-	 * @return void
-	 */
+    /**
+     * Make sure empty fields return the expected errors
+     * @group register-required
+     * @return void
+     * @throws Throwable
+     */
 	public function testRequiredFields()
 	{
 		$this->browse(function ( Browser $browser ) {
@@ -43,19 +45,20 @@ class RegistrationTest extends DuskTestCase
 				->assertSee( $validationArray[ 'name' ][ 'required' ] )
 				->assertSee( $validationArray[ 'email' ][ 'required' ] )
 				->assertSee( $validationArray[ 'password' ][ 'required' ] );
-			$this->assertNull(EventPlannerUser::first() );
+			$this->assertNull(User::first() );
 
 		});
 
 	}
 
-	/**
-	 * Test the field length restraints for the registration form
-	 *
-	 * @TODO Find a way to confirm maxlength message
-	 * @group register-fieldlengths
-	 * @return void
-	 */
+    /**
+     * Test the field length restraints for the registration form
+     *
+     * @TODO Find a way to confirm maxlength message
+     * @group register-fieldlengths
+     * @return void
+     * @throws Throwable
+     */
 	public function testFieldLengths(){
 		$this->browse(function ( Browser $browser ) {
 			$validationArray = $this->getValidationMessagesArray( 'register' );
@@ -69,11 +72,11 @@ class RegistrationTest extends DuskTestCase
 			/*
 			 * Confirm the error text when submitting oversized data
 			 */
-			$clearpass = str_random( 7 );
-			$shortclearpass = str_random( 3 );
-			$name = str_random( 256 );
+			$clearpass = Str::random( 7 );
+			$shortclearpass = Str::random( 3 );
+			$name = Str::random( 256 );
 			$browser->type( 'name', $name )
-				->type( 'email', str_random( 256 ) . '@example.com' )
+				->type( 'email', Str::random( 256 ) . '@example.com' )
 				->type( 'password', $clearpass )
 				->type( 'password_confirmation', $clearpass )
 				//->assertSee( 'The name may not be greater than 255 characters.' )
@@ -86,21 +89,22 @@ class RegistrationTest extends DuskTestCase
 				->type( 'password_confirmation', $shortclearpass )
 				->press( 'Register' )
 				->assertSee( $validationArray[ 'password' ][ 'min' ] );
-			$this->assertTrue(EventPlannerUser::where('name', $name )->get()->isEmpty() );
+			$this->assertTrue(User::where('name', $name )->get()->isEmpty() );
 		});
 	}
 
-	/**
-	 * Test the rules for confirming the password
-	 * @group register-passwordconfirmation
-	 * @return void
-	 */
+    /**
+     * Test the rules for confirming the password
+     * @group register-passwordconfirmation
+     * @return void
+     * @throws Throwable
+     */
 	public function testPasswordConfirmation(){
 		$this->browse(function (Browser $browser) {
 			$validationArray = $this->getValidationMessagesArray( 'register' );
 
-			$password = str_random( 7 );
-			$password_confirmation = str_random( 8 );
+			$password = Str::random( 7 );
+			$password_confirmation = Str::random( 8 );
 
 			$browser->visit( route( 'event-planner.register.show' ) )
 				->type( 'password', $password )
@@ -108,15 +112,16 @@ class RegistrationTest extends DuskTestCase
 				->assertSee( $validationArray[ 'password' ][ 'confirmed' ] )
 				->press( 'Register' )
 				->assertSee( $validationArray[ 'password' ][ 'confirmed' ] );
-			$this->assertNull(EventPlannerUser::first() );
+			$this->assertNull(User::first() );
 		});
 	}
 
-	/**
-	 * Test the rules for checking the password characters
-	 * @group register-passwordchars
-	 * @return void
-	 */
+    /**
+     * Test the rules for checking the password characters
+     * @group register-passwordchars
+     * @return void
+     * @throws Throwable
+     */
 	public function testPasswordCharacters(){
 		$this->browse(function (Browser $browser) {
 			$validationArray = $this->getValidationMessagesArray( 'register' );
@@ -129,14 +134,15 @@ class RegistrationTest extends DuskTestCase
 			->assertSee( $validationArray[ 'password' ][ 'regex' ] )
 			->press( 'Register' )
 			->assertSee( $validationArray[ 'password' ][ 'regex' ] );
-			$this->assertNull(EventPlannerUser::first() );
+			$this->assertNull(User::first() );
 		});
 	}
 
-	/**
-	 * Test a user's successful registration
-	 * @return void
-	 */
+    /**
+     * Test a user's successful registration
+     * @return void
+     * @throws Throwable
+     */
 	public function testSuccessfulRegistration(){
 		/*
 		 * Visit the Registration page and confirm a user can successfully create an account
@@ -145,11 +151,9 @@ class RegistrationTest extends DuskTestCase
 			/*
 			 * Create a user for registration
 			 */
-			$clearpass = FakerFactory::create()->password(6, 255);
-			$user = factory(EventPlannerUser::class )->make([
-					'password' => bcrypt( $clearpass )
-			]);
+			$user = User::factory()->clearpass()->make();
 
+            $clearpass = $user->clearpass;
 			$browser->visit( route( 'event-planner.register.show' ) )
 				->assertSee( 'E-Mail Address' )
 				->type( 'name', $user->name )
@@ -158,7 +162,7 @@ class RegistrationTest extends DuskTestCase
 				->type( 'password_confirmation', $clearpass )
 				->press( 'Register' )
 				->assertSee( "Hello, $user->name!" );
-			$this->assertFalse(EventPlannerUser::where('name', $user->name )->get()->isEmpty() );
+			$this->assertFalse(User::where('name', $user->name )->get()->isEmpty() );
 		});
 
 	}

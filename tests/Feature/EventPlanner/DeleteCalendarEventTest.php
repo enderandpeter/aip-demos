@@ -2,17 +2,15 @@
 
 namespace Tests\Feature\EventPlanner;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
-use App\EventPlanner\CalendarEvent;
-use App\EventPlanner\EventPlannerUser as User;
-
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\EventPlanner\CalendarEvent;
+use App\Models\EventPlanner\User;
 
 class DeleteCalendarEventTest extends TestCase
 {
-	use DatabaseMigrations;
+	use RefreshDatabase;
 
     /**
      * Test successful CalendarEvent deletion
@@ -23,8 +21,8 @@ class DeleteCalendarEventTest extends TestCase
      */
 	public function testSuccessfulDeletion()
     {
-    	$caldendarEvent = factory( CalendarEvent::class )->create();
-    	$user = EventPlannerUser::find($caldendarEvent->user_id );
+    	$caldendarEvent = CalendarEvent::factory()->create();
+    	$user = User::find($caldendarEvent->user_id );
 
     	$this->get( route( 'event-planner.events.edit', $caldendarEvent->id ) );
     	$this->actingAs( $user )

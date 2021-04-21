@@ -8,25 +8,27 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Carbon\Carbon;
 
-use App\EventPlanner\EventPlannerUser as User;
-use App\EventPlanner\CalendarEvent;
+use App\Models\EventPlanner\User;
+use App\Models\EventPlanner\CalendarEvent;
+use Throwable;
 
 class DeleteCalendarEventTest extends DuskTestCase
 {
 	use DatabaseMigrations;
 
-	/**
-	 * Confirm that a calendar event can be deleted
-	 *
-	 * @group delete-success
-	 * @group loginas
-	 * @return void
-	 */
+    /**
+     * Confirm that a calendar event can be deleted
+     *
+     * @group delete-success
+     * @group loginas
+     * @return void
+     * @throws Throwable
+     */
 	public function testSuccessfulDeletion()
 	{
 		$this->browse( function ( Browser $browser ) {
-			$caldendarEvent = factory( CalendarEvent::class )->create();
-			$user = EventPlannerUser::find($caldendarEvent->user_id );
+			$caldendarEvent = CalendarEvent::factory()->create();
+			$user = User::find($caldendarEvent->user_id );
 
 			$calendarHeading = $caldendarEvent->start_date->toFormattedDateString();
 
@@ -42,18 +44,19 @@ class DeleteCalendarEventTest extends DuskTestCase
 		});
 	}
 
-	/**
-	 * Confirm that the user can cancel the deletion of a calendar event
-	 *
-	 * @group delete-cancel
-	 * @group loginas
-	 * @return void
-	 */
+    /**
+     * Confirm that the user can cancel the deletion of a calendar event
+     *
+     * @group delete-cancel
+     * @group loginas
+     * @return void
+     * @throws Throwable
+     */
 	public function testCanceledDeletion()
 	{
 		$this->browse( function ( Browser $browser ) {
-			$caldendarEvent = factory( CalendarEvent::class )->create();
-			$user = EventPlannerUser::find($caldendarEvent->user_id );
+			$caldendarEvent = CalendarEvent::factory()->create();
+			$user = User::find($caldendarEvent->user_id );
 
 			$calendarHeading = $caldendarEvent->start_date->toFormattedDateString();
 

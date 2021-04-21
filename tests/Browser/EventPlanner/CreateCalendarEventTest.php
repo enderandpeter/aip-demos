@@ -2,15 +2,17 @@
 
 namespace Tests\Browser\EventPlanner;
 
+use Illuminate\Support\Str;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Carbon\Carbon;
 
-use App\EventPlanner\EventPlannerUser as User;
+use App\Models\EventPlanner\User;
 use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
-use App\EventPlanner\CalendarEvent;
+use App\Models\EventPlanner\CalendarEvent;
+use Throwable;
 
 class CreateCalendarEventTest extends DuskTestCase
 {
@@ -22,11 +24,12 @@ class CreateCalendarEventTest extends DuskTestCase
      * @group create-today
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testRequiredFields()
     {
         $this->browse( function ( Browser $browser ) {
-        	$user = factory(EventPlannerUser::class )->create();
+        	$user = User::factory()->create();
         	$date = Carbon::now();
 
         	$calendarHeading = $date->toFormattedDateString();
@@ -62,11 +65,12 @@ class CreateCalendarEventTest extends DuskTestCase
      * @group create-startdatefield
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testStartDateField(){
     	$this->browse( function ( Browser $browser ) {
 	    	$date = Carbon::now();
-	    	$user = factory(EventPlannerUser::class )->create();
+	    	$user = User::factory()->create();
 
 	    	$calendarHeading = $date->toFormattedDateString();
 
@@ -93,11 +97,12 @@ class CreateCalendarEventTest extends DuskTestCase
      * @group create-enddatefield
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testEndDateField(){
     	$this->browse( function ( Browser $browser ) {
     		$date = Carbon::now();
-    		$user = factory(EventPlannerUser::class )->create();
+    		$user = User::factory()->create();
 
     		$calendarHeading = $date->toFormattedDateString();
 
@@ -124,20 +129,21 @@ class CreateCalendarEventTest extends DuskTestCase
      * @group create-success
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testSuccessfulCreation(){
     	$this->browse( function ( Browser $browser ) {
     		$date = Carbon::now();
-    		$user = factory(EventPlannerUser::class )->create();
+    		$user = User::factory()->create();
 
     		$calendarHeading = $date->toFormattedDateString();
 
-    		$name = str_random( 20 );
-    		$type = str_random( 30 );
-    		$host = str_random( 40 );
-    		$guest_list = str_random( 500 );
-    		$location = str_random( 20 );
-    		$guest_message = str_random( 300 );
+    		$name = Str::random( 20 );
+    		$type = Str::random( 30 );
+    		$host = Str::random( 40 );
+    		$guest_list = Str::random( 500 );
+    		$location = Str::random( 20 );
+    		$guest_message = Str::random( 300 );
 
     		$start_date = clone $date;
     		$start_date->hour( 11 )->minute( 0 );

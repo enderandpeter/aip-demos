@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventPlanner;
+namespace App\Models\EventPlanner;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Validation\ValidatesRequests;

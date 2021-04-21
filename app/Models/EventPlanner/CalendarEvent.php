@@ -1,7 +1,8 @@
 <?php
 
-namespace App\EventPlanner;
+namespace App\Models\EventPlanner;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
@@ -19,6 +20,8 @@ use Carbon\Carbon;
  */
 class CalendarEvent extends Model
 {
+    use HasFactory;
+
     protected $table = 'eventplanner_calendarevents';
 
     /**
@@ -45,7 +48,7 @@ class CalendarEvent extends Model
      */
     public function user()
     {
-    	return $this->belongsTo('App\EventPlanner\EventPlannerUser');
+    	return $this->belongsTo(User::class);
     }
 
     public function showStartDate(){

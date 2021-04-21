@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\EventPlanner\Auth;
 
-use App\EventPlanner\EventPlannerUser;
+use App\Models\EventPlanner\User;
 use App\Http\Controllers\Auth\RegisterController as SiteRegisterController;
-use App\EventPlanner\ValidationData;
+use App\Models\EventPlanner\ValidationData;
 use App\Http\Controllers\EventPlanner\ValidatesEventPlannerRequests;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +43,7 @@ class RegisterController extends SiteRegisterController
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function showRegistrationForm()
     {
@@ -78,11 +78,11 @@ class RegisterController extends SiteRegisterController
 	 * Create a new user instance after a valid registration.
 	 *
 	 * @param  array  $data
-	 * @return EventPlannerUser
+	 * @return User
 	 */
 	protected function create(array $data)
 	{
-		return EventPlannerUser::create([
+		return User::create([
 				'name' => $data['name'],
 				'email' => $data['email'],
 				'password' => bcrypt($data['password']),

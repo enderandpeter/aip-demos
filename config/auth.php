@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'eventplanner',
-        'passwords' => 'users',
+        'passwords' => 'eventplanner_users',
     ],
 
     /*
@@ -71,7 +71,7 @@ return [
        // ],
     	'eventplanner_users' => [
     		'driver' => 'eloquent',
-    		'model' => App\Models\EventPlannerUser::class,
+    		'model' => App\Models\EventPlanner\User::class,
     	]
 
         // 'users' => [

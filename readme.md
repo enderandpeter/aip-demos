@@ -17,15 +17,17 @@ Code can be found at `resources/views/search-my-backyard.blade.php`
 This is the [final project](https://classroom.udacity.com/courses/ud989/lessons/3580848605/concepts/35254789990923) for [JavaScript Design Patterns](https://www.udacity.com/course/javascript-design-patterns--ud989). 
 
 ## Tests
-Typically, you can run the [Laravel Dusk](https://laravel.com/docs/5.4/dusk) tests and the regular PHPUnit ones:
 
-    php artisan dusk && vendor/bin/phpunit 
+Run the feature tests with `php artisan test`
+
+Run the [Dusk](https://laravel.com/docs/8.x/dusk) tests with `php artisan dusk`. You should run this in a graphical environment that has Google Chrome so that it will
+run all the tests in the browser. If running in a command-line environment, quite a bit of preliminary setup is involved. You will see examples in the Dusk docs for [setting up with TravisCI](https://laravel.com/docs/8.x/dusk#running-tests-on-travis-ci).
+
+Also, the [Docker Deployment repo](https://gitlab.com/aninternetpresence/docker-deployment) which defines a Docker Compose setup for AIP's services is setup
+to run Dusk tests in the `demos_php` Docker container, so take a look at that setup for an example.
 
 ## Bugs
 * In Firefox, the Street View panorama may show a gray background when first loaded.
-* The current state of Dusk is causing issues when the tests that use `loginAs` are ran at the same time, but running them separately should result in them passing:
-
-    `php artisan dusk --group=currentdate && php artisan dusk --group=gotodate && php artisan dusk --group=gotocurrent && php artisan dusk --group=create-today && php artisan dusk --group=create-datefields && php artisan dusk --exclude-group=loginas && vendor/bin/phpunit`
     
 <a href="https://demos.aninternetpresence.net/frogger" target="_blank"><h2>Effective JavaScript: Frogger</h2></a>
 
@@ -35,4 +37,4 @@ This is the [final project](https://classroom.udacity.com/courses/ud015/lessons/
 
 <hr>
 
-As always, please feel free to share feedback and suggestions. It is not likely that too many of these will be expanded upon, but if there is anything you would really like to see built out even more, just let me know and I will consider taking another look.
+As always, please feel free to share feedback and suggestions. Some of the older projects will most likely not be expanded on, but if there is anything you would really like to see built out even more, just let me know and I will consider taking another look.

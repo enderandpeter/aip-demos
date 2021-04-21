@@ -2,17 +2,17 @@
 
 namespace Tests\Feature\EventPlanner;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Carbon\Carbon;
 
-use App\EventPlanner\CalendarEvent;
-use App\EventPlanner\EventPlannerUser as User;
-
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\EventPlanner\CalendarEvent;
+use App\Models\EventPlanner\User;
 
 class EditCalendarEventTest extends TestCase
 {
-	use DatabaseMigrations;
+	use RefreshDatabase;
 
     /**
      * Test field validation of input length
@@ -23,15 +23,15 @@ class EditCalendarEventTest extends TestCase
      */
 	public function testFieldLengths()
     {
-    	$caldendarEvent = factory( CalendarEvent::class )->create();
-    	$user = EventPlannerUser::find($caldendarEvent->user_id );
+    	$caldendarEvent =  CalendarEvent::factory()->create();
+    	$user = User::find($caldendarEvent->user_id );
 
-    	$name = str_random( 256 );
-    	$type = str_random( 192 );
-    	$host = str_random( 192 );
-    	$guest_list = str_random( 1001 );
-    	$location = str_random( 192 );
-    	$guest_message = str_random( 5001 );
+    	$name = Str::random( 256 );
+    	$type = Str::random( 192 );
+    	$host = Str::random( 192 );
+    	$guest_list = Str::random( 1001 );
+    	$location = Str::random( 192 );
+    	$guest_message = Str::random( 5001 );
 
     	/*
     	 * Confirm the error session keys when explicitly posting the registration form
@@ -59,8 +59,8 @@ class EditCalendarEventTest extends TestCase
      */
     public function testRequiredField()
     {
-    	$caldendarEvent = factory( CalendarEvent::class )->create();
-    	$user = EventPlannerUser::find($caldendarEvent->user_id );
+    	$caldendarEvent = CalendarEvent::factory()->create();
+    	$user = User::find($caldendarEvent->user_id );
 
     	$name = '';
     	$type = '';
@@ -99,15 +99,15 @@ class EditCalendarEventTest extends TestCase
      */
     public function testDateFields()
     {
-    	$caldendarEvent = factory( CalendarEvent::class )->create();
-    	$user = EventPlannerUser::find($caldendarEvent->user_id );
+    	$caldendarEvent = CalendarEvent::factory()->create();
+    	$user = User::find($caldendarEvent->user_id );
 
-    	$name = str_random( 20 );
-    	$type = str_random( 30 );
-    	$host = str_random( 40 );
-    	$guest_list = str_random( 500 );
-    	$location = str_random( 20 );
-    	$guest_message = str_random( 300 );
+    	$name = Str::random( 20 );
+    	$type = Str::random( 30 );
+    	$host = Str::random( 40 );
+    	$guest_list = Str::random( 500 );
+    	$location = Str::random( 20 );
+    	$guest_message = Str::random( 300 );
 
     	$date = Carbon::now();
     	$start_date = clone $date;
@@ -145,15 +145,15 @@ class EditCalendarEventTest extends TestCase
      */
     public function testSuccessfulUpdate()
     {
-    	$caldendarEvent = factory( CalendarEvent::class )->create();
-    	$user = EventPlannerUser::find($caldendarEvent->user_id );
+    	$caldendarEvent = CalendarEvent::factory()->create();
+    	$user = User::find($caldendarEvent->user_id );
 
-    	$name = str_random( 20 );
-    	$type = str_random( 30 );
-    	$host = str_random( 40 );
-    	$guest_list = str_random( 500 );
-    	$location = str_random( 20 );
-    	$guest_message = str_random( 300 );
+    	$name = Str::random( 20 );
+    	$type = Str::random( 30 );
+    	$host = Str::random( 40 );
+    	$guest_list = Str::random( 500 );
+    	$location = Str::random( 20 );
+    	$guest_message = Str::random( 300 );
 
     	$date = $caldendarEvent->start_date;
     	$start_date = clone $date;

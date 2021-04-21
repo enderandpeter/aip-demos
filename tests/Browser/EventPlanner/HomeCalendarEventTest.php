@@ -6,10 +6,9 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-use Carbon\Carbon;
-
-use App\EventPlanner\EventPlannerUser as User;
-use App\EventPlanner\CalendarEvent;
+use App\Models\EventPlanner\User;
+use App\Models\EventPlanner\CalendarEvent;
+use Throwable;
 
 class HomeCalendarEventTest extends DuskTestCase
 {
@@ -21,12 +20,13 @@ class HomeCalendarEventTest extends DuskTestCase
      * @group home-show-event
      * @group loginas
      * @return void
+     * @throws Throwable
      */
     public function testHomeEventListing()
     {
         $this->browse( function ( Browser $browser ) {
-        	$caldendarEvents = factory( CalendarEvent::class, 5 )->create();
-        	$user = EventPlannerUser::find($caldendarEvents[0]->user_id );
+        	$caldendarEvents = CalendarEvent::factory()->count(5)->create();
+        	$user = User::find($caldendarEvents[0]->user_id );
 
             $browser->loginAs( $user, 'eventplanner' );
 

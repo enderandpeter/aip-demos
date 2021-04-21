@@ -2,17 +2,17 @@
 
 namespace Tests\Feature\EventPlanner;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Carbon\Carbon;
 
-use App\EventPlanner\CalendarEvent;
-use App\EventPlanner\EventPlannerUser as User;
-
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\EventPlanner\CalendarEvent;
+use App\Models\EventPlanner\User;
 
 class CreateCalendarEventTest extends TestCase
 {
-	use DatabaseMigrations;
+	use RefreshDatabase;
 
     /**
      * Test field validation of input length
@@ -23,14 +23,14 @@ class CreateCalendarEventTest extends TestCase
      */
 	public function testFieldLengths()
     {
-    	$user = factory(EventPlannerUser::class )->create();
+    	$user = User::factory()->create();
 
-    	$name = str_random( 256 );
-    	$type = str_random( 192 );
-    	$host = str_random( 192 );
-    	$guest_list = str_random( 1001 );
-    	$location = str_random( 192 );
-    	$guest_message = str_random( 5001 );
+    	$name = Str::random( 256 );
+    	$type = Str::random( 192 );
+    	$host = Str::random( 192 );
+    	$guest_list = Str::random( 1001 );
+    	$location = Str::random( 192 );
+    	$guest_message = Str::random( 5001 );
 
     	/*
     	 * Confirm the error session keys when explicitly posting the registration form
@@ -59,7 +59,7 @@ class CreateCalendarEventTest extends TestCase
      */
     public function testRequiredField()
     {
-    	$user = factory(EventPlannerUser::class )->create();
+    	$user = User::factory()->create();
 
     	$name = '';
     	$type = '';
@@ -99,14 +99,14 @@ class CreateCalendarEventTest extends TestCase
      */
     public function testDateFields()
     {
-    	$user = factory(EventPlannerUser::class )->create();
+    	$user = User::factory()->create();
 
-    	$name = str_random( 20 );
-    	$type = str_random( 30 );
-    	$host = str_random( 40 );
-    	$guest_list = str_random( 500 );
-    	$location = str_random( 20 );
-    	$guest_message = str_random( 300 );
+    	$name = Str::random( 20 );
+    	$type = Str::random( 30 );
+    	$host = Str::random( 40 );
+    	$guest_list = Str::random( 500 );
+    	$location = Str::random( 20 );
+    	$guest_message = Str::random( 300 );
 
     	$date = Carbon::now();
     	$start_date = clone $date;
@@ -145,14 +145,14 @@ class CreateCalendarEventTest extends TestCase
      */
     public function testSuccessfulCreation()
     {
-    	$user = factory(EventPlannerUser::class )->create();
+    	$user = User::factory()->create();
 
-    	$name = str_random( 20 );
-    	$type = str_random( 30 );
-    	$host = str_random( 40 );
-    	$guest_list = str_random( 500 );
-    	$location = str_random( 20 );
-    	$guest_message = str_random( 300 );
+    	$name = Str::random( 20 );
+    	$type = Str::random( 30 );
+    	$host = Str::random( 40 );
+    	$guest_list = Str::random( 500 );
+    	$location = Str::random( 20 );
+    	$guest_message = Str::random( 300 );
 
     	$date = Carbon::now();
     	$start_date = clone $date;
