@@ -17,5 +17,5 @@ before_script:
   - php artisan serve --no-reload &
 
 script:
-  - php artisan dusk
-  - php artisan test
+  - php artisan dusk --stop-on-failure
+  - php artisan test --testsuite=Feature --stop-on-failure
