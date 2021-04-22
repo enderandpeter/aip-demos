@@ -23,6 +23,8 @@ Run the feature tests with `php artisan test`
 Run the [Dusk](https://laravel.com/docs/8.x/dusk) tests with `php artisan dusk`. You should run this in a graphical environment that has Google Chrome so that it will
 run all the tests in the browser. If running in a command-line environment, quite a bit of preliminary setup is involved. You will see examples in the Dusk docs for [setting up with TravisCI](https://laravel.com/docs/8.x/dusk#running-tests-on-travis-ci).
 
+Running the Dusk tests in a CLI environment will require first running `php artisan serve` and setting `APP_URL=http://localhost:8000`
+
 Also, the [Docker Deployment repo](https://gitlab.com/aninternetpresence/docker-deployment) which defines a Docker Compose setup for AIP's services is setup
 to run Dusk tests in the `demos_php` Docker container, so take a look at that setup for an example.
 
@@ -31,7 +33,7 @@ to run Dusk tests in the `demos_php` Docker container, so take a look at that se
     
 <a href="https://demos.aninternetpresence.net/frogger" target="_blank"><h2>Effective JavaScript: Frogger</h2></a>
 
-An HTML5 Canvas / JavaScript game created from a template and assets that were provided by Udacity. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the level, use the directional keys to move around and collect gems to score points. Hearts replinish health and points. Keep making it across the other side until you run out of life or points.
+An HTML5 Canvas / JavaScript game created from a template and assets that were provided by Udacity. Use the left/right arrow keys to select a character from the list and the up/down arrow to choose the character. Once in the level, use the directional keys to move around and collect gems to score points. Hearts replenish health and points. Keep making it across the other side until you run out of life or points.
 
 This is the [final project](https://classroom.udacity.com/courses/ud015/lessons/3072058665/concepts/31018886370923) for [Object-Oriented JavaScript](https://www.udacity.com/course/object-oriented-javascript--ud015).
 
