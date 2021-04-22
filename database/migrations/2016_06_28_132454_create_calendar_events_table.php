@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCalendarEventsTable extends Migration
 {
@@ -13,7 +14,7 @@ class CreateCalendarEventsTable extends Migration
     public function up()
     {
         Schema::create('eventplanner_calendarevents', function (Blueprint $table) {
-            $table->increments('id');            
+            $table->id();
             $table->dateTime('start_date')->comment('The start datetime of the event');
             $table->dateTime('end_date')->comment('The end datetime of the event');            
             $table->string('type', 30)->comment('The user-provided type of event (birthday, wedding, etc.)');

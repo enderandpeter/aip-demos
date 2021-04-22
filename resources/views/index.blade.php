@@ -21,6 +21,14 @@
 		<h2 class="ml-5 my-4">Demos</h2>
 	</div>
 	<dl id="demos-list" class="ml-5 mr-3">
+        <div class="row">
+            <dt class="col-3 col-sm-2">Projects</dt>
+            <div class="col-8">
+                <dd>
+                    <a href="https://krackofdawnmobile.com" target="_blank">Krack of Dawn Mobile Kafe</a> - An online store for a mobile food truck company in Austin, Texas
+                </dd>
+            </div>
+        </div>
 		<div class="row">
 		<dt class="col-3 col-sm-2"><a target="_blank" href="https://www.udacity.com">Udacity</a></dt>
 		<div class="col-8">
@@ -33,15 +41,15 @@
 		<div class="row">
 		<dt class="col-3 col-sm-2"><a href="https://www.blender.org/" target="_blank">Blender</a></dt>
 		<div class="col-8">
-        		<dd><a href="resources/yellow-submarine/videos/my_yellow_submarine.mp4">Yellow Submarine</a> (<a href="resources/yellow-submarine/models/YellowSub.blend">My first 3D model!</a>) &mdash; <a href="http://gryllus.net/Blender/3D.html" target="_blank">Neal Hirsig's Blender 3D Design Course</a> &mdash; <a href="http://gryllus.net/Blender/PDFTutorials/01AYellowSubmarine_iTunesU/YellowSubmarine.pdf" target="_blank">Yellow Submarine tutorial</a></dd>
-        		<dd><a href="resources/castle/Castle_Texture.png">Castle (Textured)</a> (<a href="resources/castle/models/Castle_Texture.blend">2nd 3D model</a>) &mdash; <a href="http://gryllus.net/Blender/3D.html" target="_blank">Neal Hirsig's Blender 3D Design Course</a> &mdash; <a href="http://gryllus.net/Blender/PDFTutorials/02BCastleTexturing_ITunesU/CastleTexturing.pdf" target="_blank">Castle Texturing tutorial</a></dd>
+        		<dd><a href="resources/yellow-submarine/videos/my_yellow_submarine.mp4">Yellow Submarine</a> (<a href="resources/yellow-submarine/models/YellowSub.blend">My first 3D model!</a>) &mdash; <a href="https://www.emg-mediamaker.com/tutorials-blender-3d-design.php" target="_blank">Neal Hirsig's Blender 3D Design Course</a> &mdash; <a href="http://gryllus.net/Blender/PDFTutorials/01AYellowSubmarine_iTunesU/YellowSubmarine.pdf" target="_blank">Yellow Submarine tutorial</a></dd>
+        		<dd><a href="resources/castle/Castle_Texture.png">Castle (Textured)</a> (<a href="resources/castle/models/Castle_Texture.blend">2nd 3D model</a>) &mdash; <a href="https://www.emg-mediamaker.com/tutorials-blender-3d-design.php" target="_blank">Neal Hirsig's Blender 3D Design Course</a> &mdash; <a href="http://gryllus.net/Blender/PDFTutorials/02BCastleTexturing_ITunesU/CastleTexturing.pdf" target="_blank">Castle Texturing tutorial</a></dd>
 		</div>
 		</div>
 		<div class="row">
 		<dt class="col-3 col-sm-2"><a target="_blank" href="https://unity3d.com/">Unity</a></dt>
 		<div class="col-8">
-			<dd><a href="jack-the-giant">Jack the Giant</a> - My second effort at making a game</dd>
-			<dd><a href="flappy-bird">Yet Another Flappy Bird Clone</a> - My third effort at making a game</dd>
+			<dd><a href="jack-the-giant">Jack the Giant</a> - A game from a Unity tutorial</dd>
+			<dd><a href="flappy-bird">Yet Another Flappy Bird Clone</a> - Another game from a Unity tutorial</dd>
 		</div>
 		</div>
 	</dl>

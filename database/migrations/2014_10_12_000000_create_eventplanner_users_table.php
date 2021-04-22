@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class CreateEventplannerUsersTable extends Migration
 {
@@ -13,7 +14,7 @@ class CreateEventplannerUsersTable extends Migration
     public function up()
     {
         Schema::create('eventplanner_users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');

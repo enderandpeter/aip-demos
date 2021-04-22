@@ -13,7 +13,7 @@ abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if(self::getOSEnvironment() == 'Homestead'){
             exec('Xvfb -ac :0 -screen 0 1280x1024x16 &', $output, $returnValue);
@@ -25,7 +25,7 @@ abstract class DuskTestCase extends BaseTestCase
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if(self::getOSEnvironment() == 'Homestead'){
             $pids_Xvfb = exec('pidof Xvfb');
@@ -40,12 +40,11 @@ abstract class DuskTestCase extends BaseTestCase
      */
     private static function getOSEnvironment()
     {
-        $os = '';
         if(PHP_OS === 'Linux'){
             $kernelName = exec('uname -r');
             $osInfo = exec('lsb_release -r');
 
-            if(Str::contains($kernelName, ['moby', 'linuxkit']) /* Docker */){
+            if(Str::contains($kernelName, ['moby', 'linuxkit', 'microsoft-standard']) /* Docker */){
                 return 'Docker';
             }
 
@@ -82,19 +81,19 @@ abstract class DuskTestCase extends BaseTestCase
     /**
      * Create the RemoteWebDriver instance.
      *
-     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+     * @return RemoteWebDriver
      */
     protected function driver()
     {
         $defaultSettings = [];
         $arguments = [];
 
-        if(self::getOSEnvironment() == 'TravisCI'){
-            $arguments = array_merge($defaultSettings, ['--disable-gpu', '--headless']);
-        }
-
-        if(self::getOSEnvironment() == 'Homestead'){
-            $arguments = array_merge($defaultSettings, ['--disable-gpu', '--no-sandbox']);
+        if(self::isTextEnvironment()){
+            $arguments = array_merge($defaultSettings, [
+                '--disable-gpu',
+                '--headless',
+                '--no-sandbox',
+            ]);
         }
 
         $options = (new ChromeOptions)->addArguments($arguments);
@@ -102,6 +101,6 @@ abstract class DuskTestCase extends BaseTestCase
         return RemoteWebDriver::create(
             'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
                 ChromeOptions::CAPABILITY, $options
-                ));
+                )->setCapability('acceptInsecureCerts', true));
     }
 }

@@ -17,24 +17,24 @@ class LoginController extends SiteLoginController
 	{
 		return Auth::guard('eventplanner');
 	}
-	
+
 	/**
 	 * Log the user out of the application.
 	 *
 	 * @param  Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
 	public function logout(Request $request)
 	{
 		$this->guard()->logout();
-	
+
 		$request->session()->flush();
-	
+
 		$request->session()->regenerate();
-	
+
 		return redirect($this->redirectTo);
 	}
-	
+
     /**
      * Where to redirect users after login.
      *

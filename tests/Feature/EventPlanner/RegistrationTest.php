@@ -2,24 +2,21 @@
 
 namespace Tests\Feature\EventPlanner;
 
+use App\Models\EventPlanner\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
-
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-
-use App\EventPlanner\User as User;
 
 /**
  * Confirm basic endpoints and behavior for Event Planner user registration
- * 
- * @author Spencer
  *
  */
 class RegistrationTest extends TestCase
 {
-	use DatabaseMigrations;
-	
+	use RefreshDatabase;
+
 	/**
-	 * A basic test example.
+	 * Test that certain registration form fields are required
 	 *
 	 * @return void
 	 */
@@ -38,73 +35,73 @@ class RegistrationTest extends TestCase
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
 		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
-		$this->assertNull( User::first() );
+		$this->assertNull(User::first() );
 	}
-	
+
 	/**
 	 * Test the maximum length restraints for the registration form
 	 *
 	 * @return void
 	 */
 	public function testFieldLengths(){
-		$clearpass = str_random( 256 );
-		$shortclearpass = str_random( 3 );
-		$name = str_random( 256 );
+		$clearpass = Str::random( 256 );
+		$shortclearpass = Str::random( 3 );
+		$name = Str::random( 256 );
 		/*
 		 * Confirm the error session keys when explicitly posting the registration form
 		 */
 		$this->get( route( 'event-planner.register.show' ) );
 		$this->post( route( 'event-planner.register.post' ), [
 				'name' => $name,
-				'email' => str_random( 256 ) . '@example.com',
-				'password' => $clearpass,
-				'password_confirmation' => $clearpass,
-				'_token' => csrf_token()
-		])
-		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );		
-		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
-		
-		$clearpass = str_random( 3 );
-		/*
-		 * Confirm the error session keys when explicitly posting the registration form
-		 */
-		$this->get( route( 'event-planner.register.show' ) );
-		$this->post( route( 'event-planner.register.post' ), [
-				'name' => $name,
-				'email' => str_random( 256 ) . '@example.com',
+				'email' => Str::random( 256 ) . '@example.com',
 				'password' => $clearpass,
 				'password_confirmation' => $clearpass,
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
 		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
-		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
-	}
-	
-	/**
-	 * Test the rules for validating the password
-	 * 
-	 * @return void
-	 */
-	public function testPasswordValidation(){
-		$password = str_random( 7 );
-		$password_confirmation = str_random( 8 );
-		
+		$this->assertTrue(User::where('name', $name )->get()->isEmpty() );
+
+		$clearpass = Str::random( 3 );
 		/*
 		 * Confirm the error session keys when explicitly posting the registration form
 		 */
-		$name = str_random( 10 );
 		$this->get( route( 'event-planner.register.show' ) );
 		$this->post( route( 'event-planner.register.post' ), [
 				'name' => $name,
-				'email' => str_random( 256 ) . '@example.com',
+				'email' => Str::random( 256 ) . '@example.com',
+				'password' => $clearpass,
+				'password_confirmation' => $clearpass,
+				'_token' => csrf_token()
+		])
+		->assertRedirect( route( 'event-planner.register.show' ) )
+		->assertSessionHasErrors( [ 'name', 'email', 'password' ] );
+		$this->assertTrue(User::where('name', $name )->get()->isEmpty() );
+	}
+
+	/**
+	 * Test the rules for validating the password
+	 *
+	 * @return void
+	 */
+	public function testPasswordValidation(){
+		$password = Str::random( 7 );
+		$password_confirmation = Str::random( 8 );
+
+		/*
+		 * Confirm the error session keys when explicitly posting the registration form
+		 */
+		$name = Str::random( 10 );
+		$this->get( route( 'event-planner.register.show' ) );
+		$this->post( route( 'event-planner.register.post' ), [
+				'name' => $name,
+				'email' => Str::random( 256 ) . '@example.com',
 				'password' => $password,
 				'password_confirmation' => $password_confirmation,
 				'_token' => csrf_token()
 		])
 		->assertRedirect( route( 'event-planner.register.show' ) )
-		->assertSessionHasErrors( [ 'password' ] );			
-		$this->assertTrue( User::where( 'name', $name )->get()->isEmpty() );
+		->assertSessionHasErrors( [ 'password' ] );
+		$this->assertTrue(User::where('name', $name )->get()->isEmpty() );
 	}
 }

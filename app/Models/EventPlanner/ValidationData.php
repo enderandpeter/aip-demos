@@ -1,8 +1,6 @@
 <?php
-namespace App\EventPlanner;
+namespace App\Models\EventPlanner;
 
-use Illuminate\Support\Facades\Auth;
-use App\EventPlanner\CalendarEvent;
 /**
  * Validation rules for the Event Planner site.
  * @author Spencer
@@ -13,9 +11,12 @@ class ValidationData extends \App\ValidationData{
 		$date_format = CalendarEvent::$date_format;
 		$this->validationData = [
 			'register' => [
-				'name' => 'required|max:255',				
+				'name' => 'required|max:255',
+                /*
+                 * Password requires at least one uppercase letter, number, and special character
+                 */
 				'password' => 'required|min:6|max:255|regex:/(?=.*\W)(?=.*\d)(?=.*[A-Z]).+/|confirmed',
-				'email' => 'required|email|max:255|unique:eventplanner_users'						
+				'email' => 'required|email|max:255|unique:eventplanner_users'
 			],
 			'create-event' => [
 				'name' => 'required|max:255',

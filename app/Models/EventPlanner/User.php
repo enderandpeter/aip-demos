@@ -1,12 +1,12 @@
 <?php
 
-namespace App\EventPlanner;
+namespace App\Models\EventPlanner;
 
-use App\User as SiteUser;
+use App\Models\User as SiteUser;
 
-class User extends SiteUser{	
+class User extends SiteUser{
 	protected $table = 'eventplanner_users';
-	
+
 	/**
 	 * Get all calendar events for this user
 	 *
@@ -14,6 +14,6 @@ class User extends SiteUser{
 	 */
 	public function calendarEvents()
 	{
-		return $this->hasMany('App\CalendarEvents');
+		return $this->hasMany(CalendarEvent::class);
 	}
 }

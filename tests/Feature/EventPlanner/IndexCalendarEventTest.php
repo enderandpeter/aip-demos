@@ -2,30 +2,29 @@
 
 namespace Tests\Feature\EventPlanner;
 
+use App\Models\EventPlanner\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
-use App\EventPlanner\CalendarEvent;
-use App\EventPlanner\User as User;
+use App\Models\EventPlanner\CalendarEvent;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class IndexCalendarEventTest extends TestCase
 {
-	use DatabaseMigrations;
-	
+	use RefreshDatabase;
+
     /**
      * Test that all of a user's calendar events are indexed
      *
-     * @group index-events-feature     
+     * @group index-events-feature
      * @group index-feature
      * @return void
      */
 	public function testIndexEvents()
     {
-    	$caldendarEvents = factory( CalendarEvent::class, 5 )->create();
-    	$user = User::find( $caldendarEvents[0]->user_id );
-    	
+    	$caldendarEvents = CalendarEvent::factory()->count(5)->create();
+    	$user = User::find($caldendarEvents[0]->user_id );
+
 		/*
 		 * Confirm the visibility of all of a user's calendar events.
 		 */
@@ -36,6 +35,6 @@ class IndexCalendarEventTest extends TestCase
     		->assertSee( $calendarEvent->type )
     		->assertSee( $calendarEvent->showStartDate() );
     	}
-    	
+
     }
 }

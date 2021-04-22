@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventPlanner;
+namespace App\Models\EventPlanner;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -10,38 +10,38 @@ use App\Http\Controllers\Controller;
 
 /**
  * Handle managing data for Event Planner requests
- * 
+ *
  * @author Spencer
  *
  */
 class CalendarRequest{
 	use ValidatesRequests;
-	
+
 	/**
 	 * Get the calendar data for the event planner request
-	 * 
+	 *
 	 * @param Request $request The request object for this request
 	 * @param Controller $controller The controller object handling the calendar request
-	 * @return string[]
+	 * @return mixed[]
 	 */
 	public function getCalendarData(Request $request){
-		$currentDate = Carbon::now();		
-		
+		$currentDate = Carbon::now();
+
 		/*
 		 * If a specific date is not being looked up, set to the current date
 		 */
 		if( empty( $request->input('submit') ) ){
 			$request->merge(['submit' => 'today']);
 		}
-		
+
 		$month = $request->input('submit') !== 'today' && $request->input('month') ? $request->input('month') : $currentDate->month;
 		$day = $request->input('submit') !== 'today' && $request->input('day') ? $request->input('day') : $currentDate->day;
 		$year = $request->input('submit') !== 'today' && $request->input('year') ? $request->input('year') : $currentDate->year;
 		$date = $month . ' ' . $day . ' ' . $year;
-		 
+
 		if($request->input('month') && $request->input('month') && $request->input('year') && !session('errors')){
 			self::setInputs($request, $date, $month, $day, $year);
-		
+
 			$this->validate($request, [
 					'date' => 'required|date_format:n j Y'
 			]);
@@ -53,18 +53,18 @@ class CalendarRequest{
 			$date = $month . ' ' . $day . ' ' . $year;
 			self::setInputs($request, $date, $month, $day, $year);
 		}
-		 
+
 		$calendarDate = Carbon::createFromFormat('n j Y', $date);
-		 
+
 		$calendarData = [
 				'calendarHeading' => $calendarDate->format('F') . ' ' . $calendarDate->format('Y'),
 				'calendarDate' => $calendarDate,
 				'currentDate' => $currentDate
 		];
-		
+
 		return $calendarData;
 	}
-	
+
 	/**
 	 * Set the expected request inputs
 	 *

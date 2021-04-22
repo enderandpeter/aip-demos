@@ -2,30 +2,28 @@
 
 namespace Tests\Feature\EventPlanner;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
-use App\EventPlanner\CalendarEvent;
-use App\EventPlanner\User as User;
-
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\EventPlanner\CalendarEvent;
+use App\Models\EventPlanner\User;
 
 class HomeCalendarEventTest extends TestCase
 {
-	use DatabaseMigrations;
-	
+	use RefreshDatabase;
+
     /**
      * Check that a user's calendar events are shown on the right calendar on the home page
      *
-     * @group index-show-feature     
+     * @group index-show-feature
      * @group home-feature
      * @return void
      */
 	public function testIndexEvents()
     {
-    	$caldendarEvents = factory( CalendarEvent::class, 5 )->create();
-    	$user = User::find( $caldendarEvents[0]->user_id );
-    	
+    	$caldendarEvents = CalendarEvent::factory()->count(5 )->create();
+    	$user = User::find($caldendarEvents[0]->user_id );
+
 		/*
 		 * Confirm the visibility of all of a user's calendar events.
 		 */
@@ -40,6 +38,6 @@ class HomeCalendarEventTest extends TestCase
     		->assertSee( $calendarEvent->name )
     		->assertSee( $calendarEvent->getStartTime() );
     	}
-    	
+
     }
 }

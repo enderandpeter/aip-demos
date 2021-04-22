@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\EventPlanner\Auth;
 
 use App\Http\Controllers\Auth\ResetPasswordController as SiteResetPasswordController;
+use Illuminate\Auth\Passwords\PasswordBroker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends SiteResetPasswordController
@@ -15,7 +17,7 @@ class ResetPasswordController extends SiteResetPasswordController
 	{
 		return Auth::guard('eventplanner');
 	}
-	
+
     /**
      * Where to redirect users after resetting their password.
      *
@@ -33,7 +35,7 @@ class ResetPasswordController extends SiteResetPasswordController
         $this->middleware('guest');
         $this->redirectTo = route('event-planner');
     }
-    
+
     /**
      * Get the broker to be used during password reset.
      *
