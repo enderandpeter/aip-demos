@@ -22,7 +22,7 @@ Route::get('search-my-backyard', function () {
 	return view('search-my-backyard');
 });
 
-Route::post('search-my-backyard', ['uses' => [LocationDataController::class, 'postLocation'], 'as' => 'postLocation']);
+Route::post('search-my-backyard', [ LocationDataController::class, 'postLocation']);
 
 Route::get('frogger', function () {
 	return view('frogger');
@@ -39,8 +39,8 @@ Route::get('flappy-bird', function () {
 Route::get('jack-the-giant-player', function () {
     return view('jack-the-giant-player');
 });
-Auth::routes();
 
 Auth::routes();
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

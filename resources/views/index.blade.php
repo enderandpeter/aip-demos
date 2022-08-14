@@ -25,7 +25,7 @@
             <dt class="col-3 col-sm-2">Projects</dt>
             <div class="col-8">
                 <dd>
-                    <a href="https://krackofdawnmobile.com" target="_blank">Krack of Dawn Mobile Kafe</a> - An online store for a mobile food truck company in Austin, Texas
+                    <a href="https://krackofdawnmobile.com" target="_blank">Krack of Dawn Mobile Kafe</a> - An online store for an excellent mobile food truck company in Austin, Texas
                 </dd>
             </div>
         </div>
