@@ -2,7 +2,9 @@
 
 @import url(https://fonts.googleapis.com/css?family=Dancing+Script);
 
-@import 'main.css';
+@import "~bootstrap/scss/bootstrap";
+
+@import 'main';
 /*
 	Set the html and body height to allow relative unit sizes
 	for the contained divs.
@@ -34,7 +36,7 @@ address {
 }
 
 #map {
-    height: 94%;    
+    height: 94%;
 }
 
 #map h1 {
@@ -194,13 +196,13 @@ address {
 }
 
 @keyframes loading {
-  0% {
-    transform: rotate(0);
-  }
+    0% {
+        transform: rotate(0);
+    }
 
-  100% {
-    transform: rotate(1turn);
-  }
+    100% {
+        transform: rotate(1turn);
+    }
 }
 
 .reviews {
