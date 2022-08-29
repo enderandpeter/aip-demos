@@ -12,7 +12,7 @@
         @vite('resources/js/search-my-backyard.ts')
         @inertiaHead
     </head>
-    <body id="search-my-backyard-body" class="font-sans antialiased">
+    <body id="search-my-backyard-body" class="font-sans antialiased d-flex flex-column">
         @push('nav-list-items')
             @if ( Route::current()->uri() === 'search-my-backyard' )
                 <li class="breadcrumb-item active">Search my Backyard</li>

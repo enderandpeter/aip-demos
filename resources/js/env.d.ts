@@ -1,8 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-    readonly VITE_KEY_PATH: string
-    // more env variables...
+    readonly VITE_GOOGLE_API_KEY: string
 }
 
 interface ImportMeta {

@@ -329,6 +329,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@googlemaps/js-api-loader@npm:^1.13.2":
+  version: 1.14.3
+  resolution: "@googlemaps/js-api-loader@npm:1.14.3"
+  dependencies:
+    fast-deep-equal: ^3.1.3
+  checksum: 55ec4519c3bd99a489fc55715bfe5c12a617eff75101c16f237d2c8d56852f607bb74d50ca2204fe371d6b793741db57e4c487658f0d284a5d3bd2ecbcc2a15d
+  languageName: node
+  linkType: hard
+
+"@googlemaps/react-wrapper@npm:^1.1.35":
+  version: 1.1.35
+  resolution: "@googlemaps/react-wrapper@npm:1.1.35"
+  dependencies:
+    "@googlemaps/js-api-loader": ^1.13.2
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 76fa473b1bc617c157b58fb8087b61c54e07484c4e983bb25269d7afa025f3d30b77e0cb0cbd37bcd33a0c3d1f3c43c9c070aed2e2a726773eee3d26788c4abf
+  languageName: node
+  linkType: hard
+
 "@headlessui/react@npm:^1.4.2":
   version: 1.6.6
   resolution: "@headlessui/react@npm:1.6.6"
@@ -503,6 +523,13 @@ __metadata:
   dependencies:
     "@popperjs/core": ^2.9.2
   checksum: 5514555f66a455c20a024829c14d52d176d92a7526a5c13b6845bb712a2d36a93daaff56448ca520d5d6650ab7c2d2b4fecdd0f7f7af426221dc57746fdc1936
+  languageName: node
+  linkType: hard
+
+"@types/google.maps@npm:^3.50.0":
+  version: 3.50.0
+  resolution: "@types/google.maps@npm:3.50.0"
+  checksum: 8cd145ae8f3c86773a1106d7f7f02568f33cb3099dc822c29fbf837d18b7f2b74560ea7d4f3c3b01ad3b3c0139e88cb319df4fd453ae106695ad02d4e2de1235
   languageName: node
   linkType: hard
 
@@ -1300,6 +1327,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-deep-equal@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "fast-deep-equal@npm:3.1.3"
+  checksum: e21a9d8d84f53493b6aa15efc9cfd53dd5b714a1f23f67fb5dc8f574af80df889b3bce25dc081887c6d25457cce704e636395333abad896ccdec03abaf1f3f9d
+  languageName: node
+  linkType: hard
+
 "fast-glob@npm:^3.2.11":
   version: 3.2.11
   resolution: "fast-glob@npm:3.2.11"
@@ -2048,13 +2082,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "object-assign@npm:4.1.1"
-  checksum: fcc6e4ea8c7fe48abfbb552578b1c53e0d194086e2e6bbbf59e0a536381a292f39943c6e9628af05b5528aa5e3318bb30d6b2e53cadaf5b8fe9e12c4b69af23f
-  languageName: node
-  linkType: hard
-
 "object-hash@npm:^3.0.0":
   version: 3.0.0
   resolution: "object-hash@npm:3.0.0"
@@ -2243,16 +2270,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.2":
-  version: 17.0.2
-  resolution: "react-dom@npm:17.0.2"
+"react-dom@npm:^18":
+  version: 18.2.0
+  resolution: "react-dom@npm:18.2.0"
   dependencies:
     loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-    scheduler: ^0.20.2
+    scheduler: ^0.23.0
   peerDependencies:
-    react: 17.0.2
-  checksum: 1c1eaa3bca7c7228d24b70932e3d7c99e70d1d04e13bb0843bbf321582bc25d7961d6b8a6978a58a598af2af496d1cedcfb1bf65f6b0960a0a8161cb8dab743c
+    react: ^18.2.0
+  checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
   languageName: node
   linkType: hard
 
@@ -2263,13 +2289,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^17.0.2":
-  version: 17.0.2
-  resolution: "react@npm:17.0.2"
+"react@npm:^18":
+  version: 18.2.0
+  resolution: "react@npm:18.2.0"
   dependencies:
     loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: b254cc17ce3011788330f7bbf383ab653c6848902d7936a87b09d835d091e3f295f7e9dd1597c6daac5dc80f90e778c8230218ba8ad599f74adcc11e33b9d61b
+  checksum: 88e38092da8839b830cda6feef2e8505dec8ace60579e46aa5490fc3dc9bba0bd50336507dc166f43e3afc1c42939c09fe33b25fae889d6f402721dcd78fca1b
   languageName: node
   linkType: hard
 
@@ -2371,6 +2396,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@googlemaps/react-wrapper": ^1.1.35
     "@headlessui/react": ^1.4.2
     "@inertiajs/inertia": ^0.11.0
     "@inertiajs/inertia-react": ^0.8.0
@@ -2378,6 +2404,7 @@ __metadata:
     "@popperjs/core": ^2.11.6
     "@tailwindcss/forms": ^0.5.2
     "@types/bootstrap": ^5.2.3
+    "@types/google.maps": ^3.50.0
     "@types/node": ^18.7.13
     "@types/react": ^18.0.17
     "@types/react-dom": ^18.0.6
@@ -2388,8 +2415,8 @@ __metadata:
     laravel-vite-plugin: ^0.5.0
     lodash: ^4.17.19
     postcss: ^8.4.6
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    react: ^18
+    react-dom: ^18
     sass: ^1.54.5
     tailwindcss: ^3.1.0
     vite: ^3.0.0
@@ -2439,13 +2466,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.20.2":
-  version: 0.20.2
-  resolution: "scheduler@npm:0.20.2"
+"scheduler@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "scheduler@npm:0.23.0"
   dependencies:
     loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
+  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
   languageName: node
   linkType: hard
 
