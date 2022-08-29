@@ -3,7 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
-import { certPath, keyPath, host } from '@/config'
+import { certPath, keyPath, host } from './resources/js/config'
 
 const getServerConfig = () => {
     if (!fs.existsSync(keyPath)) {
@@ -35,8 +35,10 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-        }
+           '@': path.resolve(__dirname, 'resources/js'),
+           '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+        },
     },
+
     server: getServerConfig(),
 });

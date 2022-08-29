@@ -472,7 +472,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@popperjs/core@npm:^2.9.2":
+"@popperjs/core@npm:^2.11.6, @popperjs/core@npm:^2.9.2":
   version: 2.11.6
   resolution: "@popperjs/core@npm:2.11.6"
   checksum: 47fb328cec1924559d759b48235c78574f2d71a8a6c4c03edb6de5d7074078371633b91e39bbf3f901b32aa8af9b9d8f82834856d2f5737a23475036b16817f0
@@ -503,6 +503,13 @@ __metadata:
   dependencies:
     "@popperjs/core": ^2.9.2
   checksum: 5514555f66a455c20a024829c14d52d176d92a7526a5c13b6845bb712a2d36a93daaff56448ca520d5d6650ab7c2d2b4fecdd0f7f7af426221dc57746fdc1936
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.7.13":
+  version: 18.7.13
+  resolution: "@types/node@npm:18.7.13"
+  checksum: 45431e7e89ecaf85c7d2c180d801c132a7c59e2f8ad578726b6d71cc74e3267c18f9ccdcad738bc0479790c078f0c79efb0e58da2c6be535c15995dbb19050c9
   languageName: node
   linkType: hard
 
@@ -2368,8 +2375,10 @@ __metadata:
     "@inertiajs/inertia": ^0.11.0
     "@inertiajs/inertia-react": ^0.8.0
     "@inertiajs/progress": ^0.2.6
+    "@popperjs/core": ^2.11.6
     "@tailwindcss/forms": ^0.5.2
     "@types/bootstrap": ^5.2.3
+    "@types/node": ^18.7.13
     "@types/react": ^18.0.17
     "@types/react-dom": ^18.0.6
     "@vitejs/plugin-react": ^2.0.0

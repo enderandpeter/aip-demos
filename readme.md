@@ -14,7 +14,7 @@ remove them individually or in bulk.
 
 Code can be found at:
 
-* vite.config.js
+* vite.config.ts
 * resources/js/Pages/SearchMyBackyard.js
 * resources/js/search-my-backyard.ts
 * resources/views/search-my-backyard.blade.php
