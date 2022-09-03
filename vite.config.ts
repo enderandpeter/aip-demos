@@ -28,7 +28,7 @@ const getServerConfig = () => {
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/main.ts', 'search-my-backyard.ts'],
+            input: ['resources/js/main.ts', 'resources/js/search-my-backyard.ts'],
             refresh: true,
         }),
         react(),

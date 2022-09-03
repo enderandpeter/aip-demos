@@ -2289,6 +2289,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-spinners@npm:^0.13.4":
+  version: 0.13.4
+  resolution: "react-spinners@npm:0.13.4"
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: ae9430bc8a2fede2ffdcac57c3586c56c5b459e1ba3ee60058c4eaf9b7cbdd87cf07c15927cfe0a171fc7460553385b69d961dc8448356bc558fd44db02eee63
+  languageName: node
+  linkType: hard
+
 "react@npm:^18":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
@@ -2417,6 +2427,7 @@ __metadata:
     postcss: ^8.4.6
     react: ^18
     react-dom: ^18
+    react-spinners: ^0.13.4
     sass: ^1.54.5
     tailwindcss: ^3.1.0
     vite: ^3.0.0
