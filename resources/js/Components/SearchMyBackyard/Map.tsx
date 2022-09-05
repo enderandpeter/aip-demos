@@ -1,8 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
+import {useSelector} from "react-redux";
+import {errorMessage} from "@/redux/error/slice";
+import ErrorDialog from "@/Components/SearchMyBackyard/ErrorDialog";
 
 export default () => {
     const ref = useRef<HTMLDivElement>(null)
     const [ map, setMap ] = useState<google.maps.Map>();
+
+    const message = useSelector(errorMessage)
 
     const defaultCenter = new window.google.maps.LatLng(44.540, -78.546)
 
@@ -27,5 +32,10 @@ export default () => {
         }
     }, [ref, map])
 
-    return <div id={'map'} ref={ref} />
+    return (
+        <>
+            <ErrorDialog message={message} />
+            <div id={'map'} ref={ref} />
+        </>
+    )
 }

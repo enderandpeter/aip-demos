@@ -9,7 +9,7 @@
         <!-- Scripts -->
         @routes
         @viteReactRefresh
-        @vite('resources/js/search-my-backyard.ts')
+        @vite('resources/js/search-my-backyard.tsx')
         @inertiaHead
     </head>
     <body id="search-my-backyard-body" class="font-sans antialiased d-flex flex-column">

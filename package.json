@@ -7,6 +7,7 @@
     "dependencies": {
         "@googlemaps/react-wrapper": "^1.1.35",
         "@popperjs/core": "^2.11.6",
+        "@reduxjs/toolkit": "^1.8.5",
         "@types/bootstrap": "^5.2.3",
         "@types/google.maps": "^3.50.0",
         "@types/node": "^18.7.13",
@@ -16,6 +17,7 @@
         "bootstrap": "^5.2.0",
         "laravel-vite-plugin": "^0.5.0",
         "lodash": "^4.17.19",
+        "react-redux": "^8.0.2",
         "react-spinners": "^0.13.4",
         "sass": "^1.54.5",
         "vite": "^3.0.0"
