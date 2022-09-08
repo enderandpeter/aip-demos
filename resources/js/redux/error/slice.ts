@@ -1,10 +1,6 @@
 import {createSlice, Draft, PayloadAction} from '@reduxjs/toolkit'
 import {RootState} from "@/redux/store";
 
-export interface ErrorSlice {
-    message: string;
-}
-
 export interface ErrorState {
     message: string;
 }
@@ -13,9 +9,9 @@ export const errorSlice = createSlice({
     name: 'error',
     initialState: {
         message: ''
-    } as ErrorSlice,
+    } as ErrorState,
     reducers: {
-        setMessage: (state: Draft<ErrorState>, action: PayloadAction<string>) => {
+        setErrorMessage: (state: Draft<ErrorState>, action: PayloadAction<string>) => {
             state.message = action.payload
         }
     }
@@ -23,6 +19,6 @@ export const errorSlice = createSlice({
 
 export const errorMessage = (state: RootState) => state.error.message
 
-export const { setMessage } = errorSlice.actions
+export const { setErrorMessage } = errorSlice.actions
 
 export default errorSlice.reducer

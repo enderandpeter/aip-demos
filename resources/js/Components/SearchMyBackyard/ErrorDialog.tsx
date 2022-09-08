@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import {Modal} from "bootstrap";
 import {useDispatch} from "react-redux";
-import {setMessage} from "@/redux/error/slice";
+import {setErrorMessage} from "@/redux/error/slice";
 
 interface ErrorProps {
     message: string;
@@ -24,7 +24,7 @@ export default ({ message }: ErrorProps): JSX.Element => {
 
         ref.current!.addEventListener('hide.bs.modal', event => {
             isShowing = false
-            dispatch(setMessage(''))
+            dispatch(setErrorMessage(''))
         })
     }
 
@@ -32,7 +32,7 @@ export default ({ message }: ErrorProps): JSX.Element => {
         if(message){
             showModal()
         }
-    }, [])
+    }, [message])
 
     return (
         <div ref={ref} className="modal fade" tabIndex={-1}>
