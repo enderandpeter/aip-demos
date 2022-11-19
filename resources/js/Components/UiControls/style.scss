@@ -1,0 +1,25 @@
+@CHARSET "utf-8";
+
+#uicontrols {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    .uicontrol-header-div {
+        background: rgba(255, 255, 255, 0.8);
+        border: black dotted 0.1em;
+        padding: 0.8em;
+        width: 23em;
+
+        header {
+            font-size: 2em;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            margin: 2%;
+            font-size: 1.2em;
+        }
+    }
+}

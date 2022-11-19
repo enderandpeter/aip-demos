@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {errorMessage} from "@/redux/error/slice";
 import ErrorDialog from "@/Components/SearchMyBackyard/ErrorDialog";
 import {defaultCenter, findGeolocation, locationCenter} from "@/redux/location/slice";
+import UiControls from "@/Components/UiControls";
 
 export default () => {
     const dispatch = useDispatch();
@@ -46,6 +47,7 @@ export default () => {
         <>
             <ErrorDialog message={message} />
             <div id={'map'} ref={ref} />
+            <UiControls />
         </>
     )
 }
