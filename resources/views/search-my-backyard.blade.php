@@ -1,3 +1,5 @@
+@include('nav.demos')
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -15,9 +17,9 @@
     <body id="search-my-backyard-body" class="font-sans antialiased d-flex flex-column">
         @push('nav-list-items')
             @if ( Route::current()->uri() === 'search-my-backyard' )
-                <li class="breadcrumb-item active">Search my Backyard</li>
+                <li class="breadcrumb-item active" aria-current="page">Search My Backyard</li>
             @else
-                <li class="breadcrumb-item"><a href="/search-my-backyard">Search my Backyard</a></li>
+                <li class="breadcrumb-item"><a href="/search-my-backyard">Search My Backyard</a></li>
             @endif
         @endpush
         @include('header')
