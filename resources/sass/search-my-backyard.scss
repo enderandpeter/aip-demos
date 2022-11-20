@@ -35,6 +35,10 @@ address {
     overflow: hidden !important;
 }
 
+#app {
+    position: relative;
+}
+
 #app, #map {
     height: 100%;
 }

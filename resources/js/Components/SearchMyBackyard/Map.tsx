@@ -4,6 +4,7 @@ import {errorMessage} from "@/redux/error/slice";
 import ErrorDialog from "@/Components/SearchMyBackyard/ErrorDialog";
 import {defaultCenter, findGeolocation, locationCenter} from "@/redux/location/slice";
 import UiControls from "@/Components/UiControls";
+import IntroDialog from "@/Components/SearchMyBackyard/IntroDialog";
 
 export default () => {
     const dispatch = useDispatch();
@@ -46,6 +47,7 @@ export default () => {
     return (
         <>
             <ErrorDialog message={message} />
+            <IntroDialog />
             <div id={'map'} ref={ref} />
             <UiControls />
         </>

@@ -2,6 +2,8 @@ import React from "react";
 
 import './style.scss'
 
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+
 export default () => {
 
     return (
@@ -9,9 +11,9 @@ export default () => {
             <div className="uicontrol-header-div">
                 <header>
                     <h1>Search My Backyard!</h1>
-                    <button id="siteinfo-button" className="btn btn-info btn-sm" data-toggle="modal"
-                            data-target="#siteinfo-modal" title="More Info" aria-label="More Info">
-                        <i className="material-icons">error_outline</i>
+                    <button id="siteinfo-button" className="btn btn-info btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#siteinfo-modal" title="More Info" aria-label="More Info">
+                        <ErrorOutlineIcon />
                     </button>
                 </header>
             </div>
