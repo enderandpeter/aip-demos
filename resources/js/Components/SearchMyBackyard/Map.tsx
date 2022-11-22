@@ -52,6 +52,8 @@ export default () => {
 
                 const mapMarkerListener = (e: MapMouseEvent) => {
                     if(e.latLng){
+                        let newMarker: google.maps.Marker | null = null
+
                         dispatch(addGeoLocation({
                             lat: e.latLng.lat(),
                             lng: e.latLng.lng()
@@ -59,13 +61,18 @@ export default () => {
 
                         setMarkers((markers) => {
                             labelIndex = markers.length
-                            return [
-                                ...markers,
-                                new google.maps.Marker({
+
+                            if(!newMarker){
+                                newMarker = new google.maps.Marker({
                                     position: e.latLng,
                                     map: newMap,
                                     label : labels[labelIndex % labels.length]
-                                }),
+                                })
+                            }
+
+                            return [
+                                ...markers,
+                                newMarker,
                             ]
                         })
                     }
