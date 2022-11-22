@@ -1,10 +1,16 @@
-import React from "react";
+import React, {SetStateAction} from "react";
 
 import './style.scss'
 
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import MarkerMenu from "@/Components/SearchMyBackyard/MarkerMenu";
 
-export default () => {
+export interface UiControlsProps {
+    markers: google.maps.Marker[];
+    setMarkers:  React.Dispatch<React.SetStateAction<google.maps.Marker[]>>
+}
+
+export default ({markers, setMarkers}: UiControlsProps) => {
 
     return (
         <div id="uicontrols">
@@ -17,6 +23,7 @@ export default () => {
                     </button>
                 </header>
             </div>
+            <MarkerMenu markers={markers} />
         </div>
     )
 }
