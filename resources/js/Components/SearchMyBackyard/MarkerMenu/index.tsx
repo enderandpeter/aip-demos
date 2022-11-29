@@ -5,17 +5,18 @@ import SearchIcon from '@mui/icons-material/Search'
 import {useDispatch} from "react-redux";
 import {removeGeolocation} from "@/redux/geolocations/slice";
 import SearchContainer from "@/Components/SearchMyBackyard/UiControls/SearchContainer";
+import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 
-export interface MarkerMenuProps {
-    markers: google.maps.Marker[];
+export interface MarkerMenuProps extends CanSetMarkers {
+    markers: SMBMarker[];
 }
 
-export default ({markers}: MarkerMenuProps) => {
+export default ({markers, setMarkers}: MarkerMenuProps) => {
     const dispatch = useDispatch();
 
     const [isSearching, setIsSearching ] = useState(false)
 
-    const removeMarker = (marker: google.maps.Marker) => {
+    const removeMarker = (marker: SMBMarker) => {
         marker.setMap(null);
 
         dispatch(removeGeolocation({
@@ -55,34 +56,41 @@ export default ({markers}: MarkerMenuProps) => {
                     )}
                     {
                         isSearching && (
-                            <SearchContainer endSearch={endSearch} />
+                            <SearchContainer endSearch={endSearch} setMarkers={setMarkers} />
                         )
                     }
                 </div>
                 <ul id="marker_list">
                     {
-                        markers.map((marker, index) => (
-                            <li className="marker_list_item" key={`marker-${index}`}>
-                                <div className="row">
-                                    <div id="label_container" className="col-12">
-                                        <h3 className="marker_list_label_header">{marker.getLabel() as string}</h3>
+                        markers.map((marker, index) => {
+                            let className = "marker_list_item"
+
+                            if(!marker.showInList){
+                                className += " d-none"
+                            }
+
+                            return (<li className={className} key={`marker-${index}`}>
+                                    <div className="row">
+                                        <div id="label_container" className="col-12">
+                                            <h3 className="marker_list_label_header">{marker.getLabel() as string}</h3>
+                                        </div>
+                                        <div className="col-6 btn-group" role="group" aria-label="Manage location">
+                                            <button
+                                                type="submit"
+                                                className="btn btn-light btn-sm"
+                                                title="Remove"
+                                                onClick={(e)  => {
+                                                    e.preventDefault();
+                                                    removeMarker(marker)
+                                                }}
+                                            >
+                                                <DeleteIcon />
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="col-6 btn-group" role="group" aria-label="Manage location">
-                                        <button
-                                            type="submit"
-                                            className="btn btn-light btn-sm"
-                                            title="Remove"
-                                            onClick={(e)  => {
-                                                e.preventDefault();
-                                                removeMarker(marker)
-                                            }}
-                                        >
-                                            <DeleteIcon />
-                                        </button>
-                                    </div>
-                                </div>
-                            </li>
-                        ))
+                                </li>
+                            )
+                        })
                     }
                 </ul>
             </form>

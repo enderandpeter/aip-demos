@@ -7,12 +7,21 @@ import {defaultCenter, findGeolocation, locationCenter} from "@/redux/location/s
 import UiControls from "@/Components/SearchMyBackyard/UiControls";
 import IntroDialog from "@/Components/SearchMyBackyard/IntroDialog";
 import MapMouseEvent = google.maps.MapMouseEvent;
+import Marker = google.maps.Marker;
+
+export interface CanSetMarkers {
+    setMarkers:  React.Dispatch<React.SetStateAction<SMBMarker[]>>
+}
+
+export interface SMBMarker extends Marker {
+    showInList: boolean;
+}
 
 export default () => {
     const dispatch = useDispatch();
     const ref = useRef<HTMLDivElement>(null)
     const [ map, setMap ] = useState<google.maps.Map>();
-    const [ markers, setMarkers ] = useState<google.maps.Marker[]>([]);
+    const [ markers, setMarkers ] = useState<SMBMarker[]>([]);
 
     const message = useSelector(errorMessage)
 
@@ -52,7 +61,7 @@ export default () => {
 
                 const mapMarkerListener = (e: MapMouseEvent) => {
                     if(e.latLng){
-                        let newMarker: google.maps.Marker | null = null
+                        let newMarker: SMBMarker | null = null
 
                         dispatch(addGeoLocation({
                             lat: e.latLng.lat(),
@@ -67,8 +76,10 @@ export default () => {
                                     position: e.latLng,
                                     map: newMap,
                                     label : labels[labelIndex % labels.length]
-                                })
+                                }) as SMBMarker
                             }
+
+                            newMarker.showInList = true
 
                             return [
                                 ...markers,
@@ -90,8 +101,20 @@ export default () => {
 
     useEffect(() => {
         setMarkers((prevMarkers) => {
+            return userLocations.map((location) => {
+                let mappedMarker: SMBMarker
+                const hasMarker = prevMarkers.some((marker) => {
+                    let hasMarker = location.lat === marker.getPosition()!.lat() && location.lng === marker.getPosition()!.lng()
 
-            return prevMarkers.filter((marker) => userLocations.some((loc) => loc.lat === marker.getPosition()!.lat() && loc.lng === marker.getPosition()!.lng()))
+                    if(hasMarker){
+                        mappedMarker = marker
+                    }
+                    return hasMarker
+                })
+
+                return mappedMarker!
+            })
+
         })
     }, [ userLocations ])
 
