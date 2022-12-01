@@ -21,8 +21,8 @@ export default ({endSearch, setMarkers}: SearchContainerProps) => {
         setMarkers((prevMarkers) => {
             prevMarkers.forEach((marker) => {
                 marker.setVisible(true)
-                // @ts-ignore
-                if(!marker.getLabel().toString().includes(searchQuery)){
+
+                if(!marker.getLabel()!.toString().toLowerCase().includes(searchQuery.toLowerCase())){
                     marker.setVisible(false)
                     marker.showInList = false
                 }
@@ -42,6 +42,18 @@ export default ({endSearch, setMarkers}: SearchContainerProps) => {
                    onChange={(e) => {
                        e.preventDefault()
 
+                       // Show all content right before each search
+                       setMarkers((prevMarkers) => {
+                           prevMarkers.forEach((marker) => {
+                               marker.setVisible(true)
+                               marker.showInList = true
+                           })
+
+                           return [
+                               ...prevMarkers
+                           ]
+                       })
+
                        setSearchQuery(e.target.value)
                    }}
             />
@@ -51,6 +63,7 @@ export default ({endSearch, setMarkers}: SearchContainerProps) => {
                     onClick={(e) => {
                         e.preventDefault()
 
+                        // Show all content when search box is closed
                         setMarkers((prevMarkers) => {
                             prevMarkers.forEach((marker) => {
                                 marker.setVisible(true)

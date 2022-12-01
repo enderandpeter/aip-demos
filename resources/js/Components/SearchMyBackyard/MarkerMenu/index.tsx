@@ -2,6 +2,7 @@ import React, {useState} from "react";
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import SearchIcon from '@mui/icons-material/Search'
+import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {removeGeolocation} from "@/redux/geolocations/slice";
 import SearchContainer from "@/Components/SearchMyBackyard/UiControls/SearchContainer";
@@ -76,7 +77,6 @@ export default ({markers, setMarkers}: MarkerMenuProps) => {
                                         </div>
                                         <div className="col-6 btn-group" role="group" aria-label="Manage location">
                                             <button
-                                                type="submit"
                                                 className="btn btn-light btn-sm"
                                                 title="Remove"
                                                 onClick={(e)  => {
@@ -85,6 +85,24 @@ export default ({markers, setMarkers}: MarkerMenuProps) => {
                                                 }}
                                             >
                                                 <DeleteIcon />
+                                            </button>
+                                            <button className="btn btn-light btn-sm"
+                                                    onClick={(e) => {
+                                                        e.preventDefault()
+
+                                                        marker.setVisible(!marker.getVisible())
+
+                                                        // Force re-render of updated marker state
+                                                        setMarkers((prevMarkers) => [ ...prevMarkers])
+                                                    }}
+                                                    title={marker.getVisible() ? 'Hide' : 'Show'}
+                                            >
+                                                {
+                                                    marker.getVisible() ?
+                                                        <VisibilityOffIcon />
+                                                        :
+                                                        <VisibilityIcon />
+                                                }
                                             </button>
                                         </div>
                                     </div>
