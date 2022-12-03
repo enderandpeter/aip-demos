@@ -15,6 +15,7 @@ export interface CanSetMarkers {
 
 export interface SMBMarker extends Marker {
     showInList: boolean;
+    selected: boolean;
 }
 
 export default () => {
@@ -80,6 +81,7 @@ export default () => {
                             }
 
                             newMarker.showInList = true
+                            newMarker.selected = false
 
                             return [
                                 ...markers,
