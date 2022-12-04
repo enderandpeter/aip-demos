@@ -13,7 +13,7 @@ export interface UiControlsProps extends CanSetMarkers{
 export default ({markers, setMarkers}: UiControlsProps) => {
 
     return (
-        <div id="uicontrols">
+        <div id="uicontrols" className={"d-flex flex-column align-items-end"}>
             <div className="uicontrol-header-div">
                 <header>
                     <h1>Search My Backyard!</h1>

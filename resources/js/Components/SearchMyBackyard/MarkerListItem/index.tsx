@@ -104,6 +104,24 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
                 <div id="label_container" className="col-12">
                     <h3 className="marker_list_label_header">{marker.getLabel() as string}</h3>
                 </div>
+            </div>
+            <div className="row">
+                <div className="col-5">
+                    {
+                        marker.description ? (
+                            <div title={`Close to Lat: ${marker.getPosition()!.lat().toPrecision(5)}, Long: ${marker.getPosition()!.lng().toPrecision(5)}`}>
+                                {marker.description}
+                            </div>
+                        ) : (
+                            <div>
+                                <div className="lat">Lat: <span>{marker.getPosition()!.lat().toPrecision(5)}</span>
+                                </div>
+                                <div className="lng">Lng: <span>{marker.getPosition()!.lng().toPrecision(5)}</span>
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
                 <div className="col-6 btn-group" role="group" aria-label="Manage location">
                     <button
                         className="btn btn-light btn-sm"

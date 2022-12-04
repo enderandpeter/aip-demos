@@ -8,6 +8,8 @@ import ClearAndSelectAllButton from "@/Components/SearchMyBackyard/UiControls/Bu
 import ShowAndHideSelectedButton from "@/Components/SearchMyBackyard/UiControls/Button/ShowAndHideSelectedButton";
 import DeleteSelectedButton from "@/Components/SearchMyBackyard/UiControls/Button/DeleteSelectedButton";
 
+import './style.scss'
+
 export interface MarkerMenuProps extends CanSetMarkers {
     markers: SMBMarker[];
 }

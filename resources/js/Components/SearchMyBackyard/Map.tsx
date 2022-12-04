@@ -16,7 +16,8 @@ export interface CanSetMarkers {
 export interface SMBMarker extends Marker {
     showInList: boolean;
     selected: boolean;
-    hovering: boolean
+    hovering: boolean;
+    description: string;
 }
 
 export default () => {
@@ -70,6 +71,8 @@ export default () => {
                             lng: e.latLng.lng()
                         }))
 
+                        const sv = new google.maps.StreetViewService()
+
                         setMarkers((markers) => {
                             labelIndex = markers.length
 
@@ -91,6 +94,16 @@ export default () => {
                                 newMarker.addListener('mouseout', (e: MapMouseEvent) => {
                                     newMarker!.hovering = false
                                     setMarkers( (prevMarkers) => [ ...prevMarkers])
+                                })
+
+
+                                sv.getPanorama({location: e.latLng})
+                                    // @ts-ignore
+                                    .then(({data: {location: {description}}}: google.maps.StreetViewResponse) => {
+                                        newMarker!.description = description
+                                        setMarkers( (prevMarkers) => [ ...prevMarkers])
+                                    }).catch((e) => {
+
                                 })
                             }
 
