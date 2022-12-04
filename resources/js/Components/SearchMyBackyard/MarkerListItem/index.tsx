@@ -1,5 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from "@mui/icons-material/Clear";
 import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "@mui/icons-material";
 import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import {useDispatch} from "react-redux";
@@ -13,6 +15,8 @@ export interface MarkerListItemProps extends CanSetMarkers {
 export default ({marker, setMarkers}: MarkerListItemProps) => {
     const dispatch = useDispatch();
     const liRef = useRef<HTMLLIElement>(null)
+    const originalLabelRef = useRef("")
+    const searchInputRef = useRef<HTMLInputElement>(null)
 
     const removeMarker = (marker: SMBMarker) => {
         marker.setMap(null);
@@ -67,6 +71,23 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
         }
     }, [marker.hovering])
 
+    useEffect(() => {
+        originalLabelRef.current = marker.getLabel()!.toString()
+    }, [marker.editing])
+
+    const saveInput = () => {
+        marker.setLabel(searchInputRef.current!.value)
+        marker.editing = false
+
+        setMarkers((prevMarkers) => [ ...prevMarkers])
+    }
+
+    const discardInput = () => {
+        marker.setLabel(originalLabelRef.current)
+        marker.editing = false
+        setMarkers((prevMarkers) => [ ...prevMarkers])
+    }
+
     return (
         <li ref={liRef} onClick={(e) => {
             let clicked = true;
@@ -102,7 +123,53 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
         >
             <div className="row">
                 <div id="label_container" className="col-12">
-                    <h3 className="marker_list_label_header">{marker.getLabel() as string}</h3>
+                    {
+                        marker.editing ? (
+                            <div id="label_edit_container">
+                                <input className="marker_list_label_input form-control" autoFocus
+                                       ref={searchInputRef}
+                                       defaultValue={marker.getLabel()!.toString()}
+                                       onBlur={(e) => {
+                                           saveInput()
+                                       }}
+                                       onKeyDown={(e) => {
+                                           if(e.key === "Enter"){
+                                               saveInput()
+                                           }
+
+                                           if(e.key === "Escape"){
+                                               discardInput()
+                                           }
+                                       }}
+                                />
+                                <button className="marker_list_label_save btn btn-light"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            saveInput()
+                                        }}
+                                >
+                                    <DoneIcon />
+                                </button>
+                                <button className="marker_list_label_cancel btn btn-light"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            discardInput()
+                                        }}
+                                >
+                                    <ClearIcon />
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="marker_list_label_header_container">
+                                <h3 className="marker_list_label_header"
+                                    onClick={(e) => {
+                                        marker.editing = true
+                                    }}
+                                >
+                                    {marker.getLabel() as string}</h3>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
             <div className="row">

@@ -12,6 +12,7 @@
         border: black dotted 0.1em;
         padding: 0.8em;
         font-size: 0.6em;
+        width: 100%;
 
         header {
             font-size: 2em;
@@ -22,14 +23,6 @@
             font-family: 'Dancing Script', cursive;
             margin: 2%;
             font-size: 1.2em;
-        }
-    }
-}
-
-@media (min-width: 768px) {
-    #uicontrols {
-        .uicontrol-header-div {
-            width: 23em;
         }
     }
 }

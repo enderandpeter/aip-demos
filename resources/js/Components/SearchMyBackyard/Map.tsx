@@ -13,11 +13,15 @@ export interface CanSetMarkers {
     setMarkers:  React.Dispatch<React.SetStateAction<SMBMarker[]>>
 }
 
+/**
+ * Search My Backyard marker
+ */
 export interface SMBMarker extends Marker {
     showInList: boolean;
     selected: boolean;
     hovering: boolean;
     description: string;
+    editing: boolean;
 }
 
 export default () => {
@@ -86,6 +90,7 @@ export default () => {
                                 newMarker.showInList = true
                                 newMarker.selected = false
                                 newMarker.hovering = false
+                                newMarker.editing = false
 
                                 newMarker.addListener('mouseover', (e: MapMouseEvent) => {
                                     newMarker!.hovering = true
