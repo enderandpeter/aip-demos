@@ -100,28 +100,6 @@ address {
     height: 2.5em;
 }
 
-#marker_list li {
-    list-style-type: none;
-    background: rgba(200, 252, 255, 0.32);
-    border: 0.2em solid transparent;
-}
-
-#marker_list li:nth-child(even) {
-    background: rgba(241, 254, 255, 0.32);
-}
-
-#marker_list li.hovering, #marker_list li:hover {
-    border-color: black;
-}
-
-#marker_list li.selected {
-    border-color: #CCC;
-}
-
-#marker_list li div:first-child {
-    margin-bottom: 2%;
-}
-
 .marker_list_label_header {
     height: 2em;
     margin-top: 0.2em;

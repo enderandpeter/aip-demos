@@ -4,6 +4,7 @@ import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "
 import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import {useDispatch} from "react-redux";
 import {removeGeolocation} from "@/redux/geolocations/slice";
+import './style.scss'
 
 export interface MarkerListItemProps extends CanSetMarkers {
     marker: SMBMarker;

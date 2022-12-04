@@ -1,0 +1,21 @@
+.marker_list_item {
+    list-style-type: none;
+    background: rgba(200, 252, 255, 0.32);
+    border: 0.2em solid transparent;
+
+    &:nth-child(even){
+        background: rgba(75, 163, 170, 0.32);
+    }
+
+    .hovering, &:hover{
+        border-color: black;
+    }
+
+    &.selected {
+        border-color: #3BB4CC;
+    }
+
+    div:first-child {
+        margin-bottom: 2%;
+    }
+}
