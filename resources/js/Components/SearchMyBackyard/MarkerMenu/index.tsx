@@ -5,6 +5,7 @@ import SearchContainer from "@/Components/SearchMyBackyard/UiControls/SearchCont
 import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import MarkerListItem from "@/Components/SearchMyBackyard/MarkerListItem";
 import ClearAndSelectAllButton from "@/Components/SearchMyBackyard/UiControls/Button/ClearAndSelectAllButton";
+import ShowAndHideSelectedButton from "@/Components/SearchMyBackyard/UiControls/Button/ShowAndHideSelectedButton";
 
 export interface MarkerMenuProps extends CanSetMarkers {
     markers: SMBMarker[];
@@ -29,6 +30,7 @@ export default ({markers, setMarkers}: MarkerMenuProps) => {
                         <div id="marker_menu_buttons_list">
                             <div className="btn-group" role="group" aria-label="Manage all locations">
                                 <ClearAndSelectAllButton markers={markers} setMarkers={setMarkers} />
+                                <ShowAndHideSelectedButton markers={markers} setMarkers={setMarkers} />
                                 <button type="submit"
                                         title="Search locations"
                                         className="btn btn-light"

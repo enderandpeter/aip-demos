@@ -14,16 +14,23 @@ export default ({markers, setMarkers}: ClearAndSelectAllButtonProps) => {
                 className="btn btn-light"
                 onClick={(e) => {
                     e.preventDefault()
+                    let click = true;
 
-                    const atLeastOneSelected = markers.some((marker) => marker.selected)
-                    if(atLeastOneSelected){
-                        markers.forEach((marker) => marker.selected = false)
-                    } else {
-                        markers.forEach((marker) => marker.selected = true)
-                    }
-                    setMarkers(() => [
-                        ...markers
-                    ])
+                    setMarkers((prevMarkers) => {
+                        if(click){
+                            const atLeastOneSelected = prevMarkers.some((marker) => marker.selected)
+                            if(atLeastOneSelected){
+                                prevMarkers.forEach((marker) => marker.selected = false)
+                            } else {
+                                prevMarkers.forEach((marker) => marker.selected = true)
+                            }
+
+                            click = false
+                        }
+
+                        return [
+                        ...prevMarkers
+                    ]})
                 }}
         >
             <CheckBoxOutlineBlankIcon />
