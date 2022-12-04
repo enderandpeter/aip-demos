@@ -79,11 +79,20 @@ export default () => {
                                     map: newMap,
                                     label : labels[labelIndex % labels.length]
                                 }) as SMBMarker
-                            }
 
-                            newMarker.showInList = true
-                            newMarker.selected = false
-                            newMarker.hovering = false
+                                newMarker.showInList = true
+                                newMarker.selected = false
+                                newMarker.hovering = false
+
+                                newMarker.addListener('mouseover', (e: MapMouseEvent) => {
+                                    newMarker!.hovering = true
+                                    setMarkers( (prevMarkers) => [ ...prevMarkers])
+                                })
+                                newMarker.addListener('mouseout', (e: MapMouseEvent) => {
+                                    newMarker!.hovering = false
+                                    setMarkers( (prevMarkers) => [ ...prevMarkers])
+                                })
+                            }
 
                             return [
                                 ...markers,

@@ -55,6 +55,18 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
         }
     }, [marker.selected])
 
+    useEffect(() => {
+        if(liRef.current){
+            const li = liRef.current
+
+            if(marker.hovering){
+                li.classList.add("hovering")
+            } else {
+                li.classList.remove("hovering")
+            }
+        }
+    }, [marker.hovering])
+
     return (
         <li ref={liRef} onClick={(e) => {
             let clicked = true;
