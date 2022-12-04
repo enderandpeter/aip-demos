@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef} from 'react'
 
 import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "@mui/icons-material";
 import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
@@ -27,7 +27,6 @@ export default ({markers, setMarkers}: ShowAndHideSelectedButtonProps) => {
 
                                 click = false
                             }
-
 
                             return [
                                 ...prevMarkers
