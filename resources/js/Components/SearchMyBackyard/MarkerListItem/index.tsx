@@ -59,10 +59,8 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
         <li ref={liRef} onClick={(e) => {
             let clicked = true;
             setMarkers((prevMarkers) => {
-                const thisMarker = prevMarkers.find((prevMarker) => prevMarker === marker)
-
                 if(clicked){
-                    thisMarker!.selected = !marker.selected
+                    marker.selected = !marker.selected
                     clicked = false
                 }
 
@@ -70,7 +68,26 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
                     ...prevMarkers
                 ]
             })
-        }}>
+        }}
+            onMouseOver={(e) => {
+                setMarkers((prevMarkers) => {
+                    marker.hovering = true
+
+                    return [
+                        ...prevMarkers
+                    ]
+                })
+            }}
+            onMouseOut={(e) => {
+                setMarkers((prevMarkers) => {
+                    marker.hovering = false
+
+                    return [
+                        ...prevMarkers
+                    ]
+                })
+            }}
+        >
             <div className="row">
                 <div id="label_container" className="col-12">
                     <h3 className="marker_list_label_header">{marker.getLabel() as string}</h3>

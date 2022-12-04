@@ -11,7 +11,7 @@ export default ({markers, setMarkers}: ShowAndHideSelectedButtonProps) => {
     const showAllRef = useRef(true);
 
     return (
-        <div data-bind="if: canHideAllSelection()" className="button_container">
+        <div className="button_container">
             <button title="Hide selected markers"
                     className="btn btn-light"
                     onClick={(e) => {
@@ -21,9 +21,10 @@ export default ({markers, setMarkers}: ShowAndHideSelectedButtonProps) => {
 
                         setMarkers((prevMarkers) => {
                             if(click){
-                                showAllRef.current = prevMarkers.some((marker) => marker.getVisible())
+                                const selectedMarkers = prevMarkers.filter((marker) => marker.selected)
+                                showAllRef.current = selectedMarkers.some((marker) => marker.getVisible())
 
-                                prevMarkers.forEach((marker) => marker.setVisible(!showAllRef.current))
+                                selectedMarkers.forEach((marker) => marker.setVisible(!showAllRef.current))
 
                                 click = false
                             }

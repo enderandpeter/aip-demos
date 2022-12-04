@@ -16,6 +16,7 @@ export interface CanSetMarkers {
 export interface SMBMarker extends Marker {
     showInList: boolean;
     selected: boolean;
+    hovering: boolean
 }
 
 export default () => {
@@ -82,6 +83,7 @@ export default () => {
 
                             newMarker.showInList = true
                             newMarker.selected = false
+                            newMarker.hovering = false
 
                             return [
                                 ...markers,
@@ -119,6 +121,18 @@ export default () => {
 
         })
     }, [ userLocations ])
+
+    useEffect( () => {
+        if(markers){
+            markers.forEach((marker) => {
+                if(marker.hovering){
+                    marker.setAnimation(google.maps.Animation.BOUNCE)
+                } else {
+                    marker.setAnimation(null)
+                }
+            })
+        }
+    }, [markers])
 
     return (
         <>
