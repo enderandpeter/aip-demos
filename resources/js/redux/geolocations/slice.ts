@@ -77,35 +77,23 @@ export const geoLocationsSlice = createSlice({
             return state.filter((glocation) => glocation.id !== action.payload)
         },
         removeSelectedGeolocations(state: Draft<GeoLocationsState>){
-            state.filter((glocation) => !glocation.selected)
+            return state.filter((glocation) => !glocation.selected)
         },
         editGeoLocation(state: Draft<GeoLocationsState>, action: PayloadAction<GeoLocationEditPayload>){
-            return state.map((glocation) => {
-                let editedGlocation = glocation;
-                if(glocation.id === action.payload.id){
-                    /*
-                    This long series of if-statements is to make sure all settings are optional and are only set if specified.
-                     */
-                    if(action.payload.hovering)
-                        editedGlocation.hovering = action.payload.hovering
+            let gLocation = state.find((g) => g.id === action.payload.id)
 
-                    if(action.payload.editing)
-                        editedGlocation.editing = action.payload.editing
+            if(gLocation !== undefined){
+                gLocation.hovering = action.payload.hovering ?? gLocation.hovering
+                gLocation.editing = action.payload.editing ?? gLocation.editing
+                gLocation.showInList = action.payload.showInList ?? gLocation.showInList
+                gLocation.selected = action.payload.selected ?? gLocation.selected
 
-                    if(action.payload.showInList)
-                        editedGlocation.showInList = action.payload.showInList
-
-                    if(action.payload.selected)
-                        editedGlocation.selected = action.payload.selected
-
-                    if(action.payload.serviceData){
-                        Object.keys(action.payload.serviceData).forEach((serviceDataName) => {
-                            editedGlocation.serviceData[serviceDataName] = action.payload.serviceData!
-                        })
-                    }
+                if(action.payload.serviceData){
+                    Object.keys(action.payload.serviceData).forEach((serviceDataName) => {
+                        gLocation!.serviceData[serviceDataName] = action.payload.serviceData!
+                    })
                 }
-                return editedGlocation
-            })
+            }
         },
         controlGeoLocation(state: Draft<GeoLocationsState>, action: PayloadAction<GeoLocationEditPayload>){
             let selectedGeolocation = state.find((gLocation) => gLocation.id === action.payload.id)

@@ -79,18 +79,16 @@ export default () => {
                 })
 
                 const mapMarkerListener = (e: MapMouseEvent) => {
+                    let markerCreated = false
                     if(e.latLng){ // The presence of this indicates the user click on a charted location
 
                         const sv = new google.maps.StreetViewService()
 
-                        setMarkers((markers) => {
-                            // See if a marker at this location is already present
-                            let newMarker: SMBMarker | undefined = markers.find((marker) => {
-                                return marker.getPosition()?.lat() === e.latLng!.lat()
-                                    && marker.getPosition()?.lng() === e.latLng!.lng()
-                            })
+                        let newMarker: SMBMarker
 
-                            if(!newMarker){
+                        setMarkers((markers) => {
+
+                            if(!markerCreated){
                                 // A marker at the click location was not found, so make a new one
 
                                 labelIndex = markers.length
@@ -127,12 +125,16 @@ export default () => {
                                 }
 
                                 newMarker.addListener('mouseover', (e: MapMouseEvent) => {
-                                    newMarker!.hovering = true
-                                    setMarkers( (prevMarkers) => [ ...prevMarkers])
+                                    dispatch(editGeoLocation({
+                                        id: newMarker.id,
+                                        hovering: true
+                                    }))
                                 })
                                 newMarker.addListener('mouseout', (e: MapMouseEvent) => {
-                                    newMarker!.hovering = false
-                                    setMarkers( (prevMarkers) => [ ...prevMarkers])
+                                    dispatch(editGeoLocation({
+                                        id: newMarker.id,
+                                        hovering: false
+                                    }))
                                 })
 
                                 newMarker.addListener('click', (e: MapMouseEvent) => {
@@ -149,6 +151,7 @@ export default () => {
                             }
 
                             if(newMarker){
+                                markerCreated = true
                                 return [
                                     ...markers,
                                     newMarker,
@@ -181,13 +184,21 @@ export default () => {
             /*
             React to changes in userLocations
              */
-            let currentMarkers = markers.filter((marker) => {
+            return markers.filter((marker) => {
                 const gLocation = userLocations.find((location) => location.id === marker.id)
 
                 if(gLocation === undefined){
                     // This marker is being removed
                     marker.setMap(null)
                 } else {
+
+                }
+
+                return !!gLocation;
+            }).map((marker) => {
+                const gLocation = userLocations.find((location) => location.id === marker.id)
+
+                if(gLocation !== undefined){
                     // This gLocation corresponds with an existing marker
                     const {
                         label,
@@ -253,13 +264,8 @@ export default () => {
                         }))
                     }
                 }
-
-                return !!gLocation;
+                return marker
             })
-
-            return [
-                ...currentMarkers
-            ]
         })
     }, [ userLocations, setMarkers ])
 
@@ -283,19 +289,6 @@ export default () => {
             if(someUninitialized){
                 return markers.filter((marker) => !marker.initialized)
                     .map((marker) => {
-                        dispatch(addGeoLocation({
-                            id: marker.id,
-                            location: {
-                                lat: marker.getPosition()!.lat(),
-                                lng: marker.getPosition()!.lng()
-                            },
-                            showInList: marker.showInList,
-                            selected: marker.selected,
-                            hovering: marker.hovering,
-                            editing: marker.editing,
-                            label: marker.getLabel()!.toString(),
-                        }))
-
                         marker.initialized = true
 
                         return marker
@@ -305,7 +298,29 @@ export default () => {
             }
         })
 
-    }, [markers])
+
+        markers.forEach((marker) => {
+            if(!marker.initialized){
+                const gLocation = userLocations.find((gLocation) => gLocation.id === marker.id)
+
+                if(gLocation === undefined){
+                    dispatch(addGeoLocation({
+                        id: marker.id,
+                        location: {
+                            lat: marker.getPosition()!.lat(),
+                            lng: marker.getPosition()!.lng()
+                        },
+                        showInList: marker.showInList,
+                        selected: marker.selected,
+                        hovering: marker.hovering,
+                        editing: marker.editing,
+                        label: marker.getLabel()!.toString(),
+                    }))
+                }
+            }
+        })
+
+    }, [markers, setMarkers])
 
 
     return (

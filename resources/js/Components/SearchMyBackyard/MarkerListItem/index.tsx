@@ -98,12 +98,28 @@ export default ({gLocation}: MarkerListItemProps) => {
             // let clicked = true;
         }}
             onMouseOver={(e) => {
+                let obj = e.relatedTarget as Node | null
+                while(obj != null){
+                    if(obj === liRef.current){
+                        return
+                    }
+                    obj = obj.parentNode
+                }
+
                 dispatch(editGeoLocation({
                     id: gLocation.id,
                     hovering: true
                 }))
             }}
             onMouseOut={(e) => {
+                let obj = e.relatedTarget as Node | null
+                while(obj != null){
+                    if(obj === liRef.current){
+                        return
+                    }
+                    obj = obj.parentNode
+                }
+
                 dispatch(editGeoLocation({
                     id: gLocation.id,
                     hovering: false
