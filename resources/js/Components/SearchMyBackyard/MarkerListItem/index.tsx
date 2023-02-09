@@ -2,29 +2,27 @@ import React, {useEffect, useRef} from 'react'
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from "@mui/icons-material/Clear";
+import PlaceIcon from '@mui/icons-material/Place';
 import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "@mui/icons-material";
 import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
-import {useDispatch} from "react-redux";
-import {removeGeolocation} from "@/redux/geolocations/slice";
+import {useDispatch, useSelector} from "react-redux";
+import {removeGeolocation, editGeoLocation, geolocations, GeoLocationData} from "@/redux/geolocations/slice";
 import './style.scss'
 
-export interface MarkerListItemProps extends CanSetMarkers {
-    marker: SMBMarker;
+export interface MarkerListItemProps{
+    gLocation: GeoLocationData;
 }
 
-export default ({marker, setMarkers}: MarkerListItemProps) => {
+export default ({gLocation}: MarkerListItemProps) => {
     const dispatch = useDispatch();
     const liRef = useRef<HTMLLIElement>(null)
     const originalLabelRef = useRef("")
     const searchInputRef = useRef<HTMLInputElement>(null)
 
-    const removeMarker = (marker: SMBMarker) => {
-        marker.setMap(null);
+    const userLocations = useSelector(geolocations)
 
-        dispatch(removeGeolocation({
-            lat: marker.getPosition()!.lat(),
-            lng: marker.getPosition()!.lng()
-        }))
+    const removeMarker = () => {
+        dispatch(removeGeolocation(gLocation.id))
     }
 
     useEffect(() => {
@@ -39,96 +37,87 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
         if (liRef.current) {
             const li = liRef.current
 
-            if (!marker.showInList) {
+            if (!gLocation.showInList) {
                 li.classList.add("d-none")
             } else {
                 li.classList.remove("d-none")
             }
         }
-    }, [marker.showInList])
+    }, [gLocation.showInList])
 
     useEffect(() => {
         if(liRef.current){
             const li = liRef.current
 
-            if(marker.selected){
+            if(gLocation.selected){
                 li.classList.add("selected")
             } else {
                 li.classList.remove("selected")
             }
         }
-    }, [marker.selected])
+    }, [gLocation.selected])
 
     useEffect(() => {
         if(liRef.current){
             const li = liRef.current
 
-            if(marker.hovering){
+            if(gLocation.hovering){
                 li.classList.add("hovering")
             } else {
                 li.classList.remove("hovering")
             }
         }
-    }, [marker.hovering])
+    }, [gLocation.hovering])
 
     useEffect(() => {
-        originalLabelRef.current = marker.getLabel()!.toString()
-    }, [marker.editing])
+        originalLabelRef.current = gLocation.label
+    }, [gLocation.editing])
 
     const saveInput = () => {
-        marker.setLabel(searchInputRef.current!.value)
-        marker.editing = false
-
-        setMarkers((prevMarkers) => [ ...prevMarkers])
+        dispatch(editGeoLocation({
+            id: gLocation.id,
+            label: searchInputRef.current!.value,
+            editing: false
+        }))
     }
 
     const discardInput = () => {
-        marker.setLabel(originalLabelRef.current)
-        marker.editing = false
-        setMarkers((prevMarkers) => [ ...prevMarkers])
+        dispatch(editGeoLocation({
+            id: gLocation.id,
+            label: originalLabelRef.current,
+            editing: false
+        }))
     }
 
     return (
         <li ref={liRef} onClick={(e) => {
-            let clicked = true;
-            setMarkers((prevMarkers) => {
-                if(clicked){
-                    marker.selected = !marker.selected
-                    clicked = false
-                }
-
-                return [
-                    ...prevMarkers
-                ]
-            })
+            dispatch(editGeoLocation({
+                id: gLocation.id,
+                selected: !gLocation.selected
+            }))
+            // let clicked = true;
         }}
             onMouseOver={(e) => {
-                setMarkers((prevMarkers) => {
-                    marker.hovering = true
-
-                    return [
-                        ...prevMarkers
-                    ]
-                })
+                dispatch(editGeoLocation({
+                    id: gLocation.id,
+                    hovering: true
+                }))
             }}
             onMouseOut={(e) => {
-                setMarkers((prevMarkers) => {
-                    marker.hovering = false
-
-                    return [
-                        ...prevMarkers
-                    ]
-                })
+                dispatch(editGeoLocation({
+                    id: gLocation.id,
+                    hovering: false
+                }))
             }}
         >
             <div className="row">
                 <div id="label_container" className="col-12">
                     {
-                        marker.editing ? (
+                        gLocation.editing ? (
                             <div id="label_edit_container">
                                 <input className="marker_list_label_input form-control" autoFocus
                                        ref={searchInputRef}
-                                       defaultValue={marker.getLabel()!.toString()}
+                                       defaultValue={gLocation.label}
                                        onBlur={(e) => {
                                            saveInput()
                                        }}
@@ -163,10 +152,14 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
                             <div className="marker_list_label_header_container">
                                 <h3 className="marker_list_label_header"
                                     onClick={(e) => {
-                                        marker.editing = true
+                                        e.stopPropagation()
+                                        dispatch(editGeoLocation({
+                                            id: gLocation.id,
+                                            editing: true
+                                        }))
                                     }}
                                 >
-                                    {marker.getLabel() as string}</h3>
+                                    {gLocation.label}</h3>
                             </div>
                         )
                     }
@@ -175,48 +168,61 @@ export default ({marker, setMarkers}: MarkerListItemProps) => {
             <div className="row">
                 <div className="col-5">
                     {
-                        marker.description ? (
-                            <div title={`Close to Lat: ${marker.getPosition()!.lat().toPrecision(5)}, Long: ${marker.getPosition()!.lng().toPrecision(5)}`}>
-                                {marker.description}
+                        gLocation.description ? (
+                            <div title={`Close to Lat: ${gLocation.location.lat.toPrecision(5)}, Long: ${gLocation.location.lng.toPrecision(5)}`}>
+                                {gLocation.description}
                             </div>
                         ) : (
                             <div>
-                                <div className="lat">Lat: <span>{marker.getPosition()!.lat().toPrecision(5)}</span>
+                                <div className="lat">Lat: <span>{gLocation.location.lat.toPrecision(5)}</span>
                                 </div>
-                                <div className="lng">Lng: <span>{marker.getPosition()!.lng().toPrecision(5)}</span>
+                                <div className="lng">Lng: <span>{gLocation.location.lng.toPrecision(5)}</span>
                                 </div>
                             </div>
                         )
                     }
                 </div>
                 <div className="col-6 btn-group" role="group" aria-label="Manage location">
-                    <button
-                        className="btn btn-light btn-sm"
-                        title="Remove"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            removeMarker(marker)
-                        }}
-                    >
-                        <DeleteIcon/>
+                    <button title="Go to location"
+                            className="btn btn-light btn-sm"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                dispatch(editGeoLocation({
+                                    id: gLocation.id,
+                                    callGoToLocation: true,
+                                }))
+                            }}>
+                        <PlaceIcon />
                     </button>
                     <button className="btn btn-light btn-sm"
                             onClick={(e) => {
                                 e.preventDefault()
 
-                                marker.setVisible(!marker.getVisible())
-
-                                // Force re-render of updated marker state
-                                setMarkers((prevMarkers) => [...prevMarkers])
+                                dispatch(editGeoLocation({
+                                    id: gLocation.id,
+                                    visible: !gLocation.visible
+                                }))
                             }}
-                            title={marker.getVisible() ? 'Hide' : 'Show'}
+                            title={gLocation.visible ? 'Hide' : 'Show'}
                     >
                         {
-                            marker.getVisible() ?
+                            gLocation.visible ?
                                 <VisibilityOffIcon/>
                                 :
                                 <VisibilityIcon/>
                         }
+                    </button>
+                    <button
+                        className="btn btn-light btn-sm"
+                        title="Remove"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            removeMarker()
+                        }}
+                    >
+                        <DeleteIcon/>
                     </button>
                 </div>
             </div>

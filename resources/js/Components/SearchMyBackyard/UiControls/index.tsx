@@ -4,14 +4,8 @@ import './style.scss'
 
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import MarkerMenu from "@/Components/SearchMyBackyard/MarkerMenu";
-import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 
-export interface UiControlsProps extends CanSetMarkers{
-    markers: SMBMarker[];
-}
-
-export default ({markers, setMarkers}: UiControlsProps) => {
-
+export default () => {
     return (
         <div id="uicontrols" className={"d-flex flex-column align-items-end"}>
             <div className="uicontrol-header-div">
@@ -23,7 +17,7 @@ export default ({markers, setMarkers}: UiControlsProps) => {
                     </button>
                 </header>
             </div>
-            <MarkerMenu markers={markers} setMarkers={setMarkers}/>
+            <MarkerMenu />
         </div>
     )
 }

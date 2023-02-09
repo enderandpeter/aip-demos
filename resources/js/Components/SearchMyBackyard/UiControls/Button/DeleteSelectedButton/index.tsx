@@ -1,15 +1,10 @@
 import React from 'react'
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import {useDispatch} from "react-redux";
-import {removeGeolocation} from "@/redux/geolocations/slice";
+import {removeSelectedGeolocations} from "@/redux/geolocations/slice";
 
-export interface DeleteSelectedButtonProps extends CanSetMarkers {
-    markers: SMBMarker[]
-}
-
-export default ({markers, setMarkers}: DeleteSelectedButtonProps) => {
+export default () => {
     const dispatch = useDispatch()
 
     return (
@@ -17,13 +12,7 @@ export default ({markers, setMarkers}: DeleteSelectedButtonProps) => {
                 className="btn btn-light"
                 onClick={(e) => {
                     e.preventDefault()
-                    markers.filter((marker) => marker.selected).forEach((marker) => {
-                        marker.setMap(null)
-                        dispatch(removeGeolocation({
-                            lat: marker.getPosition()!.lat(),
-                            lng: marker.getPosition()!.lng()
-                        }))
-                    })
+                    dispatch(removeSelectedGeolocations())
                 }}
         >
             <DeleteIcon />

@@ -1,20 +1,18 @@
 import React, {useState} from "react";
-
+import {useSelector} from "react-redux";
 import SearchIcon from '@mui/icons-material/Search'
 import SearchContainer from "@/Components/SearchMyBackyard/UiControls/SearchContainer";
-import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import MarkerListItem from "@/Components/SearchMyBackyard/MarkerListItem";
 import ClearAndSelectAllButton from "@/Components/SearchMyBackyard/UiControls/Button/ClearAndSelectAllButton";
 import ShowAndHideSelectedButton from "@/Components/SearchMyBackyard/UiControls/Button/ShowAndHideSelectedButton";
 import DeleteSelectedButton from "@/Components/SearchMyBackyard/UiControls/Button/DeleteSelectedButton";
 
 import './style.scss'
+import {geolocations} from "@/redux/geolocations/slice";
 
-export interface MarkerMenuProps extends CanSetMarkers {
-    markers: SMBMarker[];
-}
+export default () => {
+    const userLocations = useSelector(geolocations);
 
-export default ({markers, setMarkers}: MarkerMenuProps) => {
     const [isSearching, setIsSearching ] = useState(false)
 
     const startSearch = () => {
@@ -29,12 +27,12 @@ export default ({markers, setMarkers}: MarkerMenuProps) => {
             <form id="marker_menu_form">
                 <h2>Saved Locations</h2>
                 <div id="marker_menu_buttons">
-                    { markers.length > 0 && (
+                    { userLocations.length > 0 && (
                         <div id="marker_menu_buttons_list">
                             <div className="btn-group" role="group" aria-label="Manage all locations">
-                                <ClearAndSelectAllButton markers={markers} setMarkers={setMarkers} />
-                                <DeleteSelectedButton markers={markers} setMarkers={setMarkers} />
-                                <ShowAndHideSelectedButton markers={markers} setMarkers={setMarkers} />
+                                <ClearAndSelectAllButton />
+                                <DeleteSelectedButton />
+                                <ShowAndHideSelectedButton />
                                 <button type="submit"
                                         title="Search locations"
                                         className="btn btn-light"
@@ -50,14 +48,14 @@ export default ({markers, setMarkers}: MarkerMenuProps) => {
                     )}
                     {
                         isSearching && (
-                            <SearchContainer endSearch={endSearch} setMarkers={setMarkers} />
+                            <SearchContainer endSearch={endSearch} />
                         )
                     }
                 </div>
                 <ul id="marker_list">
                     {
-                        markers.map((marker, index) => {
-                            return <MarkerListItem marker={marker} setMarkers={setMarkers} key={`marker-${index}`} />
+                        userLocations.map((gLocation) => {
+                            return <MarkerListItem gLocation={gLocation} key={gLocation.id} />
                         })
                     }
                 </ul>

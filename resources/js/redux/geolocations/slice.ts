@@ -1,24 +1,178 @@
 import {createSlice, Draft, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "@/redux/store";
 import LatLngLiteral = google.maps.LatLngLiteral;
+import {SMBMarkerProps} from "@/Components/SearchMyBackyard/Map";
 
-export type GeoLocationsState = LatLngLiteral[];
+export interface GeoLocationData extends GeoLocationPayload, GeoLocationControl{
+    serviceData: {
+        [serviceName: string]: {}
+    }
+}
+
+export interface GeoLocationPayload extends SMBMarkerProps{
+    id: string,
+    visible?: boolean,
+    description?: string;
+    label: string;
+    location: LatLngLiteral;
+}
+
+export interface GeoLocationEditPayload extends GeoLocationControl{
+    id: string;
+    hovering?: boolean;
+    showInList?: boolean;
+    selected?: boolean;
+    editing?: boolean;
+    visible?: boolean;
+    label?: string;
+    serviceData?: {
+        [serviceName: string]: ServiceData
+    }
+}
+
+export interface GeoLocationControl {
+    callGoToLocation?: boolean;
+    goToLocationCalled?: boolean;
+    callUpdateInfowindow?: boolean;
+    updateInfowindowCalled?: boolean;
+    callOpenInfowindow?: boolean;
+    openInfowindowCalled?: boolean;
+}
+
+export interface ServiceData {
+    name: string;
+    location: LatLngLiteral;
+    data: {}
+}
+
+export type GeoLocationsState = GeoLocationData[]
 
 export const geoLocationsSlice = createSlice({
     name: 'geolocations',
     initialState: [] as GeoLocationsState,
     reducers: {
-        addGeoLocation(state: Draft<GeoLocationsState>, action: PayloadAction<LatLngLiteral>){
-            state.push(action.payload);
+        addGeoLocation(state: Draft<GeoLocationsState>, action: PayloadAction<GeoLocationPayload>){
+            const {
+                location,
+                id,
+                showInList,
+                selected,
+                editing,
+                label,
+                hovering
+            } = action.payload
+            state.push({
+                location,
+                id,
+                showInList,
+                selected,
+                editing,
+                hovering,
+                label,
+                visible : true,
+                serviceData: {}
+            });
         },
-        removeGeolocation(state: Draft<GeoLocationsState>, action: PayloadAction<LatLngLiteral>){
-            return state.filter((glocation) => glocation.lat !== action.payload.lat && glocation.lng !== action.payload.lng)
+        removeGeolocation(state: Draft<GeoLocationsState>, action: PayloadAction<string>){
+            return state.filter((glocation) => glocation.id !== action.payload)
+        },
+        removeSelectedGeolocations(state: Draft<GeoLocationsState>){
+            state.filter((glocation) => !glocation.selected)
+        },
+        editGeoLocation(state: Draft<GeoLocationsState>, action: PayloadAction<GeoLocationEditPayload>){
+            return state.map((glocation) => {
+                let editedGlocation = glocation;
+                if(glocation.id === action.payload.id){
+                    /*
+                    This long series of if-statements is to make sure all settings are optional and are only set if specified.
+                     */
+                    if(action.payload.hovering)
+                        editedGlocation.hovering = action.payload.hovering
+
+                    if(action.payload.editing)
+                        editedGlocation.editing = action.payload.editing
+
+                    if(action.payload.showInList)
+                        editedGlocation.showInList = action.payload.showInList
+
+                    if(action.payload.selected)
+                        editedGlocation.selected = action.payload.selected
+
+                    if(action.payload.serviceData){
+                        Object.keys(action.payload.serviceData).forEach((serviceDataName) => {
+                            editedGlocation.serviceData[serviceDataName] = action.payload.serviceData!
+                        })
+                    }
+                }
+                return editedGlocation
+            })
+        },
+        controlGeoLocation(state: Draft<GeoLocationsState>, action: PayloadAction<GeoLocationEditPayload>){
+            let selectedGeolocation = state.find((gLocation) => gLocation.id === action.payload.id)
+
+            if(selectedGeolocation !== undefined){
+                if(action.payload.callGoToLocation)
+                    selectedGeolocation.callGoToLocation = action.payload.callGoToLocation
+
+                if(action.payload.goToLocationCalled)
+                    selectedGeolocation.goToLocationCalled = action.payload.goToLocationCalled
+
+                if(action.payload.callUpdateInfowindow)
+                    selectedGeolocation.callUpdateInfowindow = action.payload.callUpdateInfowindow
+
+                if(action.payload.updateInfowindowCalled)
+                    selectedGeolocation.updateInfowindowCalled = action.payload.updateInfowindowCalled
+
+                if(action.payload.callOpenInfowindow)
+                    selectedGeolocation.callOpenInfowindow = action.payload.callOpenInfowindow
+
+                if(action.payload.openInfowindowCalled)
+                    selectedGeolocation.openInfowindowCalled = action.payload.openInfowindowCalled
+            }
+        },
+        toggleSelectAll(state: Draft<GeoLocationsState>){
+            const atLeastOneSelected = state.some((gLocation) => gLocation.selected)
+            if(atLeastOneSelected){
+                state.forEach((gLocation) => gLocation.selected = false)
+            } else {
+                state.forEach((gLocation) => gLocation.selected = true)
+            }
+        },
+        toggleVisible(state: Draft<GeoLocationsState>, action: PayloadAction<boolean | null>){
+            let visibility;
+            if(action.payload === null){
+                visibility = !atLeastOneVisible
+            } else {
+                visibility = action.payload
+            }
+            state.forEach((gLocation) => gLocation.visible = !atLeastOneVisible)
+        },
+        search(state: Draft<GeoLocationsState>, action: PayloadAction<string>){
+            state.forEach((gLocation) => {
+                gLocation.visible = true
+
+                if(!gLocation.label.toLowerCase().includes(action.payload)){
+                    gLocation.visible = false
+                    gLocation.showInList = false
+                }
+            })
         }
     }
 });
 
-export const { addGeoLocation, removeGeolocation } = geoLocationsSlice.actions;
+export const {
+    addGeoLocation,
+    removeGeolocation,
+    editGeoLocation,
+    controlGeoLocation,
+    toggleSelectAll,
+    toggleVisible,
+    removeSelectedGeolocations,
+    search
+} = geoLocationsSlice.actions;
 
 export const geolocations = (state: RootState) => state.geolocations
+export const atLeastOneVisible = (state: RootState) => state.geolocations.filter((gLocation) => gLocation.selected)
+    .some((gLocation) => gLocation.visible)
 
 export default geoLocationsSlice.reducer;

@@ -1,14 +1,12 @@
 import React, {useRef} from 'react'
 
 import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "@mui/icons-material";
-import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleVisible, atLeastOneVisible} from "@/redux/geolocations/slice";
 
-export interface ShowAndHideSelectedButtonProps extends CanSetMarkers {
-    markers: SMBMarker[]
-}
-
-export default ({markers, setMarkers}: ShowAndHideSelectedButtonProps) => {
-    const showAllRef = useRef(true);
+export default () => {
+    const dispatch = useDispatch()
+    const oneVisible = useSelector(atLeastOneVisible)
 
     return (
         <div className="button_container">
@@ -17,26 +15,11 @@ export default ({markers, setMarkers}: ShowAndHideSelectedButtonProps) => {
                     onClick={(e) => {
                         e.preventDefault()
 
-                        let click = true
-
-                        setMarkers((prevMarkers) => {
-                            if(click){
-                                const selectedMarkers = prevMarkers.filter((marker) => marker.selected)
-                                showAllRef.current = selectedMarkers.some((marker) => marker.getVisible())
-
-                                selectedMarkers.forEach((marker) => marker.setVisible(!showAllRef.current))
-
-                                click = false
-                            }
-
-                            return [
-                                ...prevMarkers
-                            ]
-                        })
+                        dispatch(toggleVisible(null))
                     }}
             >
                 {
-                    showAllRef.current ? <VisibilityIcon /> : <VisibilityOffIcon />
+                    oneVisible ? <VisibilityOffIcon /> : <VisibilityIcon />
                 }
             </button>
         </div>

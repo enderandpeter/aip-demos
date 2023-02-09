@@ -1,12 +1,14 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import React, {useEffect, useRef, useState} from "react";
-import {CanSetMarkers} from "@/Components/SearchMyBackyard/Map";
+import {useDispatch} from "react-redux";
+import {search, toggleVisible} from "@/redux/geolocations/slice";
 
-export interface SearchContainerProps extends CanSetMarkers{
+export interface SearchContainerProps{
     endSearch: () => void;
 }
 
-export default ({endSearch, setMarkers}: SearchContainerProps) => {
+export default ({endSearch}: SearchContainerProps) => {
+    const dispatch = useDispatch()
 
     const searchInput = useRef<HTMLInputElement>(null);
     const [searchQuery, setSearchQuery] = useState("")
@@ -18,20 +20,7 @@ export default ({endSearch, setMarkers}: SearchContainerProps) => {
     }, [searchInput.current])
 
     useEffect(() => {
-        setMarkers((prevMarkers) => {
-            prevMarkers.forEach((marker) => {
-                marker.setVisible(true)
-
-                if(!marker.getLabel()!.toString().toLowerCase().includes(searchQuery.toLowerCase())){
-                    marker.setVisible(false)
-                    marker.showInList = false
-                }
-            })
-
-            return [
-                ...prevMarkers
-            ]
-        })
+        dispatch(search(searchQuery.toLowerCase()))
     }, [searchQuery])
 
     return (
@@ -43,16 +32,7 @@ export default ({endSearch, setMarkers}: SearchContainerProps) => {
                        e.preventDefault()
 
                        // Show all content right before each search
-                       setMarkers((prevMarkers) => {
-                           prevMarkers.forEach((marker) => {
-                               marker.setVisible(true)
-                               marker.showInList = true
-                           })
-
-                           return [
-                               ...prevMarkers
-                           ]
-                       })
+                       dispatch(toggleVisible(true))
 
                        setSearchQuery(e.target.value)
                    }}
@@ -64,16 +44,7 @@ export default ({endSearch, setMarkers}: SearchContainerProps) => {
                         e.preventDefault()
 
                         // Show all content when search box is closed
-                        setMarkers((prevMarkers) => {
-                            prevMarkers.forEach((marker) => {
-                                marker.setVisible(true)
-                                marker.showInList = true
-                            })
-
-                            return [
-                                ...prevMarkers
-                            ]
-                        })
+                        dispatch(toggleVisible(true))
 
                         endSearch()
                     }}

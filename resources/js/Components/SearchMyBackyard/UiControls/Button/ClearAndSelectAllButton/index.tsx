@@ -1,36 +1,19 @@
 import React from 'react'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
+import {useDispatch} from "react-redux";
+import { toggleSelectAll } from "@/redux/geolocations/slice"
 
-export interface ClearAndSelectAllButtonProps extends CanSetMarkers {
-    markers: SMBMarker[]
-}
-
-export default ({markers, setMarkers}: ClearAndSelectAllButtonProps) => {
-
+export default () => {
+    const dispatch = useDispatch();
     return (
         <button type="submit"
                 title="Clear/select markers"
                 className="btn btn-light"
                 onClick={(e) => {
                     e.preventDefault()
-                    let click = true;
 
-                    setMarkers((prevMarkers) => {
-                        if(click){
-                            const atLeastOneSelected = prevMarkers.some((marker) => marker.selected)
-                            if(atLeastOneSelected){
-                                prevMarkers.forEach((marker) => marker.selected = false)
-                            } else {
-                                prevMarkers.forEach((marker) => marker.selected = true)
-                            }
+                    dispatch(toggleSelectAll())
 
-                            click = false
-                        }
-
-                        return [
-                        ...prevMarkers
-                    ]})
                 }}
         >
             <CheckBoxOutlineBlankIcon />
