@@ -101,22 +101,22 @@ export const geoLocationsSlice = createSlice({
             let selectedGeolocation = state.find((gLocation) => gLocation.id === action.payload.id)
 
             if(selectedGeolocation !== undefined){
-                if(action.payload.callGoToLocation)
+                if(typeof action.payload.callGoToLocation === 'boolean')
                     selectedGeolocation.callGoToLocation = action.payload.callGoToLocation
 
-                if(action.payload.goToLocationCalled)
+                if(typeof action.payload.goToLocationCalled === 'boolean')
                     selectedGeolocation.goToLocationCalled = action.payload.goToLocationCalled
 
-                if(action.payload.callUpdateInfowindow)
+                if(typeof action.payload.callUpdateInfowindow === 'boolean')
                     selectedGeolocation.callUpdateInfowindow = action.payload.callUpdateInfowindow
 
-                if(action.payload.updateInfowindowCalled)
+                if(typeof action.payload.updateInfowindowCalled === 'boolean')
                     selectedGeolocation.updateInfowindowCalled = action.payload.updateInfowindowCalled
 
-                if(action.payload.callOpenInfowindow)
+                if(typeof action.payload.callOpenInfowindow === 'boolean')
                     selectedGeolocation.callOpenInfowindow = action.payload.callOpenInfowindow
 
-                if(action.payload.openInfowindowCalled)
+                if(typeof action.payload.openInfowindowCalled === 'boolean')
                     selectedGeolocation.openInfowindowCalled = action.payload.openInfowindowCalled
             }
         },

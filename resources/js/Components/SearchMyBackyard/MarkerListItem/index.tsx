@@ -6,7 +6,13 @@ import PlaceIcon from '@mui/icons-material/Place';
 import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "@mui/icons-material";
 import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import {useDispatch, useSelector} from "react-redux";
-import {removeGeolocation, editGeoLocation, geolocations, GeoLocationData} from "@/redux/geolocations/slice";
+import {
+    removeGeolocation,
+    editGeoLocation,
+    geolocations,
+    GeoLocationData,
+    controlGeoLocation
+} from "@/redux/geolocations/slice";
 import './style.scss'
 
 export interface MarkerListItemProps{
@@ -205,7 +211,7 @@ export default ({gLocation}: MarkerListItemProps) => {
                                 e.preventDefault()
                                 e.stopPropagation()
 
-                                dispatch(editGeoLocation({
+                                dispatch(controlGeoLocation({
                                     id: gLocation.id,
                                     callGoToLocation: true,
                                 }))

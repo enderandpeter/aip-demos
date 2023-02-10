@@ -31,7 +31,9 @@ export interface SMBMarker extends SMBMarkerProps, Marker {
     goToLocation: () => void;
     updateInfowindow: () => void;
     openInfowindow: () => void;
-
+    callGoToLocation?: boolean;
+    callUpdateInfowindow?: boolean;
+    callOpenInfowindow?: boolean;
     initialized: boolean;
 }
 
@@ -208,11 +210,8 @@ export default () => {
                         selected,
                         showInList,
                         callGoToLocation,
-                        goToLocationCalled,
                         callOpenInfowindow,
-                        openInfowindowCalled,
                         callUpdateInfowindow,
-                        updateInfowindowCalled
                     } = gLocation
 
                     marker.setLabel(label)
@@ -222,47 +221,11 @@ export default () => {
                     marker.selected = selected
                     marker.showInList = showInList
 
-                    if(callGoToLocation && !goToLocationCalled){
-                        marker.goToLocation();
-                        dispatch(controlGeoLocation({
-                            id: gLocation.id,
-                            goToLocationCalled: true,
-                            callGoToLocation: false
-                        }))
-                    } else if (goToLocationCalled){
-                        dispatch(controlGeoLocation({
-                            id: gLocation.id,
-                            goToLocationCalled: false,
-                        }))
-                    }
+                    marker.callGoToLocation = !!callGoToLocation;
 
-                    if(callOpenInfowindow && !openInfowindowCalled){
-                        marker.openInfowindow();
-                        dispatch(controlGeoLocation({
-                            id: gLocation.id,
-                            openInfowindowCalled: true,
-                            callOpenInfowindow: false
-                        }))
-                    } else if (openInfowindowCalled){
-                        dispatch(controlGeoLocation({
-                            id: gLocation.id,
-                            openInfowindowCalled: false,
-                        }))
-                    }
+                    marker.callOpenInfowindow = !!callOpenInfowindow;
 
-                    if(callUpdateInfowindow && !updateInfowindowCalled){
-                        marker.openInfowindow();
-                        dispatch(controlGeoLocation({
-                            id: gLocation.id,
-                            updateInfowindowCalled: true,
-                            callUpdateInfowindow: false
-                        }))
-                    } else if (updateInfowindowCalled){
-                        dispatch(controlGeoLocation({
-                            id: gLocation.id,
-                            updateInfowindowCalled: false,
-                        }))
-                    }
+                    marker.callUpdateInfowindow = !!callUpdateInfowindow;
                 }
                 return marker
             })
@@ -279,6 +242,35 @@ export default () => {
                 }
             })
         }
+
+        markers.forEach((marker) => {
+            if(marker.callOpenInfowindow){
+                marker.openInfowindow()
+
+                dispatch(controlGeoLocation({
+                    id: marker.id,
+                    callOpenInfowindow: false,
+                }))
+            }
+
+            if(marker.callGoToLocation){
+                marker.goToLocation()
+
+                dispatch(controlGeoLocation({
+                    id: marker.id,
+                    callGoToLocation: false,
+                }))
+            }
+
+            if(marker.callUpdateInfowindow){
+                marker.updateInfowindow()
+
+                dispatch(controlGeoLocation({
+                    id: marker.id,
+                    callUpdateInfowindow: false,
+                }))
+            }
+        })
     }, [markers])
 
     useEffect(() => {

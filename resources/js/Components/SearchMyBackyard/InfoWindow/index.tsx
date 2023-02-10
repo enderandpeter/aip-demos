@@ -17,13 +17,12 @@ export default ({marker}: InfoWindowProps) => {
                     {
                         marker.description ? (
                             <div
-                                data-bind="text: activeMarker().locationDescription, attr: { title: 'Close to Lat: ' + activeMarker().getPosition().lat().toPrecision(5) + ', Long: ' + activeMarker().getPosition().lng().toPrecision(5) }"
-                                title={`Close to Lat: ${marker.getPosition()!.lat()}, Long: ${marker.getPosition()!.lng()}`}
+                                className={"marker_description_container"}
                             >
                                 {marker.description}
                             </div>
                         ) : (
-                            <div>
+                            <div className={"marker_description_container"}>
                                 <div className="lat">Lat: <span id="infowindow_lat" className="autofilled">
                                     {marker.getPosition()!.lat().toPrecision(5)}
                                 </span>
