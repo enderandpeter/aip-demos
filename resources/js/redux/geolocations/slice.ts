@@ -86,6 +86,8 @@ export const geoLocationsSlice = createSlice({
                 gLocation.hovering = action.payload.hovering ?? gLocation.hovering
                 gLocation.editing = action.payload.editing ?? gLocation.editing
                 gLocation.showInList = action.payload.showInList ?? gLocation.showInList
+                gLocation.visible = action.payload.visible ?? gLocation.visible
+                gLocation.label = action.payload.label ?? gLocation.label
                 gLocation.selected = action.payload.selected ?? gLocation.selected
 
                 if(action.payload.serviceData){
@@ -127,13 +129,20 @@ export const geoLocationsSlice = createSlice({
             }
         },
         toggleVisible(state: Draft<GeoLocationsState>, action: PayloadAction<boolean | null>){
-            let visibility;
+            let visibility: boolean;
             if(action.payload === null){
-                visibility = !atLeastOneVisible
+                state.filter((g) => g.selected).forEach((gLocation) => {
+                    gLocation.visible = !gLocation.visible
+                    gLocation.showInList = !gLocation.showInList
+                })
             } else {
                 visibility = action.payload
+
+                state.forEach((gLocation) => {
+                    gLocation.visible = visibility
+                    gLocation.showInList = visibility
+                })
             }
-            state.forEach((gLocation) => gLocation.visible = !atLeastOneVisible)
         },
         search(state: Draft<GeoLocationsState>, action: PayloadAction<string>){
             state.forEach((gLocation) => {

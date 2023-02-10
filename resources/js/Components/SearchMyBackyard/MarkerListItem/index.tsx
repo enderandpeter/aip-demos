@@ -215,6 +215,7 @@ export default ({gLocation}: MarkerListItemProps) => {
                     <button className="btn btn-light btn-sm"
                             onClick={(e) => {
                                 e.preventDefault()
+                                e.stopPropagation()
 
                                 dispatch(editGeoLocation({
                                     id: gLocation.id,
