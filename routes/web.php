@@ -26,8 +26,6 @@ Route::get('search-my-backyard', function () {
     return Inertia::render('SearchMyBackyard');
 });
 
-Route::post('search-my-backyard', [ LocationDataController::class, 'postLocation']);
-
 Route::get('frogger', function () {
     return view('frogger');
 });

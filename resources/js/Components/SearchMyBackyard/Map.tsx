@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import { createRoot } from 'react-dom/client';
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch, Provider} from "react-redux";
 import {errorMessage} from "@/redux/error/slice";
 import {addGeoLocation, controlGeoLocation, editGeoLocation, geolocations} from "@/redux/geolocations/slice"
 import ErrorDialog from "@/Components/SearchMyBackyard/ErrorDialog";
@@ -11,6 +11,7 @@ import MapMouseEvent = google.maps.MapMouseEvent;
 import Marker = google.maps.Marker;
 import InfoWindow from "@/Components/SearchMyBackyard/InfoWindow";
 import {v4 as uuidv4} from 'uuid';
+import store from "@/redux/store";
 
 export interface CanSetMarkers {
     setMarkers:  React.Dispatch<React.SetStateAction<SMBMarker[]>>
@@ -118,7 +119,11 @@ export default () => {
                                     const container = document.createElement('div')
                                     container.id = 'infowindowContainer'
                                     const root = createRoot(container)
-                                    root.render(<InfoWindow marker={newMarker!}/>)
+                                    root.render(
+                                        <Provider store={store}>
+                                        <InfoWindow marker={newMarker!}/>
+                                        </Provider>
+                                    )
                                     infowindowRef.current.setContent(container)
                                 }
                                 newMarker.openInfowindow = () => {

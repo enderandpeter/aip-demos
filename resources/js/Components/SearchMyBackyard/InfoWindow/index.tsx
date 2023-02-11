@@ -1,11 +1,19 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {SMBMarker} from "@/Components/SearchMyBackyard/Map";
+import Yelp from "@/Components/SearchMyBackyard/InfoWindow/Yelp";
 
 export interface InfoWindowProps {
     marker: SMBMarker
 }
 
 export default ({marker}: InfoWindowProps) => {
+    const [activeTab, setTab] = useState('')
+
+    useEffect(() => {
+        if(!activeTab){
+            setTab('yelp')
+        }
+    }, [])
 
     return (
         <div id={'infowindow'}>
@@ -33,6 +41,22 @@ export default ({marker}: InfoWindowProps) => {
                                 </div>
                             </div>
                         )
+                    }
+                </div>
+                <ul className="nav nav-tabs">
+                    <li className="nav-item">
+                        <a
+                            className={`nav-link ${activeTab === 'yelp' ? 'active' : ''}`}
+                            aria-current={`${activeTab === 'yelp' ? 'page' : 'false'}`} href="#"
+                            onClick={(e) => setTab('yelp')}
+                        >
+                            Yelp
+                        </a>
+                    </li>
+                </ul>
+                <div className={'infowindow_content'}>
+                    {
+                        activeTab === 'yelp' ? <Yelp marker={marker} /> : null
                     }
                 </div>
             </header>
