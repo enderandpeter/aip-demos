@@ -26,6 +26,7 @@ export interface SMBMarkerProps {
     selected: boolean;
     hovering: boolean;
     editing: boolean;
+    pano?: string;
 }
 export interface SMBMarker extends SMBMarkerProps, Marker {
     description: string;
@@ -110,6 +111,17 @@ export default () => {
                                 newMarker.hovering = false;
                                 newMarker.editing = false;
 
+                                let panoramaData
+
+                                sv.getPanorama({location: e.latLng})
+                                    // @ts-ignore
+                                    .then(({data: { location: {description, pano}}}: google.maps.StreetViewResponse) => {
+                                        newMarker!.description = description
+                                        newMarker.pano = pano;
+                                    }).catch((e) => {
+
+                                })
+
                                 newMarker.goToLocation = () => {
                                     (newMarker!.getMap() as google.maps.Map).panTo(newMarker!.getPosition()!)
                                     newMarker!.updateInfowindow()
@@ -121,7 +133,7 @@ export default () => {
                                     const root = createRoot(container)
                                     root.render(
                                         <Provider store={store}>
-                                        <InfoWindow marker={newMarker!}/>
+                                            <InfoWindow marker={newMarker!}/>
                                         </Provider>
                                     )
                                     infowindowRef.current.setContent(container)
@@ -146,14 +158,6 @@ export default () => {
 
                                 newMarker.addListener('click', (e: MapMouseEvent) => {
                                     newMarker!.goToLocation()
-                                })
-
-                                sv.getPanorama({location: e.latLng})
-                                    // @ts-ignore
-                                    .then(({data: {location: {description}}}: google.maps.StreetViewResponse) => {
-                                        newMarker!.description = description
-                                    }).catch((e) => {
-
                                 })
                             }
 
@@ -311,6 +315,7 @@ export default () => {
                         selected: marker.selected,
                         hovering: marker.hovering,
                         editing: marker.editing,
+                        pano: marker.pano ?? '',
                         label: marker.getLabel()!.toString(),
                     }))
                 }

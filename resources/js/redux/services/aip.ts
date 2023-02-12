@@ -1,5 +1,3 @@
-import { host } from '@/config'
-
 export interface YelpReview {
     id: string;
     url: string;
@@ -45,7 +43,6 @@ export interface YelpBusiness {
 }
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {EndpointBuilder} from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 
 export const aipAPI = createApi({
     reducerPath: 'aipAPI',

@@ -1,9 +1,19 @@
 import React, {useEffect, useState} from 'react'
 import {SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import Yelp from "@/Components/SearchMyBackyard/InfoWindow/Yelp";
+import GoogleStreetView from "@/Components/SearchMyBackyard/InfoWindow/GoogleStreetView";
 
 export interface InfoWindowProps {
     marker: SMBMarker
+}
+
+export const services = {
+    'yelp': {
+        'display_name': 'Yelp'
+    },
+    'gsv': {
+        'display_name': 'Google Street View'
+    }
 }
 
 export default ({marker}: InfoWindowProps) => {
@@ -44,20 +54,30 @@ export default ({marker}: InfoWindowProps) => {
                     }
                 </div>
                 <ul className="nav nav-tabs">
-                    <li className="nav-item">
-                        <a
-                            className={`nav-link ${activeTab === 'yelp' ? 'active' : ''}`}
-                            aria-current={`${activeTab === 'yelp' ? 'page' : 'false'}`} href="#"
-                            onClick={(e) => setTab('yelp')}
-                        >
-                            Yelp
-                        </a>
-                    </li>
+                    {
+                        Object.keys(services).map((service) => {
+
+                            return (
+                                <li className="nav-item" key={service}>
+                                    <a
+                                        className={`nav-link ${activeTab === service ? 'active' : ''}`}
+                                        aria-current={`${activeTab === service ? 'page' : 'false'}`} href="#"
+                                        onClick={(e) => setTab(service)}
+                                    >
+                                        {services[service as keyof typeof services].display_name}
+                                    </a>
+                                </li>
+                            )
+                        })
+                    }
                 </ul>
                 <div className={'infowindow_content'}>
+                    <div id="location_content" className="mt-3">
                     {
-                        activeTab === 'yelp' ? <Yelp marker={marker} /> : null
+                        activeTab === 'yelp' ? <Yelp marker={marker} />
+                            : activeTab === 'gsv' ? <GoogleStreetView marker={marker} /> :  null
                     }
+                    </div>
                 </div>
             </header>
         </div>

@@ -25,6 +25,7 @@ export interface GeoLocationEditPayload extends GeoLocationControl{
     editing?: boolean;
     visible?: boolean;
     label?: string;
+    pano?: string;
     serviceData?: {
         [serviceName: string]: ServiceData
     }
@@ -59,7 +60,8 @@ export const geoLocationsSlice = createSlice({
                 selected,
                 editing,
                 label,
-                hovering
+                hovering,
+                pano
             } = action.payload
             state.push({
                 location,
@@ -69,6 +71,7 @@ export const geoLocationsSlice = createSlice({
                 editing,
                 hovering,
                 label,
+                pano,
                 visible : true,
                 serviceData: {}
             });

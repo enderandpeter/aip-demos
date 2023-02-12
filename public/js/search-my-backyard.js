@@ -1,7 +1,7 @@
 $(function () {
     /**
      * Data pertaining to an image modal
-     * 
+     *
      * @param ImageData image A URL to an image
      */
     function ImageModal(image) {
@@ -24,13 +24,10 @@ $(function () {
      * section of data such as a Wikipedia article and all the images from that
      * article. A LocalPage is typically in a collection of pages that are shown
      * in a tab and whose contents can be navigated through.
-     * 
-     * @param array
-     *            localPages The array of LocalPage objects that this localPage
+     *
+     * @param localPages The array of LocalPage objects that this localPage
      *            is a member of
-     * @param object
-     *            article Data pertaining to the article that the page belongs
-     *            to
+     * @param article Data pertaining to the article that the page belongs to
      */
     function LocalPage(localPages, article) {
         /**
@@ -59,7 +56,7 @@ $(function () {
          *            image is hidden and then explicity reshown because the
          *            code in the image's onload handler may not fire.
          */
-        this.showImage = function (image, openedDirectly) {            
+        this.showImage = function (image, openedDirectly) {
             var $imageMedia;
             if (openedDirectly === true) {
                 $imageMedia = $('.image_modal_media');
@@ -117,7 +114,7 @@ $(function () {
 
                 if (imageArrayIndex === thisLocalPage.imageArray.length - 1) { // User is viewing last image in local page
                     // User is viewing last image in last local page
-                    if (thisLocalPageIndex === localPages.length - 1) { 
+                    if (thisLocalPageIndex === localPages.length - 1) {
                         // The next image is the first one in the first local page
                         nextImage = localPages[0].imageArray[0];
                     } else {
@@ -160,10 +157,10 @@ $(function () {
 
     /**
      * Data pertaining to an image to be shown
-     * 
+     *
      * @param image object Data from which the image thumbnail, original URL, and title can be obtained
      * @param Localpage localPage The LocalPage that this image is from
-     * @param string|int localPageIndex The numerical index in a localPages array at which this local page is found 
+     * @param string|int localPageIndex The numerical index in a localPages array at which this local page is found
      */
     function ImageData(image, imageArrayIndex, localPage, localPageIndex){
         this.thumbnail = image.thumbnail;
@@ -173,7 +170,7 @@ $(function () {
         this.localPage = localPage;
         this.article = localPage.title;
         this.localPageIndex = localPageIndex;
-        
+
         // Whether or not the data is for an image as opposed to other media
         this.isImage = function(){
             return !this.isOgv();
@@ -185,7 +182,7 @@ $(function () {
             return this.original.match(/\.ogv$/);
         };
     }
-    
+
     /*
      * There is a single image modal used to show images on the site.
      */
@@ -196,10 +193,10 @@ $(function () {
     /**
      * A control object for the map that either displays information or provides
      * functionality
-     * 
+     *
      * Pass either a list of elements or the content, attributes and style used
      * to initialize this control.
-     * 
+     *
      * @constructor
      * @param object
      *            elementList A list of objects with an element property for
@@ -355,28 +352,28 @@ $(function () {
             var self = this;
 
             /*
-             * this.services = ko.observable([ 
-             *     ko.observable({ 
+             * this.services = ko.observable([
+             *     ko.observable({
              *         service: 'yelp',
-             *         serviceName: 'Yelp', 
-             *         data: ko.observableArray(), 
+             *         serviceName: 'Yelp',
+             *         data: ko.observableArray(),
              *         showView: true,
              *         showTab: function(){...} }
-             *     ), 
-             *     ko.observable({ 
-             *         service: 'streetview', 
-             *         serviceName: 'Google Street View', 
-             *         data: ko.observableArray(), 
-             *         showView: false, 
-             *         showTab: function(){...} }
-             *     ), 
+             *     ),
              *     ko.observable({
-             *         service: 'wikipedia', 
-             *         serviceName: 'Wikipedia', 
-             *         data: ko.observableArray(), 
+             *         service: 'streetview',
+             *         serviceName: 'Google Street View',
+             *         data: ko.observableArray(),
              *         showView: false,
              *         showTab: function(){...} }
-             *     ) 
+             *     ),
+             *     ko.observable({
+             *         service: 'wikipedia',
+             *         serviceName: 'Wikipedia',
+             *         data: ko.observableArray(),
+             *         showView: false,
+             *         showTab: function(){...} }
+             *     )
              *  ]);
              */
             var serviceSetup = [ {
@@ -517,17 +514,17 @@ $(function () {
              * The InfoWindow used to display info about a location
              */
             this.infoWindow = new google.maps.InfoWindow();
-            
+
             this.infoWindow.addListener('closeclick', function(){
                 map.setOptions({gestureHandling : 'auto'});
             });
-            
+
             this.hideMarkers = function(){
                 $.each(this.allMarkers(), function(index, marker){
                     marker.toggleVisibility(false);
                 });
             }
-            
+
             this.showMarkers = function(){
                 $.each(this.allMarkers(), function(index, marker){
                     marker.toggleVisibility(true);
@@ -550,7 +547,7 @@ $(function () {
                 }
 
                 self.hideMarkers();
-                
+
                 var searchBoxInput = $searchBox.val();
                 self.markers(self.allMarkers().filter(
                         function (marker) {
@@ -570,12 +567,12 @@ $(function () {
             this.endSearch = function (item, event) {
                 self.searching(false);
                 self.showMarkers();
-                self.markers(self.allMarkers.removeAll());                
+                self.markers(self.allMarkers.removeAll());
             };
 
             /**
              * Add a maker to the map at the provided location
-             * 
+             *
              * @this MarkerListViewModel
              */
             this.addMarker = function (location) {
@@ -729,7 +726,7 @@ $(function () {
                     marker.locationDataViewModel().downloading(true);
 
                     var streetViewPages = [];
-                    
+
                     /*
                      * Only get Street View images if they have not already been
                      * loaded and panorama data is detected
@@ -741,27 +738,27 @@ $(function () {
                                 + panoramaData.location.pano;
 
                         var streetViewArticle = {title: 'Google Street View'};
-                        
+
                         var streetViewPage = new LocalPage(streetViewPages, streetViewArticle);
                         var imageTitles = {
-                                0:   'North', 
-                                90:  'East', 
-                                180: 'South', 
+                                0:   'North',
+                                90:  'East',
+                                180: 'South',
                                 270: 'West'
                         };
-                        
+
                         for (var i = 0; i < 360; i += 90) {
                             var imageTitle = imageTitles[i];
                             var imageParam = {
                                     title: imageTitle,
                                     thumbnail: requestURL + '&heading=' + i + '&size=100x100',
-                                    original: requestURL + '&heading=' + i + '&size=600x300' 
-                            }                            
+                                    original: requestURL + '&heading=' + i + '&size=600x300'
+                            }
                             var imageData = new ImageData(imageParam, i / 90, streetViewPage, 0);
                             streetViewPage.imageArray.push(imageData);
                             streetViewPage.images[imageTitle] = imageData;
                         }
-                        
+
                         streetViewPages.push(streetViewPage);
                         marker.locationDataViewModel().getService('streetview').data(streetViewPages);
                     }
@@ -814,7 +811,7 @@ $(function () {
                     /*
                      * Create the URL for retrieving a list of articles in the
                      * area and their image names
-                     * 
+                     *
                      * Example:
                      * https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&generator=geosearch&colimit=50&
                      * prop=coordinates|images&imlimit=max&ggsradius=10000&ggslimit=50&ggscoord=39.68711024716294|-104.80545043945312
@@ -904,7 +901,7 @@ $(function () {
                                                      * localPages array.
                                                      */
                                                     var localPage = new LocalPage(localPages, article);
-                                                    
+
                                                     var localImages = {};
 
                                                     /*
@@ -951,9 +948,9 @@ $(function () {
                                                                 function (imageinfo_resp) {
                                                                     if (imageinfo_resp.query.pages) {
                                                                         /*
-                                                                         * For every page of pageimages data, search through localPages to find the element in the images 
+                                                                         * For every page of pageimages data, search through localPages to find the element in the images
                                                                          * collection with that image name for a key and store the URLs there.
-                                                                         * 
+                                                                         *
                                                                          * Each "page" consists of data for a single image
                                                                          */
                                                                         for ( var imageIndex in imageinfo_resp.query.pages) {
@@ -968,9 +965,9 @@ $(function () {
                                                                                       original: image.original.source,
                                                                                       title : image.title
                                                                                     };
-                                                                                    
+
                                                                                     var imageArrayIndex = aLocalPage.imageArray.length;
-                                                                                    var imageData = new ImageData(imageParam, imageArrayIndex, aLocalPage, localPageIndex);                                                                                    
+                                                                                    var imageData = new ImageData(imageParam, imageArrayIndex, aLocalPage, localPageIndex);
                                                                                     aLocalPage.images[image.title] = imageData;
                                                                                     aLocalPage.imageArray.push(imageData);
                                                                                 }
@@ -1025,13 +1022,13 @@ $(function () {
                 self.markers.push(marker);
 
                 this.infoWindow.addListener('closeclick', function () {
-                    uicontrols.appendChild(infowindow);                    
+                    uicontrols.appendChild(infowindow);
                 });
             };
 
             /**
              * Enable a marker's hover property. This will highlight the entry in the Saved Locations list
-             * 
+             *
              * @this google.maps.Marker
              */
             this.highlightMarker = function (event) {
@@ -1132,7 +1129,7 @@ $(function () {
 
         /*
          * Create the list of elements and handlers from which to make a UI control
-         * 
+         *
          * elements - An array of elements that will be appended to the UI control container
          * handlers - A function that returns the addDomListener reference for the control
          */

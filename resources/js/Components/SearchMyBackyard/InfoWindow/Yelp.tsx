@@ -1,6 +1,6 @@
 import {useGetYelpReviewsQuery, YelpBusiness} from "@/redux/services/aip";
 import {BeatLoader} from "react-spinners";
-import React from "react";
+import React, {useEffect} from "react";
 import {SMBMarker} from "@/Components/SearchMyBackyard/Map";
 
 
@@ -11,13 +11,19 @@ export interface YelpInfowindowProps {
 export default ({marker}: YelpInfowindowProps) => {
     const locationString = `${marker.getPosition()?.lat()},${marker.getPosition()?.lng()}`
     const {data, error, isLoading} = useGetYelpReviewsQuery(locationString)
+
+    useEffect(() => {
+        if(!isLoading){ // Center the info window once the data has loaded
+            marker.openInfowindow()
+        }
+    }, [isLoading])
+
     return (<div className={'infowindow_yelp'}>
         {
             isLoading ? <BeatLoader color={'blue'} loading={true} />
                 : error ? <div>Sorry, there was an error</div>
                     : data ? (
-                        <div id="location_content" className="mt-3">
-                            <div id="yelp_container" className="service_container active">
+                        <div id="yelp_container" className="service_container active">
                                 <h3>Yelp</h3>
                                 <ul id="yelp_businesses" className="list-unstyled media-list">
                                     {
@@ -57,7 +63,7 @@ export default ({marker}: YelpInfowindowProps) => {
                                                             <address>
                                                                 {
                                                                     location.display_address.map((address) => {
-                                                                        return (<div>{address}</div>)
+                                                                        return (<div key={address}>{address}</div>)
                                                                     })
                                                                 }
                                                             </address>
@@ -127,8 +133,6 @@ export default ({marker}: YelpInfowindowProps) => {
                                     }
                                 </ul>
                             </div>
-
-                        </div>
                         )
                     : null
         }
