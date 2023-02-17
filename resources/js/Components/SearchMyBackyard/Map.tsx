@@ -1,8 +1,14 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import { createRoot } from 'react-dom/client';
 import {useSelector, useDispatch, Provider} from "react-redux";
 import {errorMessage} from "@/redux/error/slice";
-import {addGeoLocation, controlGeoLocation, editGeoLocation, geolocations} from "@/redux/geolocations/slice"
+import {
+    addGeoLocation,
+    controlGeoLocation,
+    editGeoLocation,
+    GeoLocationData,
+    geolocations
+} from "@/redux/geolocations/slice"
 import ErrorDialog from "@/Components/SearchMyBackyard/ErrorDialog";
 import {defaultCenter, findGeolocation, locationCenter} from "@/redux/location/slice";
 import UiControls from "@/Components/SearchMyBackyard/UiControls";
@@ -38,7 +44,7 @@ export interface SMBMarker extends SMBMarkerProps, Marker {
     callOpenInfowindow?: boolean;
     initialized: boolean;
 }
-
+let markerCreated = false
 export default () => {
     const dispatch = useDispatch();
     const ref = useRef<HTMLDivElement>(null)
@@ -52,8 +58,6 @@ export default () => {
 
     const userLocations = useSelector(geolocations);
 
-    const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
     useEffect(() => {
         if(center.lat === defaultCenter.lat && center.lng === defaultCenter.lng){
             // @ts-ignore
@@ -63,7 +67,6 @@ export default () => {
         if (ref.current && !map) {
 
             setMap( () => {
-                let labelIndex = 0;
                 // @ts-ignore
                 const newMap = new window.google.maps.Map(ref.current, {
                     center,
@@ -83,96 +86,20 @@ export default () => {
                 })
 
                 const mapMarkerListener = (e: MapMouseEvent) => {
-                    let markerCreated = false
-                    if(e.latLng){ // The presence of this indicates the user click on a charted location
+                    if(e.latLng){ // The presence of this indicates the user clicked on a charted location
+                        // Create the location that will soon correspond with a marker
 
-                        const sv = new google.maps.StreetViewService()
-
-                        let newMarker: SMBMarker
-
-                        setMarkers((markers) => {
-
-                            if(!markerCreated){
-                                // A marker at the click location was not found, so make a new one
-
-                                labelIndex = markers.length
-
-                                let label = labels[labelIndex % labels.length]
-
-                                newMarker = new google.maps.Marker({
-                                    position: e.latLng,
-                                    map: newMap,
-                                    label
-                                }) as SMBMarker
-
-                                newMarker.id = uuidv4()
-                                newMarker.showInList = true;
-                                newMarker.selected = false;
-                                newMarker.hovering = false;
-                                newMarker.editing = false;
-
-                                let panoramaData
-
-                                sv.getPanorama({location: e.latLng})
-                                    // @ts-ignore
-                                    .then(({data: { location: {description, pano}}}: google.maps.StreetViewResponse) => {
-                                        newMarker!.description = description
-                                        newMarker.pano = pano;
-                                    }).catch((e) => {
-
-                                })
-
-                                newMarker.goToLocation = () => {
-                                    (newMarker!.getMap() as google.maps.Map).panTo(newMarker!.getPosition()!)
-                                    newMarker!.updateInfowindow()
-                                    newMarker!.openInfowindow()
-                                }
-                                newMarker.updateInfowindow = () => {
-                                    const container = document.createElement('div')
-                                    container.id = 'infowindowContainer'
-                                    const root = createRoot(container)
-                                    root.render(
-                                        <Provider store={store}>
-                                            <InfoWindow marker={newMarker!}/>
-                                        </Provider>
-                                    )
-                                    infowindowRef.current.setContent(container)
-                                }
-                                newMarker.openInfowindow = () => {
-                                    infowindowRef.current.open(newMarker!.getMap(), newMarker)
-                                    newMarker!.getMap()!.setOptions({gestureHandling : 'cooperative'});
-                                }
-
-                                newMarker.addListener('mouseover', (e: MapMouseEvent) => {
-                                    dispatch(editGeoLocation({
-                                        id: newMarker.id,
-                                        hovering: true
-                                    }))
-                                })
-                                newMarker.addListener('mouseout', (e: MapMouseEvent) => {
-                                    dispatch(editGeoLocation({
-                                        id: newMarker.id,
-                                        hovering: false
-                                    }))
-                                })
-
-                                newMarker.addListener('click', (e: MapMouseEvent) => {
-                                    newMarker!.goToLocation()
-                                })
-                            }
-
-                            if(newMarker){
-                                markerCreated = true
-                                return [
-                                    ...markers,
-                                    newMarker,
-                                ]
-                            } else {
-                                return [
-                                    ...markers,
-                                ]
-                            }
-                        })
+                        dispatch(addGeoLocation({
+                            id: uuidv4(),
+                            location: {
+                                lat: e.latLng.lat(),
+                                lng: e.latLng.lng()
+                            },
+                            showInList: true,
+                            selected: false,
+                            hovering: false,
+                            editing: false,
+                        }))
                     }
                 }
 
@@ -188,28 +115,94 @@ export default () => {
 
             map.setCenter(center)
         }
-    }, [ref, map, center])
+    }, [ref, map, center, userLocations])
+
 
     useEffect(() => {
-        setMarkers((markers) => {
-            /*
-            React to changes in userLocations
-             */
-            return markers.filter((marker) => {
-                const gLocation = userLocations.find((location) => location.id === marker.id)
+        let newMarker: SMBMarker | undefined;
 
-                if(gLocation === undefined){
-                    // This marker is being removed
-                    marker.setMap(null)
+        // Edit these markers based on changes to corresponding GeoLocationData
+        setMarkers((prevMarkers) => {
+
+            // Remove markers not listed in userLocations
+            prevMarkers.filter((marker) => {
+                const foundMarker = userLocations.find((gLocation: GeoLocationData) => gLocation.id === marker.id)
+
+                return foundMarker === undefined
+            }).forEach((marker) => {
+                marker.setMap(null)
+            })
+
+            return userLocations.map((gLocation: GeoLocationData) => {
+                let marker = prevMarkers.find((marker) => marker.id === gLocation.id) ?? newMarker
+
+                if(marker === undefined) {
+                    // create this marker
+                    const sv = new google.maps.StreetViewService()
+
+                    marker = new google.maps.Marker({
+                        position: gLocation.location,
+                        map,
+                        label: gLocation.label
+                    }) as SMBMarker
+
+                    newMarker = marker
+
+                    marker.id = gLocation.id
+                    marker.showInList = gLocation.showInList;
+                    marker.selected = gLocation.selected;
+                    marker.hovering = gLocation.hovering;
+                    marker.editing = gLocation.editing;
+
+                    sv.getPanorama({location: gLocation.location})
+                        // @ts-ignore
+                        .then(({data: {location: {description, pano}}}: google.maps.StreetViewResponse) => {
+                            marker!.description = description
+                            marker!.pano = pano;
+                        }).catch((e) => {
+
+                    })
+
+                    marker.goToLocation = () => {
+                        (marker!.getMap() as google.maps.Map).panTo(marker!.getPosition()!)
+                        marker!.updateInfowindow()
+                        marker!.openInfowindow()
+                    }
+                    marker.updateInfowindow = () => {
+                        const container = document.createElement('div')
+                        container.id = 'infowindowContainer'
+                        const root = createRoot(container)
+                        root.render(
+                            <Provider store={store}>
+                                <InfoWindow marker={marker!}/>
+                            </Provider>
+                        )
+                        infowindowRef.current.setContent(container)
+                    }
+                    marker.openInfowindow = () => {
+                        infowindowRef.current.open(marker!.getMap(), marker)
+                        marker!.getMap()!.setOptions({gestureHandling: 'cooperative'});
+                    }
+
+                    marker.addListener('mouseover', (e: MapMouseEvent) => {
+                        dispatch(editGeoLocation({
+                            id: marker!.id,
+                            hovering: true
+                        }))
+                    })
+                    marker.addListener('mouseout', (e: MapMouseEvent) => {
+                        dispatch(editGeoLocation({
+                            id: marker!.id,
+                            hovering: false
+                        }))
+                    })
+
+                    marker.addListener('click', (e: MapMouseEvent) => {
+                        marker!.goToLocation()
+                    })
                 } else {
+                    // edit this marker
 
-                }
-
-                return !!gLocation;
-            }).map((marker) => {
-                const gLocation = userLocations.find((location) => location.id === marker.id)
-
-                if(gLocation !== undefined){
                     // This gLocation corresponds with an existing marker
                     const {
                         label,
@@ -236,9 +229,11 @@ export default () => {
 
                     marker.callUpdateInfowindow = !!callUpdateInfowindow;
                 }
-                return marker
+
+                return marker!
             })
         })
+
     }, [ userLocations, setMarkers ])
 
     useEffect( () => {
@@ -281,49 +276,6 @@ export default () => {
             }
         })
     }, [markers])
-
-    useEffect(() => {
-
-        setMarkers((markers) => {
-            const someUninitialized = markers.some((marker) => !marker.initialized)
-
-            if(someUninitialized){
-                return markers.filter((marker) => !marker.initialized)
-                    .map((marker) => {
-                        marker.initialized = true
-
-                        return marker
-                    })
-            } else {
-                return markers
-            }
-        })
-
-
-        markers.forEach((marker) => {
-            if(!marker.initialized){
-                const gLocation = userLocations.find((gLocation) => gLocation.id === marker.id)
-
-                if(gLocation === undefined){
-                    dispatch(addGeoLocation({
-                        id: marker.id,
-                        location: {
-                            lat: marker.getPosition()!.lat(),
-                            lng: marker.getPosition()!.lng()
-                        },
-                        showInList: marker.showInList,
-                        selected: marker.selected,
-                        hovering: marker.hovering,
-                        editing: marker.editing,
-                        pano: marker.pano ?? '',
-                        label: marker.getLabel()!.toString(),
-                    }))
-                }
-            }
-        })
-
-    }, [markers, setMarkers])
-
 
     return (
         <>

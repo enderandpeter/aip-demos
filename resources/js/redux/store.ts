@@ -4,6 +4,7 @@ import locationReducer from '@/redux/location/slice'
 import geoLocationsReducer from '@/redux/geolocations/slice'
 import { aipAPI } from "@/redux/services/aip";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
+import {wikipediaImageDataAPI} from "@/redux/services/wikipedia/imageData";
 
 const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
         location: locationReducer,
         geolocations: geoLocationsReducer,
         [aipAPI.reducerPath]: aipAPI.reducer,
+        [wikipediaImageDataAPI.reducerPath]: wikipediaImageDataAPI.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(aipAPI.middleware)
@@ -19,4 +21,4 @@ const store = configureStore({
 setupListeners(store.dispatch)
 
 export default store;
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = typeof store

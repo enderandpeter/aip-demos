@@ -13,7 +13,8 @@ export interface GeoLocationPayload extends SMBMarkerProps{
     id: string,
     visible?: boolean,
     description?: string;
-    label: string;
+    label?: string;
+    delete?: boolean;
     location: LatLngLiteral;
 }
 
@@ -26,6 +27,7 @@ export interface GeoLocationEditPayload extends GeoLocationControl{
     visible?: boolean;
     label?: string;
     pano?: string;
+    delete?: boolean;
     serviceData?: {
         [serviceName: string]: ServiceData
     }
@@ -48,6 +50,10 @@ export interface ServiceData {
 
 export type GeoLocationsState = GeoLocationData[]
 
+let labelIndex = 0
+
+const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 export const geoLocationsSlice = createSlice({
     name: 'geolocations',
     initialState: [] as GeoLocationsState,
@@ -59,10 +65,18 @@ export const geoLocationsSlice = createSlice({
                 showInList,
                 selected,
                 editing,
-                label,
                 hovering,
                 pano
             } = action.payload
+
+            let {label} = action.payload
+
+            if(!label){
+                labelIndex = state.length
+
+                label = labels[labelIndex % labels.length]
+            }
+
             state.push({
                 location,
                 id,
@@ -151,7 +165,7 @@ export const geoLocationsSlice = createSlice({
             state.forEach((gLocation) => {
                 gLocation.visible = true
 
-                if(!gLocation.label.toLowerCase().includes(action.payload)){
+                if(!gLocation.label!.toLowerCase().includes(action.payload)){
                     gLocation.visible = false
                     gLocation.showInList = false
                 }

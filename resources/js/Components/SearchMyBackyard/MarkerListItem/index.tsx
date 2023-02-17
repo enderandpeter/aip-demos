@@ -76,7 +76,9 @@ export default ({gLocation}: MarkerListItemProps) => {
     }, [gLocation.hovering])
 
     useEffect(() => {
-        originalLabelRef.current = gLocation.label
+        if (gLocation.label != null) {
+            originalLabelRef.current = gLocation.label
+        }
     }, [gLocation.editing])
 
     const saveInput = () => {

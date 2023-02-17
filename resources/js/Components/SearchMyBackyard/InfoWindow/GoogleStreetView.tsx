@@ -13,9 +13,6 @@ const imageDirections = ['0', '90', '180', '270'];
 const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY
 
 export default ({marker}: GSVInfowindowProps) => {
-    const userLocations = useSelector(geolocations)
-    const dispatch = useDispatch()
-
     const {pano} = marker
 
     const [images, setImages] = useState<ImageSettings[]>([])

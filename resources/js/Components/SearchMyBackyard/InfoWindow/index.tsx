@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import Yelp from "@/Components/SearchMyBackyard/InfoWindow/Yelp";
 import GoogleStreetView from "@/Components/SearchMyBackyard/InfoWindow/GoogleStreetView";
+import Wikipedia from "@/Components/SearchMyBackyard/InfoWindow/Wikipedia";
 
 export interface InfoWindowProps {
     marker: SMBMarker
@@ -13,6 +14,9 @@ export const services = {
     },
     'gsv': {
         'display_name': 'Google Street View'
+    },
+    'wikipedia': {
+        'display_name': 'Wikipedia'
     }
 }
 
@@ -75,7 +79,8 @@ export default ({marker}: InfoWindowProps) => {
                     <div id="location_content" className="mt-3">
                     {
                         activeTab === 'yelp' ? <Yelp marker={marker} />
-                            : activeTab === 'gsv' ? <GoogleStreetView marker={marker} /> :  null
+                            : activeTab === 'gsv' ? <GoogleStreetView marker={marker} />
+                                : activeTab === 'wikipedia' ? <Wikipedia marker={marker} /> : null
                     }
                     </div>
                 </div>
