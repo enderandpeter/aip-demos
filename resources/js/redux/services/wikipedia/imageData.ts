@@ -1,8 +1,7 @@
-import {WikipediaPages} from "@/redux/services/wikipedia/imageNames";
-
 export interface WikipediaImageData {
     articleTitle: string;
-    imageArray: WikipediaImageArrayData[]
+    imageArray: WikipediaImageArrayData[],
+    pageIndex: string,
 }
 
 export interface WikipediaImageArrayData {
@@ -11,9 +10,33 @@ export interface WikipediaImageArrayData {
     title: string;
 }
 
+export interface WikipediaImagePages {
+    [index: string]: WikipediaImage
+}
+
+export interface WikipediaImage {
+    title: string;
+    original: {
+        source: string
+    };
+    thumbnail: {
+        source: string
+    };
+}
+
+export interface WikipediaPages {
+    [index: string]: {
+        title: string;
+        images: WikipediaPagesImage[]
+    }
+}
+
+export interface WikipediaPagesImage {
+    title: string;
+}
+
 import {createApi, fetchBaseQuery, FetchBaseQueryError} from '@reduxjs/toolkit/query/react'
 import LatLngLiteral = google.maps.LatLngLiteral;
-import {WikipediaImagePages} from "@/redux/services/wikipedia/imageUrls";
 
 const baseUrl = 'https://en.wikipedia.org/w/'
 export const wikipediaImageDataAPI = createApi({
@@ -41,39 +64,46 @@ export const wikipediaImageDataAPI = createApi({
                     const articlePage = articles.data.query.pages[pageIndex]
 
                     // Get a max of 50 images per article
-                    const imageList = articlePage.images.map((image) => {
+                    const imageList = articlePage.images?.map((image: WikipediaPagesImage) => {
                         return image.title
                     }).slice(0, 51).join('|')
 
-                    const imageDataResponse = await fetchWithBQ('api.php?action=query&format=json&origin=*&'
-                        + 'prop=pageimages&'
-                        + 'piprop=thumbnail|name|original&pithumbsize=200&'
-                        + 'titles='
-                        + `${imageList}`)
+                    let imageArray: WikipediaImageArrayData[] = []
+                    if(imageList){
+                        const imageDataResponse = await fetchWithBQ('api.php?action=query&format=json&origin=*&'
+                            + 'prop=pageimages&'
+                            + 'piprop=thumbnail|name|original&pithumbsize=200&'
+                            + 'titles='
+                            + `${imageList}`)
 
-                    if (imageDataResponse.error) {
-                        error = imageDataResponse.error
-                        return
-                    }
-
-                    const imagePages = imageDataResponse.data as { data: { query: { pages: WikipediaImagePages } } }
-
-                    const imageArray = Object.keys(imagePages.data.query.pages).map((imagePageIndex) => {
-                        const imagePage = imagePages.data.query.pages[imagePageIndex]
-
-                        return {
-                            original: imagePage.original.source,
-                            thumbnail: imagePage.thumbnail.source,
-                            title: imagePage.title,
+                        if (imageDataResponse.error) {
+                            error = imageDataResponse.error
+                            return
                         }
-                    })
+
+                        const imagePages = imageDataResponse as { data: { query: { pages: WikipediaImagePages } } }
+
+                        imageArray = imagePages.data?.query?.pages ? Object.keys(imagePages.data.query.pages).map((imagePageIndex) => {
+                            const imagePage = imagePages.data.query.pages[imagePageIndex]
+
+                            return {
+                                original: imagePage.original?.source,
+                                thumbnail: imagePage.thumbnail?.source,
+                                title: imagePage.title,
+                            }
+                        }) : []
+                    }
                     return {
+                        pageIndex,
                         articleTitle: articlePage.title,
                         imageArray
                     }
+                }).filter(async (imageDataPromise) => {
+                    const imageData = await Promise.resolve(imageDataPromise)
+                    return imageData!.articleTitle && imageData!.imageArray.length > 0
                 })
 
-                return error ? {error: error as FetchBaseQueryError} : {data}
+                return error ? {error: error as FetchBaseQueryError} : {data: await Promise.all(data) as WikipediaImageData[]}
             },
         })
     })

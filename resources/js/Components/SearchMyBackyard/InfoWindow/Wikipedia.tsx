@@ -1,42 +1,29 @@
 import {SMBMarker} from "@/Components/SearchMyBackyard/Map";
-import {useGetWikiImageDataQuery, WikipediaImageData} from "@/redux/services/wikipedia/imageData";
+import {
+    useGetWikiImageDataQuery,
+    WikipediaImageArrayData,
+    WikipediaImageData
+} from "@/redux/services/wikipedia/imageData";
 import {useEffect, useState} from "react";
 import {BeatLoader} from "react-spinners";
 
 export interface WikipediaProps{
-    marker: SMBMarker
+    marker: SMBMarker,
+    activeTab: string;
 }
 
 
-export default ({marker}: WikipediaProps) => {
+export default ({marker, activeTab}: WikipediaProps) => {
     const {data, error, isLoading} = useGetWikiImageDataQuery({lat: marker.getPosition()!.lat(), lng: marker.getPosition()!.lng()})
-    const [wpImages, setWpImages] = useState<WikipediaImageData[]>([])
 
     useEffect(() => {
-        if(data){
-            Promise.allSettled(data).then((results) => {
-                setWpImages((imageData) => {
-                    let newImageData: WikipediaImageData = {
-                        articleTitle: '',
-                        imageArray: []
-                    }
-                    return results.map((result) => {
-                        if(result.status === 'fulfilled'){
-                            newImageData.articleTitle = result.value?.articleTitle ?? ''
-                            newImageData.imageArray = result.value?.imageArray ?? []
-                        }
-
-                        return newImageData
-                    }).filter((imageData: WikipediaImageData) => {
-                        return imageData.articleTitle && imageData.imageArray.length !== 0
-                    })
-                })
-            })
+        if(!isLoading){ // Center the info window once the data has loaded
+            marker.openInfowindow()
         }
-    }, [data, setWpImages])
+    }, [isLoading])
 
     return (
-        <div id="wikipedia_container" className="service_container"
+        <div id="wikipedia_container" className={`service_container ${activeTab === 'wikipedia' ? 'active' : ''}`}
              data-bind="if: activeMarker().locationDataViewModel().getService('wikipedia').showView, css: { active: activeMarker().locationDataViewModel().getService('wikipedia').showView() }">
             <div id="wikipedia_content"
                  data-bind="if: activeMarker().locationDataViewModel().getService('wikipedia').data().length !== 0">
@@ -44,10 +31,10 @@ export default ({marker}: WikipediaProps) => {
                 <ul className="wikipedia_article_list list-unstyled"
                     data-bind="foreach: activeMarker().locationDataViewModel().getService('wikipedia').data">
                     {
-                        isLoading ? <BeatLoader color={'black'} /> : wpImages.length !== 0 ? wpImages.map((image) => {
-                            const {articleTitle, imageArray} = image
+                        isLoading ? <BeatLoader color={'black'} /> : data && data.length !== 0 ? data.map((image) => {
+                            const {articleTitle, imageArray, pageIndex} = image
 
-                            return (<li className="wikipedia_article_list_item">
+                            return (<li className="wikipedia_article_list_item" key={pageIndex}>
                                 <div className="wikipedia_article_container">
                                     <h4>
                                         <a target="_blank" href={`https://en.wikipedia.org/wiki/${articleTitle.replace(/ /g, '_')}`}>{articleTitle}</a>
@@ -55,11 +42,11 @@ export default ({marker}: WikipediaProps) => {
                                 </div>
                                 <ul className="wikipedia_image_list list-unstyled list-inline">
                                     {
-                                        imageArray.map((imageData) => {
-                                            const {original, thumbnail} = imageData
+                                        imageArray.map((imageData: WikipediaImageArrayData) => {
+                                            const {original, thumbnail, title} = imageData
                                             return (
-                                                <li className="wikipedia_image_list_item list-inline-item">
-                                                    <a href={original}>
+                                                <li className="wikipedia_image_list_item list-inline-item" key={title}>
+                                                    <a href={original} target="_blank" >
                                                         <img className="img-responsive" src={thumbnail} />
                                                     </a>
                                                 </li>

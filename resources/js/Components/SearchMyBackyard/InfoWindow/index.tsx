@@ -78,9 +78,9 @@ export default ({marker}: InfoWindowProps) => {
                 <div className={'infowindow_content'}>
                     <div id="location_content" className="mt-3">
                     {
-                        activeTab === 'yelp' ? <Yelp marker={marker} />
+                        activeTab === 'yelp' ? <Yelp marker={marker} activeTab={activeTab} />
                             : activeTab === 'gsv' ? <GoogleStreetView marker={marker} />
-                                : activeTab === 'wikipedia' ? <Wikipedia marker={marker} /> : null
+                                : activeTab === 'wikipedia' ? <Wikipedia marker={marker} activeTab={activeTab} /> : null
                     }
                     </div>
                 </div>

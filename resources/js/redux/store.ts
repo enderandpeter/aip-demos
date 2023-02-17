@@ -15,7 +15,7 @@ const store = configureStore({
         [wikipediaImageDataAPI.reducerPath]: wikipediaImageDataAPI.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(aipAPI.middleware)
+        getDefaultMiddleware().concat([aipAPI.middleware, wikipediaImageDataAPI.middleware])
 })
 
 setupListeners(store.dispatch)

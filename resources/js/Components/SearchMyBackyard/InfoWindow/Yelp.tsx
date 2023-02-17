@@ -6,9 +6,10 @@ import {SMBMarker} from "@/Components/SearchMyBackyard/Map";
 
 export interface YelpInfowindowProps {
     marker: SMBMarker;
+    activeTab: string;
 }
 
-export default ({marker}: YelpInfowindowProps) => {
+export default ({marker, activeTab}: YelpInfowindowProps) => {
     const locationString = `${marker.getPosition()?.lat()},${marker.getPosition()?.lng()}`
     const {data, error, isLoading} = useGetYelpReviewsQuery(locationString)
 
@@ -23,7 +24,7 @@ export default ({marker}: YelpInfowindowProps) => {
             isLoading ? <BeatLoader color={'blue'} loading={true} />
                 : error ? <div>Sorry, there was an error</div>
                     : data ? (
-                        <div id="yelp_container" className="service_container active">
+                        <div id="yelp_container" className={`service_container ${activeTab === 'yelp' ? 'active' : ''}`}>
                                 <h3>Yelp</h3>
                                 <ul id="yelp_businesses" className="list-unstyled media-list">
                                     {
