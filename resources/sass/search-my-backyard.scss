@@ -72,6 +72,12 @@ address {
     background-color: rgba(200, 10, 10, 0.4);
 }
 
+#marker_menu {
+    width: 23em;
+    background: rgba(255, 255, 255, 0.5);
+    overflow-y: hidden;
+}
+
 #marker_menu_buttons_list button {
     font-size: 1em;
 }
@@ -87,6 +93,9 @@ address {
 #marker_list {
     font-size: 1.2em;
     padding: 0;
+    max-height: 64vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #marker_list .btn {

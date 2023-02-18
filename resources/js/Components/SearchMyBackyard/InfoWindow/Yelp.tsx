@@ -46,7 +46,7 @@ export default ({marker, activeTab}: YelpInfowindowProps) => {
                                                             image_url ? (
                                                                 <div className={"business_img flex-shrink-0"}>
                                                                     <a href={url} target="_blank">
-                                                                        <img className={"media-object mr-3 w-100"}
+                                                                        <img className={"media-object me-3 w-100"}
                                                                              alt={name}
                                                                              src={image_url.replace(/http:/, '')}
                                                                         />
@@ -56,7 +56,7 @@ export default ({marker, activeTab}: YelpInfowindowProps) => {
                                                         }
                                                     </div>
                                                     <div className={"flex-grow-1 ms-3"}>
-                                                        <header className={"media-heading"}>
+                                                        <header className={"media-heading mb-3"}>
                                                             <h3>
                                                                 <a href={url}
                                                                    target="_blank">{name}</a>
@@ -89,13 +89,13 @@ export default ({marker, activeTab}: YelpInfowindowProps) => {
                                                                         return (
                                                                             <li className="review_list_item d-flex mb-3" key={review.id}>
                                                                                 <div
-                                                                                    className="user">
+                                                                                    className="user w-25">
                                                                                     <div className={"flex-shrink-0"}>
                                                                                         <a
                                                                                            href={review.user.profile_url}
                                                                                            target="_blank">
                                                                                             <img
-                                                                                                className={"media-object mr-3 w-50 h-100"}
+                                                                                                className={"media-object me-3"}
                                                                                                 style={{width: '50px', height: '50px'}}
                                                                                                 src={
                                                                                                 user.image_url ? user.image_url.replace(/http:/, '')
@@ -108,7 +108,7 @@ export default ({marker, activeTab}: YelpInfowindowProps) => {
                                                                                     </div>
                                                                                 </div>
                                                                                 <div className="flex-grow-1 ms-3">
-                                                                                    <div className="review_excerpt mr-3">{review.text}</div>
+                                                                                    <div className="review_excerpt me-3 mb-2">{review.text}</div>
                                                                                     <div className="review_rating">
                                                                                         <a
                                                                                            href={review.url}

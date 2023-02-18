@@ -26,6 +26,7 @@ export interface GeoLocationEditPayload extends GeoLocationControl{
     editing?: boolean;
     visible?: boolean;
     label?: string;
+    description?: string;
     pano?: string;
     delete?: boolean;
     serviceData?: {
@@ -40,6 +41,8 @@ export interface GeoLocationControl {
     updateInfowindowCalled?: boolean;
     callOpenInfowindow?: boolean;
     openInfowindowCalled?: boolean;
+    callOpenStreetView?: boolean;
+    openStreetViewCalled?: boolean;
 }
 
 export interface ServiceData {
@@ -106,6 +109,7 @@ export const geoLocationsSlice = createSlice({
                 gLocation.visible = action.payload.visible ?? gLocation.visible
                 gLocation.label = action.payload.label ?? gLocation.label
                 gLocation.selected = action.payload.selected ?? gLocation.selected
+                gLocation.description = action.payload.description ?? gLocation.description
 
                 if(action.payload.serviceData){
                     Object.keys(action.payload.serviceData).forEach((serviceDataName) => {
@@ -135,6 +139,12 @@ export const geoLocationsSlice = createSlice({
 
                 if(typeof action.payload.openInfowindowCalled === 'boolean')
                     selectedGeolocation.openInfowindowCalled = action.payload.openInfowindowCalled
+
+                if(typeof action.payload.callOpenStreetView === 'boolean')
+                    selectedGeolocation.callOpenStreetView = action.payload.callOpenStreetView
+
+                if(typeof action.payload.openStreetViewCalled === 'boolean')
+                    selectedGeolocation.openStreetViewCalled = action.payload.openStreetViewCalled
             }
         },
         toggleSelectAll(state: Draft<GeoLocationsState>){

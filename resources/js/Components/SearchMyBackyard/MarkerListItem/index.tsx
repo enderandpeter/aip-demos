@@ -1,10 +1,10 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from "@mui/icons-material/Clear";
 import PlaceIcon from '@mui/icons-material/Place';
+import StreetviewIcon from '@mui/icons-material/Streetview';
 import {Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon} from "@mui/icons-material";
-import {CanSetMarkers, SMBMarker} from "@/Components/SearchMyBackyard/Map";
 import {useDispatch, useSelector} from "react-redux";
 import {
     removeGeolocation,
@@ -24,8 +24,7 @@ export default ({gLocation}: MarkerListItemProps) => {
     const liRef = useRef<HTMLLIElement>(null)
     const originalLabelRef = useRef("")
     const searchInputRef = useRef<HTMLInputElement>(null)
-
-    const userLocations = useSelector(geolocations)
+    const [hasStreetView, setHasStreetView] = useState(false)
 
     const removeMarker = () => {
         dispatch(removeGeolocation(gLocation.id))
@@ -80,6 +79,10 @@ export default ({gLocation}: MarkerListItemProps) => {
             originalLabelRef.current = gLocation.label
         }
     }, [gLocation.editing])
+
+    useEffect(() => {
+        setHasStreetView(!!gLocation.description)
+    }, [gLocation.description])
 
     const saveInput = () => {
         dispatch(editGeoLocation({
@@ -188,8 +191,6 @@ export default ({gLocation}: MarkerListItemProps) => {
                         )
                     }
                 </div>
-            </div>
-            <div className="row">
                 <div className="col-5">
                     {
                         gLocation.description ? (
@@ -238,6 +239,20 @@ export default ({gLocation}: MarkerListItemProps) => {
                                 :
                                 <VisibilityIcon/>
                         }
+                    </button>
+                    <button className="btn btn-light btn-sm" disabled={!hasStreetView}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                dispatch(controlGeoLocation({
+                                    id: gLocation.id,
+                                    callOpenStreetView: true,
+                                }))
+                            }}
+                            title={'Open Google Street View'}
+                        >
+                        <StreetviewIcon />
                     </button>
                     <button
                         className="btn btn-light btn-sm"

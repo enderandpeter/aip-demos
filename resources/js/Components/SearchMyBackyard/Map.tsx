@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { createRoot } from 'react-dom/client';
 import {useSelector, useDispatch, Provider} from "react-redux";
 import {errorMessage} from "@/redux/error/slice";
@@ -39,12 +39,13 @@ export interface SMBMarker extends SMBMarkerProps, Marker {
     goToLocation: () => void;
     updateInfowindow: () => void;
     openInfowindow: () => void;
+    openStreetView: () => void;
     callGoToLocation?: boolean;
     callUpdateInfowindow?: boolean;
     callOpenInfowindow?: boolean;
+    callOpenStreetView: boolean;
     initialized: boolean;
 }
-let markerCreated = false
 export default () => {
     const dispatch = useDispatch();
     const ref = useRef<HTMLDivElement>(null)
@@ -111,7 +112,7 @@ export default () => {
 
                 return newMap;
             });
-        } else if (ref.current && map){
+        } else if (ref.current && map && userLocations.length === 0){
 
             map.setCenter(center)
         }
@@ -139,6 +140,7 @@ export default () => {
                 if(marker === undefined) {
                     // create this marker
                     const sv = new google.maps.StreetViewService()
+                    const panorama = map!.getStreetView()
 
                     marker = new google.maps.Marker({
                         position: gLocation.location,
@@ -159,6 +161,11 @@ export default () => {
                         .then(({data: {location: {description, pano}}}: google.maps.StreetViewResponse) => {
                             marker!.description = description
                             marker!.pano = pano;
+
+                            dispatch(editGeoLocation({
+                                id: marker!.id,
+                                description
+                            }))
                         }).catch((e) => {
 
                     })
@@ -182,6 +189,18 @@ export default () => {
                     marker.openInfowindow = () => {
                         infowindowRef.current.open(marker!.getMap(), marker)
                         marker!.getMap()!.setOptions({gestureHandling: 'cooperative'});
+                    }
+
+                    marker.openStreetView = function () {
+                        if(panorama){
+                            panorama.setPosition(marker!.getPosition()!);
+
+                            panorama.setVisible(true);
+
+                            panorama.addListener('closeclick', function (e: MapMouseEvent) {
+                                panorama.setVisible(false);
+                            });
+                        }
                     }
 
                     marker.addListener('mouseover', (e: MapMouseEvent) => {
@@ -214,6 +233,7 @@ export default () => {
                         callGoToLocation,
                         callOpenInfowindow,
                         callUpdateInfowindow,
+                        callOpenStreetView,
                     } = gLocation
 
                     marker.setLabel(label)
@@ -228,13 +248,15 @@ export default () => {
                     marker.callOpenInfowindow = !!callOpenInfowindow;
 
                     marker.callUpdateInfowindow = !!callUpdateInfowindow;
+
+                    marker.callOpenStreetView = !!callOpenStreetView;
                 }
 
                 return marker!
             })
         })
 
-    }, [ userLocations, setMarkers ])
+    }, [ userLocations, setMarkers, map ])
 
     useEffect( () => {
         if(markers){
@@ -272,6 +294,22 @@ export default () => {
                 dispatch(controlGeoLocation({
                     id: marker.id,
                     callUpdateInfowindow: false,
+                }))
+            }
+
+            if(marker.callOpenStreetView){
+                marker.openStreetView()
+
+                dispatch(controlGeoLocation({
+                    id: marker.id,
+                    callOpenStreetView: false,
+                }))
+            }
+
+            if(marker.description){
+                dispatch(editGeoLocation({
+                    id: marker.id,
+                    description: marker.description
                 }))
             }
         })
