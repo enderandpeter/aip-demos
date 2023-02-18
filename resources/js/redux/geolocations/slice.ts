@@ -4,9 +4,7 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 import {SMBMarkerProps} from "@/Components/SearchMyBackyard/Map";
 
 export interface GeoLocationData extends GeoLocationPayload, GeoLocationControl{
-    serviceData: {
-        [serviceName: string]: {}
-    }
+
 }
 
 export interface GeoLocationPayload extends SMBMarkerProps{
@@ -29,9 +27,6 @@ export interface GeoLocationEditPayload extends GeoLocationControl{
     description?: string;
     pano?: string;
     delete?: boolean;
-    serviceData?: {
-        [serviceName: string]: ServiceData
-    }
 }
 
 export interface GeoLocationControl {
@@ -90,7 +85,6 @@ export const geoLocationsSlice = createSlice({
                 label,
                 pano,
                 visible : true,
-                serviceData: {}
             });
         },
         removeGeolocation(state: Draft<GeoLocationsState>, action: PayloadAction<string>){
@@ -110,12 +104,6 @@ export const geoLocationsSlice = createSlice({
                 gLocation.label = action.payload.label ?? gLocation.label
                 gLocation.selected = action.payload.selected ?? gLocation.selected
                 gLocation.description = action.payload.description ?? gLocation.description
-
-                if(action.payload.serviceData){
-                    Object.keys(action.payload.serviceData).forEach((serviceDataName) => {
-                        gLocation!.serviceData[serviceDataName] = action.payload.serviceData!
-                    })
-                }
             }
         },
         controlGeoLocation(state: Draft<GeoLocationsState>, action: PayloadAction<GeoLocationEditPayload>){
