@@ -1,31 +1,33 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use App\Http\Controllers\LocationDataController;
+
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
 Route::get('/', function () {
-	return view('index');
+    return view('index');
 });
 
 Route::get('search-my-backyard', function () {
-	return view('search-my-backyard');
+    Inertia::setRootView('search-my-backyard');
+    return Inertia::render('SearchMyBackyard');
 });
 
-Route::post('search-my-backyard', [ LocationDataController::class, 'postLocation']);
-
 Route::get('frogger', function () {
-	return view('frogger');
+    return view('frogger');
 });
 
 Route::get('jack-the-giant', function () {
@@ -40,7 +42,8 @@ Route::get('jack-the-giant-player', function () {
     return view('jack-the-giant-player');
 });
 
-Auth::routes();
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+require __DIR__.'/auth.php';

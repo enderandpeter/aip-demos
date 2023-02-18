@@ -10,7 +10,7 @@ class LocationDataController extends Controller
 	/**
 	 * Handle the request where location data is posted so that data about the area will be returned
 	 */
-	public function postLocation(Request $request){
+	public function getLocation(Request $request){
 		$this->validate($request, [
 			'location' => 'required|geolocation'
 		]);
@@ -22,7 +22,7 @@ class LocationDataController extends Controller
 		$locationData['lat'] = $positions[0];
 		$locationData['lng'] = $positions[1];
 
-		$yelpclient = new YelpClient($locationData);
+		$yelpclient = app(YelpClient::class, ['location' => $locationData]);
 
 		if($yelpclient->status !== 'error'){
 			$yelpclient->query_api();

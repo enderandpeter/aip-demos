@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@push('nav-list-items')	
+@push('nav-list-items')
 	@if ( Route::current()->uri() === 'search-my-backyard' )
 		<li class="breadcrumb-item active">Search my Backyard</li>
 	@else
@@ -14,8 +14,6 @@
 
 @include('scripts.google-maps')
 @include('scripts.bootstrap4')
-@include('scripts.ko')
-@include('scripts.jquery')
 
 @section('body')
 <body id="search-my-backyard-body">

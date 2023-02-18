@@ -12,3 +12,11 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 auth.json
+config.js
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
