@@ -17,7 +17,7 @@ Jack the Giant
         <p>Builds are available for <a href="https://github.com/enderandpeter/Jack-The-Giant/releases/download/v1.1/JackTheGiant-win.zip">Windows</a> and <a href="https://github.com/enderandpeter/Jack-The-Giant/releases/download/v1.1/JackTheGiant-mac.zip">macOS</a>.
     		A Linux version will be available soon.
     		</p>
-    		<ul id="build-list" class="list-group mx-auto mb-4">
+        <ul id="build-list" class="list-group mx-auto mb-4">
           <li class="list-group-item">
           	<a class="download-link" href="https://github.com/enderandpeter/Jack-The-Giant/releases/download/v1.1/JackTheGiant-win.zip">
           		<img src="resources/software/windows.svg" class="download-icon"/>

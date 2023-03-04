@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+.screenshot-image {
+    max-width: 50vw;
+    padding: 3vw;
+}
+
+#lessons-learned-container {
+    padding: 0 20vw;
+    text-align: left;
+}
+
+#lessons-learned-container li {
+    padding: 0.2em 0;
+}
+
+#lessons-learned-container h2, #lessons-learned-container h3 {
+    text-align: center;
+}
+
+#invaluable-resources-list {
+    list-style: none;
+}
+
+#build-list {
+    width: 300px;
+}
+
+.download-icon {
+    width: 20px;
+    float: left;
+}

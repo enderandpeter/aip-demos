@@ -48,6 +48,7 @@
 		<div class="row">
 		<dt class="col-3 col-sm-2"><a target="_blank" href="https://unity3d.com/">Unity</a></dt>
 		<div class="col-8">
+            <dd><a href="foxy">Foxy</a> - A small demo I made with Unity and many free assets</dd>
 			<dd><a href="jack-the-giant">Jack the Giant</a> - A game from a Unity tutorial</dd>
 			<dd><a href="flappy-bird">Yet Another Flappy Bird Clone</a> - Another game from a Unity tutorial</dd>
 		</div>

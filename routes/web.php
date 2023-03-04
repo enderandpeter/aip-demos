@@ -26,6 +26,10 @@ Route::get('search-my-backyard', function () {
     return Inertia::render('SearchMyBackyard');
 });
 
+Route::get('foxy', function () {
+    return view('foxy');
+});
+
 Route::get('frogger', function () {
     return view('frogger');
 });
