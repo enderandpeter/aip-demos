@@ -13,10 +13,10 @@ Foxy
 @section('body-content')
 	<div id="main-container" class="container-fluid text-center">
         <div id="screenshot-image-container">
-            <img src="{{ asset('images/Foxy01.png') }}" class="screenshot-image" alt="Foxy crouching to avoid bird and slime" class="img-fluid" />
+            <img src="{{ config('filesystems.disks.s3.url') . '/images/Foxy01.png' }}" class="screenshot-image" alt="Foxy crouching to avoid bird and slime" class="img-fluid" />
             <div class="second-row d-flex justify-content-center">
-                <img src="{{ asset('images/Foxy02.png') }}" class="screenshot-image" alt="Foxy reading a sign about how villagers left" class="img-fluid" />
-                <img src="{{ asset('images/Foxy03.png') }}" class="screenshot-image" alt="Foxy demonstrating his dexterity" class="img-fluid" />
+                <img src="{{ config('filesystems.disks.s3.url') . '/images/Foxy02.png' }}" class="screenshot-image" alt="Foxy reading a sign about how villagers left" class="img-fluid" />
+                <img src="{{ config('filesystems.disks.s3.url') . '/images/Foxy03.png' }}" class="screenshot-image" alt="Foxy demonstrating his dexterity" class="img-fluid" />
             </div>
         </div>
         <p>I made this small demo of a game with Unity, using a large handful of free assets. "Foxy" is a working title. I think this character was meant to be a squirrel, actually.</p>
@@ -51,17 +51,17 @@ Foxy
             </ul>
         </div>
         <p>
-            Builds are available for <a href="{{ asset('releases/Foxy/Windows/FoxCrazy_Windows_1_0.zip') }}">Windows</a> and <a href="{{ asset('releases/Foxy/macOS/FoxCrazy_MacOS_Intel_and_Silicon_1_0.zip') }}">macOS</a>. Possibly Linux in the future.
+            Builds are available for <a href="{{ config('filesystems.disks.s3.url') . '/releases/Foxy/Windows/FoxCrazy_Windows_1_0.zip' }}">Windows</a> and <a href="{{ asset('releases/Foxy/macOS/FoxCrazy_MacOS_Intel_and_Silicon_1_0.zip') }}">macOS</a>. Possibly Linux in the future.
         </p>
         <ul id="build-list" class="list-group mx-auto mb-4">
             <li class="list-group-item">
-                <a class="download-link" href="{{ asset('releases/Foxy/Windows/FoxCrazy_Windows_1_0.zip') }}">
+                <a class="download-link" href="{{ config('filesystems.disks.s3.url') . '/releases/Foxy/Windows/FoxCrazy_Windows_1_0.zip' }}">
                     <img src="resources/software/windows.svg" class="download-icon"/>
                     <span class="download-link">Download for Windows</span>
                 </a>
             </li>
             <li class="list-group-item">
-                <a class="download-link" href="{{ asset('releases/Foxy/macOS/FoxCrazy_MacOS_Intel_and_Silicon_1_0.zip') }}">
+                <a class="download-link" href="{{ config('filesystems.disks.s3.url') . '/releases/Foxy/macOS/FoxCrazy_MacOS_Intel_and_Silicon_1_0.zip' }}">
                     <img src="resources/software/apple.svg" class="download-icon"/>
                     <span class="download-link">Download for macOS</span>
                 </a>
