@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\EventPlanner;
 
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 use App\Models\EventPlanner\CalendarRequest;
@@ -102,9 +106,9 @@ class CalendarEventController extends EventPlannerController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return Application|Factory|View|RedirectResponse
      */
-    public function index( Request $request )
+    public function index( Request $request ): Factory|View|Application|RedirectResponse
     {
     	if( !Auth::guard( $this->getGuard() )->user() ){
     		return redirect()->route( 'event-planner' );
@@ -122,7 +126,7 @@ class CalendarEventController extends EventPlannerController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return Application|Factory|View|RedirectResponse
      */
     public function create( Request $request )
     {
@@ -155,7 +159,7 @@ class CalendarEventController extends EventPlannerController
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function store( Request $request )
     {
@@ -211,10 +215,10 @@ class CalendarEventController extends EventPlannerController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $id
+     * @return Application|Factory|View
      */
-    public function show( $id )
+    public function show(int $id ): Factory|View|Application
     {
     	$calendarEvent = CalendarEvent::findOrFail( $id );
 
@@ -240,7 +244,7 @@ class CalendarEventController extends EventPlannerController
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function edit( $id )
     {
@@ -276,7 +280,7 @@ class CalendarEventController extends EventPlannerController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, $id)
     {
@@ -336,7 +340,7 @@ class CalendarEventController extends EventPlannerController
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {

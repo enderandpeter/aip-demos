@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Events scheduled on the user's calendar
@@ -36,38 +37,50 @@ class CalendarEvent extends Model
      *
      * @var array
      */
-    protected $dates = [ 'start_date', 'end_date' ];
+    protected array $dates = [ 'start_date', 'end_date' ];
 
-    public static $date_format = 'n/j/Y g:i a';
-    public static $datepicker_format = 'm/d/Y';
+    protected function casts(): array {
+        return [
+            'start_date' => 'datetime:'.self::$date_format,
+            'end_date' => 'datetime:'.self::$date_format,
+        ];
+    }
+
+    public static string $date_format = 'n/j/Y g:i a';
+    public static string $datepicker_format = 'm/d/Y';
 
     /**
      * Get the user that owns the comment.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
     	return $this->belongsTo(User::class);
     }
 
-    public function showStartDate(){
+    public function showStartDate(): string
+    {
     	return $this->start_date->format( self::$date_format );
     }
 
-    public function showEndDate(){
+    public function showEndDate(): string
+    {
     	return $this->end_date->format( self::$date_format );
     }
 
-    public function editStartDate(){
+    public function editStartDate(): string
+    {
     	return $this->start_date->format( self::$date_format );
     }
 
-    public function editEndDate(){
+    public function editEndDate(): string
+    {
     	return $this->end_date->format( self::$date_format );
     }
 
-    public function getStartTime(){
+    public function getStartTime(): string
+    {
     	return $this->start_date->format( 'g:i a' );
     }
 
@@ -78,7 +91,8 @@ class CalendarEvent extends Model
      * @param int $month
      * @return array
      */
-    public static function getEventsByYearAndMonth( $year, $month ){
+    public static function getEventsByYearAndMonth(int $year, int $month ): array
+    {
     	$events = [];
     	foreach( CalendarEvent::all() as $calendarEvent ){
     		if( $calendarEvent->start_date->year === $year && $calendarEvent->start_date->month === $month ){
