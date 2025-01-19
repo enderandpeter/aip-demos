@@ -57,8 +57,22 @@ Run `yarn build` to build the production files.
 
 Run the feature tests with `php artisan test`
 
-Run the [Dusk](https://laravel.com/docs/dusk) tests with `php artisan dusk`. You should run this in a graphical environment that has Google Chrome so that it will
-run all the tests in the browser. If running in a command-line environment, quite a bit of preliminary setup is involved. You will see examples in the Dusk docs for [setting up with TravisCI](https://laravel.com/docs/8.x/dusk#running-tests-on-travis-ci).
+### Browser Tests
+
+First run `php artisan dusk:chrome-driver` on the environment where the tests will be ran.
+
+Then, copy `.env.dusk.local.example` to `.env.dusk.local`. You can change the `.local` suffix
+to the name of `APP_ENV`.
+
+Use [Dusk](https://laravel.com/docs/dusk) to run the command `php artisan dusk`.
+
+The best place to run this is in an graphical environment so you can see the browser being interacted with
+as the tests run. When you run `php artisan dusk:chrome-driver` in the environment where the Dusk tests will run,
+this will install ChromeDriver for your OS.
+
+To enable graphical mode, set `DUSK_HEADLESS_DISABLED=true` in `.env.dusk.*` where `*` is your `APP_ENV`.
+
+If running in a command-line environment, quite a bit of preliminary setup is involved. You will see examples in the Dusk docs for [setting up with TravisCI](https://laravel.com/docs/8.x/dusk#running-tests-on-travis-ci).
 
 Running the Dusk tests in a CLI environment will require first running `php artisan serve` and setting `APP_URL=http://localhost:8000`
 
