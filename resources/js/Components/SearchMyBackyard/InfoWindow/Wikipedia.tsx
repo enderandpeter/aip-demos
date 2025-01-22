@@ -16,6 +16,17 @@ export interface WikipediaProps{
 export default ({marker, activeTab}: WikipediaProps) => {
     const {data, error, isLoading} = useGetWikiImageDataQuery({lat: marker.getPosition()!.lat(), lng: marker.getPosition()!.lng()})
 
+    const excludedImages = [
+        'File:Commons-logo.svg',
+        'File:OOjs UI icon edit-ltr-progressive.svg',
+        'File:Question book-new.svg',
+        'File:Ambox important.svg',
+        'File:Ambox current red.svg',
+        'File:Crystal Clear app kedit.svg',
+        'File:Red pog.svg',
+        'File:Edit-clear.svg'
+    ]
+
     useEffect(() => {
         if(!isLoading){ // Center the info window once the data has loaded
             marker.openInfowindow()
@@ -42,7 +53,8 @@ export default ({marker, activeTab}: WikipediaProps) => {
                                 </div>
                                 <ul className="wikipedia_image_list list-unstyled list-inline">
                                     {
-                                        imageArray.map((imageData: WikipediaImageArrayData) => {
+                                        imageArray.filter((imageData: WikipediaImageArrayData) => !excludedImages.includes(imageData.title))
+                                            .map((imageData: WikipediaImageArrayData) => {
                                             const {original, thumbnail, title} = imageData
                                             return (
                                                 <li className="wikipedia_image_list_item list-inline-item" key={title}>

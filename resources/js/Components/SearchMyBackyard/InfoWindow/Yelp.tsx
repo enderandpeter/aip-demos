@@ -99,7 +99,7 @@ export default ({marker, activeTab}: YelpInfowindowProps) => {
                                                                                                 style={{width: '50px', height: '50px'}}
                                                                                                 src={
                                                                                                 user.image_url ? user.image_url.replace(/http:/, '')
-                                                                                                    : ''
+                                                                                                    : null
                                                                                                 }
                                                                                                 title={user.name}
                                                                                                 alt={user.name}
