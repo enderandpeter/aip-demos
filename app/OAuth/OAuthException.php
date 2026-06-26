@@ -1,6 +1,8 @@
 <?php
+
 namespace App\OAuth;
 
-class OAuthException extends Exception {
-  // pass
+class OAuthException extends Exception
+{
+    // pass
 }

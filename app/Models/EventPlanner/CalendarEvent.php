@@ -2,10 +2,9 @@
 
 namespace App\Models\EventPlanner;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -17,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method CalendarEvent all() Get all the user's calendar events
  *
  * @author Spencer
- *
  */
 class CalendarEvent extends Model
 {
@@ -30,16 +28,15 @@ class CalendarEvent extends Model
      *
      * @var array
      */
-    protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be mutated to dates.
-     *
-     * @var array
      */
-    protected array $dates = [ 'start_date', 'end_date' ];
+    protected array $dates = ['start_date', 'end_date'];
 
-    protected function casts(): array {
+    protected function casts(): array
+    {
         return [
             'start_date' => 'datetime:'.self::$date_format,
             'end_date' => 'datetime:'.self::$date_format,
@@ -47,59 +44,54 @@ class CalendarEvent extends Model
     }
 
     public static string $date_format = 'n/j/Y g:i a';
+
     public static string $datepicker_format = 'm/d/Y';
 
     /**
      * Get the user that owns the comment.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
-    	return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function showStartDate(): string
     {
-    	return $this->start_date->format( self::$date_format );
+        return $this->start_date->format(self::$date_format);
     }
 
     public function showEndDate(): string
     {
-    	return $this->end_date->format( self::$date_format );
+        return $this->end_date->format(self::$date_format);
     }
 
     public function editStartDate(): string
     {
-    	return $this->start_date->format( self::$date_format );
+        return $this->start_date->format(self::$date_format);
     }
 
     public function editEndDate(): string
     {
-    	return $this->end_date->format( self::$date_format );
+        return $this->end_date->format(self::$date_format);
     }
 
     public function getStartTime(): string
     {
-    	return $this->start_date->format( 'g:i a' );
+        return $this->start_date->format('g:i a');
     }
 
     /**
      * Get user's calendar events by year and month
-     *
-     * @param int $year
-     * @param int $month
-     * @return array
      */
-    public static function getEventsByYearAndMonth(int $year, int $month ): array
+    public static function getEventsByYearAndMonth(int $year, int $month): array
     {
-    	$events = [];
-    	foreach( CalendarEvent::all() as $calendarEvent ){
-    		if( $calendarEvent->start_date->year === $year && $calendarEvent->start_date->month === $month ){
-    			$events[ $calendarEvent->start_date->day ][] = $calendarEvent;
-    		}
-    	}
+        $events = [];
+        foreach (CalendarEvent::all() as $calendarEvent) {
+            if ($calendarEvent->start_date->year === $year && $calendarEvent->start_date->month === $month) {
+                $events[$calendarEvent->start_date->day][] = $calendarEvent;
+            }
+        }
 
-    	return $events;
+        return $events;
     }
 }

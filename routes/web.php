@@ -3,8 +3,6 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\LocationDataController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +21,7 @@ Route::get('/', function () {
 
 Route::get('search-my-backyard', function () {
     Inertia::setRootView('search-my-backyard');
+
     return Inertia::render('SearchMyBackyard');
 });
 

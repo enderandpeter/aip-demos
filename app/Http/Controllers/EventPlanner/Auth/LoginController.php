@@ -3,37 +3,37 @@
 namespace App\Http\Controllers\EventPlanner\Auth;
 
 use App\Http\Controllers\Auth\LoginController as SiteLoginController;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends SiteLoginController
 {
-	/**
-	 * The authentication guard that should be used.
-	 *
-	 */
-	protected function guard()
-	{
-		return Auth::guard('eventplanner');
-	}
-
-	/**
-	 * Log the user out of the application.
-	 *
-	 * @param  Request  $request
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    /**
+     * The authentication guard that should be used.
      */
-	public function logout(Request $request)
-	{
-		$this->guard()->logout();
+    protected function guard()
+    {
+        return Auth::guard('eventplanner');
+    }
 
-		$request->session()->flush();
+    /**
+     * Log the user out of the application.
+     *
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
 
-		$request->session()->regenerate();
+        $request->session()->flush();
 
-		return redirect($this->redirectTo);
-	}
+        $request->session()->regenerate();
+
+        return redirect($this->redirectTo);
+    }
 
     /**
      * Where to redirect users after login.

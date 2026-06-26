@@ -24,7 +24,7 @@ class CalendarEventFactory extends Factory
     public function definition()
     {
         $start_date = $this->faker->dateTimeThisYear;
-        $end_date = ( Carbon::instance( $start_date ) )->addHour();
+        $end_date = (Carbon::instance($start_date))->addHour();
 
         return [
             'start_date' => $start_date,
@@ -35,9 +35,9 @@ class CalendarEventFactory extends Factory
             'guest_list' => $this->faker->sentence,
             'location' => $this->faker->address,
             'guest_message' => $this->faker->realText(),
-            'user_id' => function(){
+            'user_id' => function () {
                 return User::factory()->create()->id;
-            }
+            },
         ];
     }
 }

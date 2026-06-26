@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 class EventPlannerRouteServiceProvider extends RouteServiceProvider
@@ -30,12 +31,12 @@ class EventPlannerRouteServiceProvider extends RouteServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  Router  $router
      * @return void
      */
     public function map()
     {
-    	parent::map();
+        parent::map();
     }
 
     /**
@@ -53,7 +54,7 @@ class EventPlannerRouteServiceProvider extends RouteServiceProvider
             require base_path('routes/eventplanner.php');
         });
     }
-    
+
     /**
      * Define the "api" routes for the application.
      *
@@ -63,12 +64,12 @@ class EventPlannerRouteServiceProvider extends RouteServiceProvider
      */
     protected function mapApiRoutes()
     {
-    	Route::group([
-    			'middleware' => 'eventplanner_api',
-    			'namespace' => $this->namespace,
-    			'prefix' => 'api',
-    	], function () {
-    		require base_path('routes/eventplanner_api.php');
-    	});
+        Route::group([
+            'middleware' => 'eventplanner_api',
+            'namespace' => $this->namespace,
+            'prefix' => 'api',
+        ], function () {
+            require base_path('routes/eventplanner_api.php');
+        });
     }
 }

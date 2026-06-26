@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\EventPlanner\User;
+
 return [
 
     /*
@@ -41,10 +43,10 @@ return [
             'provider' => 'eventplanner_users',
             'hash' => false,
         ],
-    	'eventplanner' => [
-    		'driver' => 'session',
-    		'provider' => 'eventplanner_users',
-    	],
+        'eventplanner' => [
+            'driver' => 'session',
+            'provider' => 'eventplanner_users',
+        ],
     ],
 
     /*
@@ -65,14 +67,14 @@ return [
     */
 
     'providers' => [
-       // 'users' => [
-       //    'driver' => 'eloquent',
-       //     'model' => App\User::class, // This class is currently not usable
-       // ],
-    	'eventplanner_users' => [
-    		'driver' => 'eloquent',
-    		'model' => App\Models\EventPlanner\User::class,
-    	]
+        // 'users' => [
+        //    'driver' => 'eloquent',
+        //     'model' => App\User::class, // This class is currently not usable
+        // ],
+        'eventplanner_users' => [
+            'driver' => 'eloquent',
+            'model' => User::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -105,7 +107,7 @@ return [
             'email' => 'auth.emails.password',
             'table' => 'eventplanner_password_resets',
             'expire' => 60,
-            'throttle' => 60
+            'throttle' => 60,
         ],
     ],
 

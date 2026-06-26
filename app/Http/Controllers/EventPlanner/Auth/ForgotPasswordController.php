@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\EventPlanner\Auth;
 
 use App\Http\Controllers\Auth\ForgotPasswordController as SiteForgetPasswordController;
+use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends SiteForgetPasswordController
@@ -20,10 +21,10 @@ class ForgotPasswordController extends SiteForgetPasswordController
     /**
      * Get the broker to be used during password reset.
      *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
+     * @return PasswordBroker
      */
     public function broker()
     {
-    	return Password::broker('eventplanner_users');
+        return Password::broker('eventplanner_users');
     }
 }

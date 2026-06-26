@@ -28,6 +28,6 @@ class Test extends Command
      */
     public function handle()
     {
-    	Artisan::call('dusk', ['--group=currentdate']);
+        Artisan::call('dusk', ['--group=currentdate']);
     }
 }

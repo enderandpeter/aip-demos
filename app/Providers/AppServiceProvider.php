@@ -2,10 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\DuskServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,12 +16,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('geolocation', function($attribute, $value, $parameters, $validator) {
+        Validator::extend('geolocation', function ($attribute, $value, $parameters, $validator) {
             $positions = explode(',', $value);
             $pass = true;
 
-            foreach($positions as $positionIndex => $position){
-                if(!is_numeric($position)){
+            foreach ($positions as $positionIndex => $position) {
+                if (! is_numeric($position)) {
                     $pass = false;
                 }
             }
@@ -40,8 +39,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-    	if ($this->app->environment('local', 'testing')) {
-    		$this->app->register(DuskServiceProvider::class);
-    	}
+        if ($this->app->environment('local', 'testing')) {
+            $this->app->register(DuskServiceProvider::class);
+        }
     }
 }
