@@ -2,52 +2,52 @@
 
 namespace Tests\Browser\EventPlanner;
 
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-
+use App\Models\EventPlanner\User;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
-
-use App\Models\EventPlanner\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 use Throwable;
 
 class CalendarNavigationTest extends DuskTestCase
 {
-	use DatabaseMigrations;
+    use DatabaseMigrations;
 
     /**
      * Test to confirm that current date appears on default event page
      *
      * @group currentdate
      * @group loginas
+     *
      * @return void
+     *
      * @throws Throwable
      */
-    public function testCurrentDate()
+    public function test_current_date()
     {
-    	$user = User::factory()->create();
+        $user = User::factory()->create();
 
-    	$this->browse(function ( Browser $browser ) use ( $user ) {
-    		$date = Carbon::now();
+        $this->browse(function (Browser $browser) use ($user) {
+            $date = Carbon::now();
 
-    		$dateHeaderFormat = 'F Y';
+            $dateHeaderFormat = 'F Y';
 
-    		$headerID = 'calendarHeading';
-    		$headerText = $date->format( $dateHeaderFormat );
+            $headerID = 'calendarHeading';
+            $headerText = $date->format($dateHeaderFormat);
 
-    		/*
+            /*
     		 * When logged in and visiting /event-planner, the current date should be in the calendar heading
     		 * with the proper format
     		 */
 
-    		$browser->loginAs( $user, 'eventplanner' )
-    			->visit( route( 'event-planner' ) )
-    			->assertSeeIn( '#calendarHeading', $headerText ) // Header text should be present
-    			->assertSelected( '#month', $date->format( 'n' ) ) // Header should have current date
-    			->assertValue( '#year', $date->format( 'Y' ) )
-    			->assertSeeIn( '#today', $date->format( 'j' ) ); // The current day should be in the appropriate element
-    	});
+            $browser->loginAs($user, 'eventplanner')
+                ->visit(route('event-planner'))
+                ->assertSeeIn('#calendarHeading', $headerText) // Header text should be present
+                ->assertSelected('#month', $date->format('n')) // Header should have current date
+                ->assertValue('#year', $date->format('Y'))
+                ->assertSeeIn('#today', $date->format('j')); // The current day should be in the appropriate element
+        });
     }
 
     /**
@@ -55,48 +55,55 @@ class CalendarNavigationTest extends DuskTestCase
      *
      * @group gotodate
      * @group loginas
+     *
      * @return void
+     *
      * @throws Throwable
      */
-    public function testGoToDate(){
-    	$user = User::factory()->create();
+    public function test_go_to_date()
+    {
+        $user = User::factory()->create();
 
-    	$this->browse( function ( Browser $browser ) use ( $user ) {
-    		$faker = Faker::create();
+        $this->browse(function (Browser $browser) use ($user) {
+            $faker = Faker::create();
 
-    		$date = Carbon::instance( $faker->dateTime() );
+            $date = Carbon::instance($faker->dateTime());
 
-    		$dateHeaderFormat = 'F Y';
+            $dateHeaderFormat = 'F Y';
 
-    		$browser->loginAs( $user, 'eventplanner' )
-	    		->visit( route( 'event-planner' ) )
-	    		->select( '#month', (string) $date->month )
-	    		->type( '#year', $date->year )
-	    		->press( 'Go' )
-	    		->assertSee( $date->format( $dateHeaderFormat) );
-    	});
+            $browser->loginAs($user, 'eventplanner')
+                ->visit(route('event-planner'))
+                ->select('#month', (string) $date->month)
+                ->type('#year', $date->year)
+                ->press('Go')
+                ->assertSee($date->format($dateHeaderFormat));
+        });
     }
 
     /**
      * Test to make sure the current date will load when the button is clicked
+     *
      * @group gotocurrent
      * @group loginas
+     *
      * @return void
+     *
      * @throws Throwable
      */
-    public function testGoToCurrentDate(){
+    public function test_go_to_current_date()
+    {
 
-    	$user = User::factory()->create();
+        $user = User::factory()->create();
 
-    	$this->browse( function ( Browser $browser ) use ( $user ) {
-    		$date = Carbon::now();
+        $this->browse(function (Browser $browser) use ($user) {
+            $date = Carbon::now();
 
-    		$dateHeaderFormat = 'F Y';
+            $dateHeaderFormat = 'F Y';
 
-    		$browser->loginAs( $user, 'eventplanner' )
-	    		->visit( route( 'event-planner' ) )
-	    		->press( 'Today' )
-	    		->assertSee( $date->format( $dateHeaderFormat ) );
-    	});
+            $browser->loginAs($user, 'eventplanner')
+                ->visit(route('event-planner'))
+                ->press('Today')
+                ->assertSee($date->format($dateHeaderFormat));
+        });
     }
 }

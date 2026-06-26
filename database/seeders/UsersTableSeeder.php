@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {
@@ -15,11 +15,11 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-    	DB::table('eventplanner_users')->insert([
-    			'name' => 'Spencer Williams',
-    			'email' => 'enderandpeter@yahoo.com',
-    			'password' => bcrypt('password'),
-    			'created_at' => Carbon::now()
-    	]);
+        DB::table('eventplanner_users')->insert([
+            'name' => 'Spencer Williams',
+            'email' => 'enderandpeter@yahoo.com',
+            'password' => bcrypt('password'),
+            'created_at' => Carbon::now(),
+        ]);
     }
 }

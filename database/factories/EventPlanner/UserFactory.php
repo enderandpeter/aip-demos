@@ -30,9 +30,11 @@ class UserFactory extends Factory
         ];
     }
 
-    public function clearpass(){
+    public function clearpass()
+    {
         return $this->state(function (array $attributes) {
             $clearPass = $this->faker->password(6, 255);
+
             return [
                 'clearpass' => $clearPass,
                 'password' => bcrypt($clearPass),

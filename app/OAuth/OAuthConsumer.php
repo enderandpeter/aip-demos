@@ -1,19 +1,24 @@
 <?php
+
 namespace App\OAuth;
 
 // https://github.com/Yelp/yelp-api/blob/master/v2/php/lib/OAuth.php
 
-class OAuthConsumer {
-  public $key;
-  public $secret;
+class OAuthConsumer
+{
+    public $key;
 
-  function __construct($key, $secret, $callback_url=NULL) {
-    $this->key = $key;
-    $this->secret = $secret;
-    $this->callback_url = $callback_url;
-  }
+    public $secret;
 
-  function __toString() {
-    return "OAuthConsumer[key=$this->key,secret=$this->secret]";
-  }
+    public function __construct($key, $secret, $callback_url = null)
+    {
+        $this->key = $key;
+        $this->secret = $secret;
+        $this->callback_url = $callback_url;
+    }
+
+    public function __toString()
+    {
+        return "OAuthConsumer[key=$this->key,secret=$this->secret]";
+    }
 }

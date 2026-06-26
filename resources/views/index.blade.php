@@ -21,14 +21,6 @@
 		<h2 class="ml-5 my-4">Demos</h2>
 	</div>
 	<dl id="demos-list" class="ml-5 mr-3">
-        <div class="row">
-            <dt class="col-3 col-sm-2">Projects</dt>
-            <div class="col-8">
-                <dd>
-                    <a href="https://krackofdawnmobile.com" target="_blank">Krack of Dawn Mobile Kafe</a> - An online store for an excellent mobile food truck company in Austin, Texas
-                </dd>
-            </div>
-        </div>
 		<div class="row">
 		<dt class="col-3 col-sm-2"><a target="_blank" href="https://www.udacity.com">Udacity</a></dt>
 		<div class="col-8">
