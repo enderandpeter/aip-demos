@@ -79,7 +79,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://aninternetpresence.net'),
+    'cd_game_url' => env('CD_GAME_URL', 'https://cd-game.aninternetpresence.net'),
     'asset_url' => env('ASSET_URL'),
 
     /*

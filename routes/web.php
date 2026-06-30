@@ -16,7 +16,9 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('index', [
+        'cd_game_url' => config('app.cd_game_url'),
+    ]);
 });
 
 Route::get('search-my-backyard', function () {
